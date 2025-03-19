@@ -1,0 +1,45 @@
+Tech stack:
+	Front end: HTML, CSS, JS, Jinja
+	Back end: Python w/Flask framework
+	Database: SQLite
+	API: MealDB, Spoonacular
+
+Core features:
+	Modules:
+		User control
+		Home/Index page
+		Recipe search
+		Favourite recipes
+		Meal plan
+		Shopping list
+
+	Module key features:
+		1. User control
+			1.1. Registration
+			1.2. Login
+			1.3. Profile management
+		2. Home/Index page
+			2.1. Navigation
+			2.2. Random/suggested recipe
+			2.3. Recognised food quotes
+		3. Recipe search
+			3.1. Input ingredient/s
+			3.2. Input exclusion/s
+			3.3. Input restriction/s
+			3.4. Display return (recipe/s)
+			3.4. Select and add ingredient to shopping list
+			3.5. Select and add recipe to meal plan
+			3.6. Select and add recipe to favourite list
+		4. Favourite recipes
+			4.1. Overview of favourite recipe list
+			4.2. Detailed view of recipe (pop up?)
+			4.3. Add ingredients from recipe to shopping list
+			4.4. Share recipe link (email/text)?
+		5. Meal plan
+			5.1. Overview of meal plan per week (Mon - Sun)
+			5.2. Add recipe or manual entry to recipe plan
+			5.3. Email meal plan
+		6. Shopping list
+			6.1. View shopping list
+			6.2. Share via email/text
+			6.3. Clear list

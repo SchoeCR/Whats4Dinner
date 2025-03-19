@@ -1,0 +1,23 @@
+Project Milestones:
+1. Planning & Research (Week 1-2)
+	1.1.	Define core features (ingredient input, filtering, recipe retrieval).
+	1.2.	Research APIs for recipe data (e.g., Spoonacular, Edamam, or a custom database).
+	1.3.	Outline the tech stack (frontend framework, backend, database, API integrations).
+2. Backend Development (Week 3-5)
+	2.1.	Set up the database (if needed) to store recipes or connect to an API.
+	2.2.	Develop API endpoints for ingredient-based search and filtering.
+	2.3.	Implement logic to retrieve and rank recipes based on input.
+3. Frontend Development (Week 6-8)
+	3.1.	Create a user-friendly UI for ingredient input and recipe display.
+	3.2.	Implement filtering functionality for additional ingredients.
+	3.3.	Ensure responsiveness across devices.
+4. Integration & Testing (Week 9-10)
+	4.1.	Connect frontend to backend API.
+	4.2.	Test for accuracy of recipe retrieval and filtering.
+	4.3.	Fix bugs and optimize performance.
+5. User Testing & Feedback (Week 11-12)
+	4.4.	Conduct beta testing with real users.
+	4.5.	Gather feedback and make improvements.
+6. Launch & Deployment (Week 13-14)
+	4.6.	Finalize UI/UX refinements.
+	4.7.	Deploy the app on a hosting service (e.g., Vercel, AWS, or Firebase).

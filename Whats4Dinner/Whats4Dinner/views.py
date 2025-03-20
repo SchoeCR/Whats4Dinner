@@ -62,7 +62,9 @@ def register():
         password = request.form.get("password")
         confirmation = request.form.get("confirmation")
 
-        # TODO: Add more validation (null checks etc) 
+        # TODO: Add more validation (null checks etc)
+        
+        # Check form variables for null values
 
         # Validate psw entry matches
         if password != confirmation:

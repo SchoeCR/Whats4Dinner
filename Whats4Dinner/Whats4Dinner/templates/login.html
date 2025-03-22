@@ -12,14 +12,19 @@
 
 {% endif %}
 
-<form action="/login" method="post" class="row g-3">
-    <div class="mb-2">
+<form action="/login" method="post" class="row g-1">
+
+    <div class="justify-content-center mb-2">
         <label class="label-register">Please enter your email address</label>
-        <input autocomplete="off" autofocus class="form-control wx-auto mx-auto" name="email" placeholder="hello@world.com" type="email">
+        <input autocomplete="off" autofocus class="form-control w-auto" name="email" placeholder="hello@world.com" type="email">
     </div>
-    <div class="mb-2">
+
+    <div class="justify-content-center mb-2">
         <label class="label-register">Please enter a password</label>
-        <input class="form-control mx-auto" name="password" placeholder="Password" type="password">
+        <input class="form-control w-auto" name="password" placeholder="Password" type="password">
+    </div>
+    <div class="justify-content-center mb-2">
+        <button class="btn btn-primary" type="submit">Login</button>
     </div>
 </form>
 

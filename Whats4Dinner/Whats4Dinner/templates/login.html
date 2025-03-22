@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h3>Login</h3>
+
+{% if validation_error %}
+
+<div style="text-col">
+    Error: {{ validation_error }}
+</div>
+
+{% endif %}
+
+<form action="/login" method="post" class="row g-3">
+    <div class="mb-2">
+        <label class="label-register">Please enter your email address</label>
+        <input autocomplete="off" autofocus class="form-control wx-auto mx-auto" name="email" placeholder="hello@world.com" type="email">
+    </div>
+    <div class="mb-2">
+        <label class="label-register">Please enter a password</label>
+        <input class="form-control mx-auto" name="password" placeholder="Password" type="password">
+    </div>
+</form>
+
+{% endblock %}

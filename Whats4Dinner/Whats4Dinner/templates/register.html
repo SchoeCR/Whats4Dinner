@@ -12,29 +12,26 @@
 
 {% endif %}
 
-    <form action="/register" method="post" class="row g-3 needs-validation" novalidate>
-        <div class="mb-3">
-            <label class="label-register">Please enter first name</label>
-            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="first_name" placeholder="Username" type="text" id="validationCustom01" required>
-            <div class="valid-feedback">
-                Looks good!
-            </div> 
+    <form action="/register" method="post" class="row g-3">
+        <div class="mb-2">
+            <label for="first_name_id" class="label-register">Please enter first name</label>
+            <input autocomplete="off" autofocus class="form-control mx-auto" name="first_name" placeholder="Username" type="text" id="first_name_id" required> 
         </div>
-        <div class="mb-3">
-            <label class="label-register">Please enter last name</label>
-            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="last_name" placeholder="Username" type="text">
+        <div class="mb-2">
+            <label for="last_name_id" class="label-register">Please enter last name</label>
+            <input autocomplete="off" autofocus class="form-control mx-auto" name="last_name" placeholder="Username" type="text" id="last_name_id" required>
         </div>
-        <div class="mb-3">
+        <div class="mb-2">
             <label class="label-register">Please enter your email address</label>
-            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="email" placeholder="hello@world.com" type="email">
+            <input autocomplete="off" autofocus class="form-control mx-auto" name="email" placeholder="hello@world.com" type="email">
         </div>
-        <div class="mb-3">
+        <div class="mb-2">
             <label class="label-register">Please enter a password</label>
-            <input class="form-control mx-auto w-auto" name="password" placeholder="Password" type="password">
+            <input class="form-control mx-auto" name="password" placeholder="Password" type="password">
         </div>
-        <div class="mb-3">
+        <div class="mb-2">
             <label class="label-register">Please confirm your password</label>
-            <input class="form-control mx-auto w-auto" name="confirmation" placeholder="Confirm password" type="password">
+            <input class="form-control mx-auto" name="confirmation" placeholder="Confirm password" type="password">
         </div>
         <button class="btn btn-primary" type="submit">Register</button>
     </form>

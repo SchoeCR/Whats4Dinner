@@ -68,6 +68,7 @@
     <Content Include="Whats4Dinner\templates\contact.html" />
     <Content Include="Whats4Dinner\templates\index.html" />
     <Content Include="Whats4Dinner\templates\layout.html" />
+    <Content Include="Whats4Dinner\templates\login.html" />
     <Content Include="Whats4Dinner\templates\register.html" />
   </ItemGroup>
   <ItemGroup>

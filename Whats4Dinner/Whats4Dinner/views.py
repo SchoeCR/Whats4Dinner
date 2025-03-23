@@ -3,10 +3,12 @@ Routes and views for the flask application.
 """
 
 import sqlite3
+import tkinter.messagebox
 from werkzeug.security import generate_password_hash
 from datetime import datetime
 from flask import render_template, request
 from Whats4Dinner import app
+import tkinter
 
 def get_db_connection():
     conn = sqlite3.connect('dinner.db')
@@ -65,6 +67,21 @@ def register():
         # TODO: Add more validation (null checks etc)
         
         # Check form variables for null values
+        if not first_name:
+            tkinter.messagebox.showwarning("Missing value","Please enter a first name.")
+            return
+        if not last_name:
+            tkinter.messagebox.showwarning("Missing value","Please enter a last name.")
+            return
+        if not email:
+            tkinter.messagebox.showwarning("Missing value","Please enter an email.")
+            return
+        if not password:
+            tkinter.messagebox.showwarning("Missing value","Please enter a password.")
+            return
+        if not confirmation:
+            tkinter.messagebox.showwarning("Missing value","Please enter password confirmation.")
+            return
 
         # Validate psw entry matches
         if password != confirmation:

@@ -8,12 +8,7 @@ from werkzeug.security import generate_password_hash
 from datetime import datetime
 from flask import render_template, request
 from Whats4Dinner import app
-import tkinter
-
-def get_db_connection():
-    conn = sqlite3.connect('dinner.db')
-    conn.row_factory = sqlite3.Row
-    return conn
+from supplementary import get_db_connection, db_select, db_insert
 
 @app.route('/')
 @app.route('/home')
@@ -93,16 +88,17 @@ def register():
             validation_error='Passwords do not match. Please fix.'
         )
 
+        # Check if profile with received email already exists
+        profile = db_select("SELECT * FROM users WHERE email = ?",email)
+        if profile:
+            tkinter.messagebox.showwarning("Existing profile","A user profile with the entered email already exists.")
+            return
+
         # Hash password
         hash = generate_password_hash(password)
 
         # Post new user to database
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute ("INSERT INTO users (first_name, last_name, email, hash) VALUES (?, ?, ?, ?)", (first_name, last_name, email, hash))
-
-        conn.commit()
-        conn.close()
+        db_execute("INSERT INTO users (first_name, last_name, email, hash) VALUES (?, ?, ?, ?)", (first_name, last_name, email, hash))
 
         return render_template(
             'register.html',

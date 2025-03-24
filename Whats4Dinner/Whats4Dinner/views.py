@@ -8,7 +8,7 @@ from werkzeug.security import generate_password_hash
 from datetime import datetime
 from flask import render_template, request
 from Whats4Dinner import app
-from supplementary import *
+from .utils import *
 
 @app.route('/')
 @app.route('/home')
@@ -58,25 +58,45 @@ def register():
         email = request.form.get("email")
         password = request.form.get("password")
         confirmation = request.form.get("confirmation")
+        added_date = datetime.now().date
 
         # TODO: Add more validation (null checks etc)
         
         # Check form variables for null values
         if not first_name:
-            tkinter.messagebox.showwarning("Missing value","Please enter a first name.")
-            return
+            return render_template(
+            'register.html', title='Register',
+            year=datetime.now().year,
+            message='Your application description page.',
+            validation_error='Please enter a first name.')
+
         if not last_name:
-            tkinter.messagebox.showwarning("Missing value","Please enter a last name.")
-            return
+            return render_template(
+            'register.html', title='Register',
+            year=datetime.now().year,
+            message='Your application description page.',
+            validation_error='Please enter a last name.')
+
         if not email:
-            tkinter.messagebox.showwarning("Missing value","Please enter an email.")
-            return
+            return render_template(
+            'register.html', title='Register',
+            year=datetime.now().year,
+            message='Your application description page.',
+            validation_error='Please enter an email.')
+
         if not password:
-            tkinter.messagebox.showwarning("Missing value","Please enter a password.")
-            return
+            return render_template(
+            'register.html', title='Register',
+            year=datetime.now().year,
+            message='Your application description page.',
+            validation_error='Please enter a password.')
+
         if not confirmation:
-            tkinter.messagebox.showwarning("Missing value","Please enter password confirmation.")
-            return
+            return render_template(
+            'register.html', title='Register',
+            year=datetime.now().year,
+            message='Your application description page.',
+            validation_error='Please confirm your password.')
 
         # Validate psw entry matches
         if password != confirmation:
@@ -89,16 +109,19 @@ def register():
         )
 
         # Check if profile with received email already exists
-        profile = db_select("SELECT * FROM users WHERE email = ?",(email))
-        if profile:
-            tkinter.messagebox.showwarning("Existing profile","A user profile with the entered email already exists.")
-            return
+        profile = db_select("SELECT * FROM users WHERE email = ?",email)
+        if len(profile) >= 1:
+            return render_template(
+            'register.html', title='Register',
+            year=datetime.now().year,
+            message='Your application description page.',
+            validation_error='Sorry, a user profile with the entered email already exists.')
 
         # Hash password
         hash = generate_password_hash(password)
 
         # Post new user to database
-        db_insert("INSERT INTO users (first_name, last_name, email, hash) VALUES (?, ?, ?, ?)", (first_name, last_name, email, hash))
+        db_insert("INSERT INTO users (first_name, last_name, email, hash, added_date) VALUES (?, ?, ?, ?, ?)", first_name, last_name, email, hash, added_date)
 
         return render_template(
             'register.html',

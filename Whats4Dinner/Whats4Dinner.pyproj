@@ -32,7 +32,7 @@
     <Compile Include="Whats4Dinner\db.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Whats4Dinner\supplementary.py">
+    <Compile Include="Whats4Dinner\utils.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Whats4Dinner\__init__.py" />

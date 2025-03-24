@@ -1,20 +1,23 @@
-from Whats4Dinner import app
 import sqlite3
 
-def db_insert(qryStr):
+def db_insert(qryStr, *args):
     conn = get_db_connection()
     cursor = conn.cursor()
-    result = cursor.execute(qryStr)
-    conn.commit()
-    conn.close()
-    return result
+    cursor.execute(qryStr, args)  # Pass args correctly
+    conn.commit()  # Commit the transaction
+    result = cursor.lastrowid  # Get the last inserted row's ID
+    conn.close()  # Close connection after fetching the result
+    return result  # Return last inserted ID
 
-def db_select(qryStr):
+
+def db_select(qryStr, *args):
     conn = get_db_connection()
     cursor = conn.cursor()
-    result = cursor.execute(qryStr)
+    cursor.execute(qryStr, args)  # Pass args as a tuple
+    result = cursor.fetchall()  # Fetch data before closing
     conn.close()
-    return result
+    return result  # Now returning fetched data
+
 
 def get_db_connection():
     conn = sqlite3.connect('dinner.db')

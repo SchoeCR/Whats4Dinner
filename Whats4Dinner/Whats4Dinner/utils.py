@@ -1,3 +1,4 @@
+from Whats4Dinner import app
 import sqlite3
 
 def db_insert(qryStr):

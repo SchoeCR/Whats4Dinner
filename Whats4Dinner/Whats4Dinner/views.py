@@ -8,7 +8,7 @@ from werkzeug.security import generate_password_hash
 from datetime import datetime
 from flask import render_template, request
 from Whats4Dinner import app
-from supplementary import get_db_connection, db_select, db_insert
+from supplementary import *
 
 @app.route('/')
 @app.route('/home')
@@ -89,7 +89,7 @@ def register():
         )
 
         # Check if profile with received email already exists
-        profile = db_select("SELECT * FROM users WHERE email = ?",email)
+        profile = db_select("SELECT * FROM users WHERE email = ?",(email))
         if profile:
             tkinter.messagebox.showwarning("Existing profile","A user profile with the entered email already exists.")
             return
@@ -98,7 +98,7 @@ def register():
         hash = generate_password_hash(password)
 
         # Post new user to database
-        db_execute("INSERT INTO users (first_name, last_name, email, hash) VALUES (?, ?, ?, ?)", (first_name, last_name, email, hash))
+        db_insert("INSERT INTO users (first_name, last_name, email, hash) VALUES (?, ?, ?, ?)", (first_name, last_name, email, hash))
 
         return render_template(
             'register.html',

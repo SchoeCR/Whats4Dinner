@@ -1,9 +1,15 @@
-"""
-Helper functions for application
-"""
+import sqlite3
 
-import requests
-from flask import render_template, redirect, session
+def duplicate_user(email):
+    # Check if a user profile with argument email, already exists
+    # Query table users
 
-def exception(message):
-    #TODO - exception handler function
+def db_execute():
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+def get_db_connection():
+    conn = sqlite3.connect('dinner.db')
+    conn.row_factory = sqlite3.Row
+    return conn

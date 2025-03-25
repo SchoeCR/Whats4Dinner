@@ -4,7 +4,7 @@ Routes and views for the flask application.
 
 import sqlite3
 import tkinter.messagebox
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from flask import render_template, request, flash, redirect
 from Whats4Dinner import app
@@ -145,5 +145,18 @@ def login():
 
         # Check if email is null
         if not email:
-            return render_template
+            return render_template(
+            'login.html', title='Login',
+            year=datetime.now().year,
+            validation_error='Please enter an email.')
+
+        # Check if password is null
+        if not password:
+            return render_template(
+            'login.html', title='Login',
+            year=datetime.now().year,
+            validation_error='Please enter a password.')
+
+        # Query database for existing account with matching credentials
+        profile = db_select()
 

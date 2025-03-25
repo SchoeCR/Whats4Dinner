@@ -8,22 +8,22 @@
 
 <div class="text-danger" style="text-col">
     Error: {{ validation_error }}
-    <hr />
 </div>
+<hr />
 
 {% elif new_user %}
 
 <div class="text-success" style="text-col">
     {{ new_user }}
-    <hr />
 </div>
+<hr />
 
 {% elif login_prompt %}
 
 <div class="text-primary" style="text-col">
     {{ login_prompt }}
-    <hr />
 </div>
+<hr />
 
 {% endif %}
 

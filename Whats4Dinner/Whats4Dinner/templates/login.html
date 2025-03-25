@@ -6,23 +6,23 @@
 
 {% if validation_error %}
 
-<div style="text-col">
+<div class="text-danger" style="text-col">
     Error: {{ validation_error }}
-
+    <hr />
 </div>
 
 {% elif new_user %}
 
-<div style="text-col">
+<div class="text-success" style="text-col">
     {{ new_user }}
-
+    <hr />
 </div>
 
 {% elif login_prompt %}
 
-<div style="text-col">
+<div class="text-primary" style="text-col">
     {{ login_prompt }}
-
+    <hr />
 </div>
 
 {% endif %}

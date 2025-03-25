@@ -6,7 +6,7 @@ import sqlite3
 import tkinter.messagebox
 from werkzeug.security import generate_password_hash
 from datetime import datetime
-from flask import render_template, request
+from flask import render_template, request, flash, redirect
 from Whats4Dinner import app
 from .utils import *
 
@@ -105,8 +105,7 @@ def register():
             title='Register',
             year=datetime.now().year,
             message='Your application description page.',
-            validation_error='Passwords do not match. Please fix.'
-        )
+            validation_error='Passwords do not match. Please fix.')
 
         # Check if profile with received email already exists
         profile = db_select("SELECT * FROM users WHERE email = ?",email)
@@ -127,11 +126,9 @@ def register():
         db_insert("users",["first_name","last_name","email","hash","added_date"],[first_name,last_name,email,psw_hash,date_now])
 
         return render_template(
-            'register.html',
-            title='Register',
-            year=datetime.now().year,
-            new_user='Your user has been created.'
-            )
+        'login.html', title='Login',
+        year=datetime.now().year,
+        new_user='A new user has been created!')
 
 @app.route('/login', methods=["GET", "POST"])
 def login():

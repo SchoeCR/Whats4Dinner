@@ -1,14 +1,14 @@
 import sqlite3
 
-def db_insert(qryStr, *args):
+def db_insert(table, columns, values):
+    placeholders = ", ".join(["?"] * len(values))  # Create placeholders dynamically
+    sql = f"INSERT INTO {table} ({', '.join(columns)}) VALUES ({placeholders})"
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute(qryStr, args)  # Pass args correctly
-    conn.commit()  # Commit the transaction
-    result = cursor.lastrowid  # Get the last inserted row's ID
-    conn.close()  # Close connection after fetching the result
-    return result  # Return last inserted ID
-
+    cursor.execute(sql, values)  # Pass the values dynamically
+    conn.commit()
+    conn.close()
+    return
 
 def db_select(qryStr, *args):
     conn = get_db_connection()

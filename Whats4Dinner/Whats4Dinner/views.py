@@ -118,16 +118,19 @@ def register():
             validation_error='Sorry, a user profile with the entered email already exists.')
 
         # Hash password
-        hash = generate_password_hash(password)
+        psw_hash = generate_password_hash(password)
+
+        # Get current date
+        date_now = datetime.now()
 
         # Post new user to database
-        db_insert("INSERT INTO users (first_name, last_name, email, hash, added_date) VALUES (?, ?, ?, ?, ?)", first_name, last_name, email, hash, added_date)
+        db_insert("users",["first_name","last_name","email","hash","added_date"],[first_name,last_name,email,psw_hash,date_now])
 
         return render_template(
             'register.html',
             title='Register',
             year=datetime.now().year,
-            message='Your user has been created.'
+            new_user='Your user has been created.'
             )
 
 @app.route('/login', methods=["GET", "POST"])

@@ -139,7 +139,7 @@ def login():
             'login.html',
             title='Login',
             year=datetime.now().year,
-            message='Please enter your account details to login.'
+            login_prompt='Please enter your account details to login.'
         )
 
     if request.method == "POST":

@@ -67,35 +67,30 @@ def register():
             return render_template(
             'register.html', title='Register',
             year=datetime.now().year,
-            message='Your application description page.',
             validation_error='Please enter a first name.')
 
         if not last_name:
             return render_template(
             'register.html', title='Register',
             year=datetime.now().year,
-            message='Your application description page.',
             validation_error='Please enter a last name.')
 
         if not email:
             return render_template(
             'register.html', title='Register',
             year=datetime.now().year,
-            message='Your application description page.',
             validation_error='Please enter an email.')
 
         if not password:
             return render_template(
             'register.html', title='Register',
             year=datetime.now().year,
-            message='Your application description page.',
             validation_error='Please enter a password.')
 
         if not confirmation:
             return render_template(
             'register.html', title='Register',
             year=datetime.now().year,
-            message='Your application description page.',
             validation_error='Please confirm your password.')
 
         # Validate psw entry matches
@@ -104,7 +99,6 @@ def register():
             'register.html',
             title='Register',
             year=datetime.now().year,
-            message='Your application description page.',
             validation_error='Passwords do not match. Please fix.')
 
         # Check if profile with received email already exists
@@ -113,7 +107,6 @@ def register():
             return render_template(
             'register.html', title='Register',
             year=datetime.now().year,
-            message='Your application description page.',
             validation_error='Sorry, a user profile with the entered email already exists.')
 
         # Hash password
@@ -150,28 +143,7 @@ def login():
         
         # Check form variables for null values
 
+        # Check if email is null
+        if not email:
+            return render_template
 
-        # Validate psw entry matches
-        if password != confirmation:
-            return render_template(
-            'register.html',
-            title='Register',
-            year=datetime.now().year,
-            message='Your application description page.',
-            validation_error='Passwords do not match. Please fix.'
-        )
-
-        # Post new user to database
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute ("INSERT INTO users (first_name, last_name, email, hash) VALUES (?, ?, ?, ?)", (first_name, last_name, email, hash))
-
-        conn.commit()
-        conn.close()
-
-        return render_template(
-            'register.html',
-            title='Register',
-            year=datetime.now().year,
-            message='Your user has been created.'
-            )

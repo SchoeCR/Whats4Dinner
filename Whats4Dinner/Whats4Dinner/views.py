@@ -155,7 +155,7 @@ def login():
             validation_error='Please enter a password.')
 
         # Query database for existing account with matching credentials
-        profile = db_select(f"SELECT * FROM users WHERE email={email}")
+        profile = db_select(f"SELECT * FROM users WHERE email='{email}'")
 
         # Retrieve stored password hash
         pswhash = profile[0]["hash"]

@@ -2,15 +2,10 @@
 The flask application package.
 """
 
-from flask import Flask, flash, redirect, render_template
-from flask_session import Session
+from flask import Flask, flash, redirect, render_template, session
 from cs50 import SQL
 app = Flask(__name__)
 
 import Whats4Dinner.views
 
-# Configure session to use filesystem (instead of signed cookies)
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
-
+app.secret_key = b'49a05b0a2838342efe5dcbbacaae129afb817bc15deaf3b51ec815db696e3012'

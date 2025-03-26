@@ -4,6 +4,9 @@
 
 <div class="jumbotron">
     <h1>Flask</h1>
+    {% if session['user_id'] %}
+    <h2>Welcome back {{ session['first_name'] }} </h2>
+    {% endif %}
     <p class="lead">Flask is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
     <p><a href="http://flask.pocoo.org/" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
 </div>

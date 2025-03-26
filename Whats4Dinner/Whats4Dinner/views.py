@@ -6,7 +6,7 @@ import sqlite3
 import tkinter.messagebox
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-from flask import render_template, request, flash, redirect
+from flask import render_template, request, flash, redirect, session
 from Whats4Dinner import app
 from .utils import *
 
@@ -168,6 +168,8 @@ def login():
             validation_error='The email or password is incorrect.\nPlease try again.')
 
         # TODO: Create new session for user_id
+        session['user_id'] = profile[0]['user_id']
+        session['first_name'] = profile[0]['first_name']
 
         # Redirect user to home page
         return redirect("/")

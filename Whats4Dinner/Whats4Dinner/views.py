@@ -139,10 +139,7 @@ def login():
         email = request.form.get("email")
         password = request.form.get("password")
 
-        # TODO: Add more validation (null checks etc)
-        
         # Check form variables for null values
-
         # Check if email is null
         if not email:
             return render_template(
@@ -158,5 +155,20 @@ def login():
             validation_error='Please enter a password.')
 
         # Query database for existing account with matching credentials
-        profile = db_select()
+        profile = db_select(f"SELECT * FROM users WHERE email={email}")
+
+        # Retrieve stored password hash
+        pswhash = profile[0]["hash"]
+
+        # Check if profile is null or passwords do not match
+        if len(profile) != 1 or not check_password_hash(pswhash,password):
+            return render_template(
+            'login.html', title='Login',
+            year=datetime.now().year,
+            validation_error='The email or password is incorrect.\nPlease try again.')
+
+        # TODO: Create new session for user_id
+
+        # Redirect user to home page
+        return redirect("/")
 

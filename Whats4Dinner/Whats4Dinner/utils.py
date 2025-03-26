@@ -10,12 +10,10 @@ def db_insert(table, columns, values):
     conn.close()
     return
 
-def db_select(table, columns, criteria):
-    placeholders = ", ".join(["?"] * len(values))  # Create placeholders dynamically
-    sql = f"SELECT ({', '.join(columns)}) FROM {table} WHERE )"
+def db_select(qryStr):
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute(qryStr, args)  # Pass args as a tuple
+    cursor.execute(qryStr)  # Pass args as a tuple
     result = cursor.fetchall()  # Fetch data before closing
     conn.close()
     return result  # Now returning fetched data

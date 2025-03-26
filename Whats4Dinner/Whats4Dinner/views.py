@@ -174,7 +174,7 @@ def login():
         # Redirect user to home page
         return redirect("/")
 
-@app.route('/logout', methods=["POST"])
+@app.route('/logout', methods=["GET"])
 def logout():
     """Logs user out of web app (Clears session)."""
 

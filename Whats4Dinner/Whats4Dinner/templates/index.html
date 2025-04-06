@@ -11,20 +11,43 @@
 <div class="row">
         
     <div class="col-md-12">
-        <h2>My receipes</h2>
+        <h2>My recipes</h2>
         <p>
             Find your first recipe.
         </p>
 
-        <form action="/login" method="post" class="row g-1">
+        <form action="/search" method="post" class="row g-1">
 
             <div class="justify-content-center mb-2">
                 <label class="label-register">Keyword</label>
                 <input autofocus class="form-control w-auto" name="keyword" placeholder="Pizza" type="text">
             </div>
-
         </form>
 
+            {% if recipes %}
+            <h4>How about one of the following...</h4>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Image</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for id, recipe in recipes.items() %}
+                    <tr>
+                        <td>{{ id }}</td>
+                        <td>{{ recipe.title }}</td>
+                        <td><img src="{{ recipe.image }}" alt="Mmm, yum yum" /></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% elif invalid_response %}
+            <h4>Uh oh.. No results found!!</h4>
+            <img src="https://c.tenor.com/lx2WSGRk8bcAAAAd/tenor.gif" alt="Computer man" style="width:250px;height:250px;">
+            {% endif %}
     </div>
 </div>
 

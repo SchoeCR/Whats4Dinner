@@ -6,9 +6,11 @@ import sqlite3
 import tkinter.messagebox
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-from flask import render_template, request, flash, redirect, session
+from flask import render_template, request, flash, redirect, session, json
 from Whats4Dinner import app
 from .utils import *
+import requests
+from .config import API_KEY
 
 @app.route('/')
 @app.route('/home')
@@ -20,12 +22,12 @@ def home():
         year=datetime.now().year,
     )
 
-@app.route('/contact')
-def contact():
-    """Renders the contact page."""
+@app.route('/profile')
+def profile():
+    """Renders the profile page."""
     return render_template(
-        'contact.html',
-        title='Contact',
+        'profile.html',
+        title='User Profile',
         year=datetime.now().year,
         message='Your contact page.'
     )
@@ -59,8 +61,6 @@ def register():
         password = request.form.get("password")
         confirmation = request.form.get("confirmation")
         added_date = datetime.now().date
-
-        # TODO: Add more validation (null checks etc)
         
         # Check form variables for null values
         if not first_name:
@@ -184,3 +184,67 @@ def logout():
     # Redirect user to login
     return redirect("/")
 
+@app.route('/search', methods=["GET","POST"])
+def search_recipe():
+    """Route for user to search for recipe on root page"""
+    if request.method == "GET":
+        render_template(
+            'index.html',
+            title='Home page',
+            year=datetime.now().year)
+
+    elif request.method == "POST":
+
+        # Assign form values to variables
+        query_input = request.form.get("keyword")
+
+        # Validate form input
+        if not query_input:
+            return render_template(
+            'index.html',
+            title='Home page',
+            year=datetime.now().year,
+            missing_input='Please enter a meal or ingredient to search')
+    
+        base_url = "https://api.spoonacular.com/recipes/complexSearch"
+        query = query_input 
+        number = 5
+       
+        URL = f"{base_url}?query={query}&number={number}&apiKey={API_KEY}"
+
+        # API call via requests library
+        response = requests.get(URL)
+
+        # Verify response is valid
+        if response.status_code == 200:
+            # Assign API call results to data
+            parsed_json = response.json()
+            print(f'json: {parsed_json}')
+            
+            # Extract title and image
+            extracted_data = {}
+            for recipe in parsed_json['results']:
+                extracted_data[recipe['id']] = {
+                    'title': recipe['title'],
+                    'image': recipe['image']
+                }
+            print(extracted_data)
+            # Redirect/render index.html template. Pass results dictionary to index.html to be rendered.
+            return render_template(
+                'index.html',
+                title='Home page',
+                year=datetime.now().year,
+                recipes=extracted_data)
+        # API call has returned a response code other than 200
+        else:
+            # Render index.html page with message code alerting no results.
+            return render_template(
+            'index.html',
+            title='Home page',
+            year=datetime.now().year,
+            invalid_response='No results found.')
+
+        # TODO: Parameterise the query 
+        # Figure out how to process the JSON. I think we can render it directly in the view template. 
+        # Otherwise, we need to process the JSON and return an array of data.
+        # Review ... https://medium.com/@modimuskan397/how-to-parse-json-file-and-show-output-json-using-flask-c0b415f3f0a0

@@ -225,6 +225,7 @@ def search_recipe():
             extracted_data = {}
             for recipe in parsed_json['results']:
                 extracted_data[recipe['id']] = {
+                    'id': recipe['id'],
                     'title': recipe['title'],
                     'image': recipe['image']
                 }
@@ -248,3 +249,59 @@ def search_recipe():
         # Figure out how to process the JSON. I think we can render it directly in the view template. 
         # Otherwise, we need to process the JSON and return an array of data.
         # Review ... https://medium.com/@modimuskan397/how-to-parse-json-file-and-show-output-json-using-flask-c0b415f3f0a0
+
+@app.route('/recipe/view', methods=["GET","POST"])
+def recipe_view():
+    # Route for user to view recipe in detail.
+    # User reached page via GET method.
+    if request.method == "GET":
+        return render_template(
+        'recipe.html',
+        title='Recipe',
+        year=datetime.now().year
+        )
+    # User reached page via POST method.
+    if request.method == "POST":
+        
+        # Assign form values to variables
+        recipe_id = request.form.get("recipe_id")
+
+        # Validate form input
+        if not recipe_id:
+            return render_template(
+            'recipe.html',
+            title='Recipe - Detail',
+            year=datetime.now().year,
+            recipe_missing='Error - recipe ID cannot be found.')
+    
+        base_url = "https://api.spoonacular.com/recipes/"
+        
+        URL = f"{base_url}{recipe_id}/information?includeNutrition=true&addWinePairing=true&apiKey={API_KEY}"
+
+        # API call via requests library
+        response = requests.get(URL)
+
+        # Verify response is valid
+        if response.status_code == 200:
+            # Assign API call results to data
+            parsed_json = response.json()
+            print(f'json: {parsed_json}')
+            
+            # Extract form content fields
+            extracted_data = {}
+            extracted_data = parsed_json
+
+            # Redirect/render index.html template. Pass results dictionary to index.html to be rendered.
+            return render_template(
+                'recipe.html',
+                title='Recipe - Detail',
+                year=datetime.now().year,
+                recipes=extracted_data)
+        # API call has returned a response code other than 200
+        else:
+            # Render index.html page with message code alerting no results.
+            return render_template(
+            'index.html',
+            title='Home page',
+            year=datetime.now().year,
+            invalid_response='No results found.')

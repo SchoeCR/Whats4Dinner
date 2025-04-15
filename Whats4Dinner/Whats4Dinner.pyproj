@@ -54,10 +54,14 @@
     <Content Include="Whats4Dinner\static\content\bootstrap.css" />
     <Content Include="Whats4Dinner\static\content\bootstrap.min.css" />
     <Content Include="Whats4Dinner\static\content\site.css" />
+    <Content Include="Whats4Dinner\static\cooking.svg" />
+    <Content Include="Whats4Dinner\static\dairy-free.svg" />
     <Content Include="Whats4Dinner\static\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Whats4Dinner\static\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Whats4Dinner\static\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Whats4Dinner\static\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Whats4Dinner\static\food-preparation-_1_.svg" />
+    <Content Include="Whats4Dinner\static\gluten-free_1.svg" />
     <Content Include="Whats4Dinner\static\knife.svg" />
     <Content Include="Whats4Dinner\static\scripts\bootstrap.js" />
     <Content Include="Whats4Dinner\static\scripts\bootstrap.min.js" />
@@ -74,6 +78,8 @@
     <Content Include="Whats4Dinner\static\scripts\respond.js" />
     <Content Include="Whats4Dinner\static\scripts\respond.min.js" />
     <Content Include="Whats4Dinner\static\scripts\_references.js" />
+    <Content Include="Whats4Dinner\static\vegan_1.svg" />
+    <Content Include="Whats4Dinner\static\vegetables.svg" />
     <Content Include="Whats4Dinner\templates\about.html" />
     <Content Include="Whats4Dinner\templates\contact.html" />
     <Content Include="Whats4Dinner\templates\index.html" />

@@ -76,138 +76,67 @@
                     </div>
                 </div>
                 {% if recipes %}
-                    <div class="container-fluid">
+                <div class="d-flex">
+                    <div class="flex-grow-1">
                         <img class="rounded" src="{{ recipes.image }}" />
-                        <p class="fs-6 fst-italic">{{ recipes.id }}</p>
+                        <p class="fs-10 fw-light fst-italic">{{ recipes.id }}</p>
                     </div>
+                    <div class="flex-grow-1">
+                        <div class="d-flex mb-3">
+                            <img class="flex-grow-1" src="/static/food-preparation-_1_.svg" alt="Preparation time:" height="50" width="50" title="Preparation time" />
+                            <p class="flex-grow-1">{{ recipes.preparationMinutes }}</p>
+                        </div>
+                        <div class="d-flex mb-3">
+                            <img class="flex-grow-1" src="/static/cooking.svg" alt="Cooking time:" height="50" width="50" title="Cooking time" />
+                            <p class="flex-grow-1">{{ recipes.cookingMinutes }}</p>
+                        </div>
+                        <div class="d-flex mb-3">
+                            <img class="flex-grow-1" src="/static/knife.svg" alt="Ready in:" height="50" width="50" title="Ready in" />
+                            <p class="flex-grow-1">{{ recipes.readyInMinutes }}</p>
+                        </div>
+                        {% if dairyFree == True %}
+                        <img src="/static/dairy-free.svg" alt="Dairy Free" height="50" width="50" />
+                        {% endif %}
+                        {% if glutenFree == True %}
+                        <img src="/static/gluten-free_1.svg" alt="Gluten Free" height="50" width="50" />
+                        {% endif %}
+                        {% if vegan == True %}
+                        <img src="/static/vegan_1.svg" alt="Vegan" height="50" width="50" />
+                        {% endif %}
+                        {% if vegetarian == True %}
+                        <img src="/static/vegetables.svg" alt="Vegetarian" height="50" width="50" />
+                        {% endif %}
+                    </div>
+                </div>
                 {% endif %}
                 
 
-                <h2>Section title</h2>
+                <h2>Ingredients</h2>
                 <div class="table-responsive">
                     <table class="table table-striped table-sm">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Header</th>
-                                <th scope="col">Header</th>
-                                <th scope="col">Header</th>
-                                <th scope="col">Header</th>
+                                <th scope="col">Item</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
+                            {% for ingredient in recipes.extendedIngredients %}
                             <tr>
-                                <td>1,001</td>
-                                <td>random</td>
-                                <td>data</td>
-                                <td>placeholder</td>
-                                <td>text</td>
+                                <td>{{ ingredient.name }}</td>
+                                {% if ingredient.measures.us.amount and ingredient.measures.metric.amount %}
+                                    {% if ingredient.measures.us.amount != ingredient.measures.metric.amount %}
+                                        <td>{{ ingredient.measures.us.amount }} {{ ingredient.measures.us.unitShort }} ({{ ingredient.measures.metric.amount }} {{ ingredient.measures.metric.unitShort }})</td>
+                                    {% else %}
+                                        <td>{{ ingredient.measures.us.amount }} {{ ingredient.measures.us.unitShort }}</td>
+                                    {% endif %}
+                                {% else %}
+                                    <td>{{ ingredient.measures.us.amount }} {{ ingredient.measures.us.unitShort }}</td>
+                                {% endif %}
+                                <td><img class="rounded" src="https://spoonacular.com/cdn/ingredients_100x100/{{ ingredient.image }}" /></td>
                             </tr>
-                            <tr>
-                                <td>1,002</td>
-                                <td>placeholder</td>
-                                <td>irrelevant</td>
-                                <td>visual</td>
-                                <td>layout</td>
-                            </tr>
-                            <tr>
-                                <td>1,003</td>
-                                <td>data</td>
-                                <td>rich</td>
-                                <td>dashboard</td>
-                                <td>tabular</td>
-                            </tr>
-                            <tr>
-                                <td>1,003</td>
-                                <td>information</td>
-                                <td>placeholder</td>
-                                <td>illustrative</td>
-                                <td>data</td>
-                            </tr>
-                            <tr>
-                                <td>1,004</td>
-                                <td>text</td>
-                                <td>random</td>
-                                <td>layout</td>
-                                <td>dashboard</td>
-                            </tr>
-                            <tr>
-                                <td>1,005</td>
-                                <td>dashboard</td>
-                                <td>irrelevant</td>
-                                <td>text</td>
-                                <td>placeholder</td>
-                            </tr>
-                            <tr>
-                                <td>1,006</td>
-                                <td>dashboard</td>
-                                <td>illustrative</td>
-                                <td>rich</td>
-                                <td>data</td>
-                            </tr>
-                            <tr>
-                                <td>1,007</td>
-                                <td>placeholder</td>
-                                <td>tabular</td>
-                                <td>information</td>
-                                <td>irrelevant</td>
-                            </tr>
-                            <tr>
-                                <td>1,008</td>
-                                <td>random</td>
-                                <td>data</td>
-                                <td>placeholder</td>
-                                <td>text</td>
-                            </tr>
-                            <tr>
-                                <td>1,009</td>
-                                <td>placeholder</td>
-                                <td>irrelevant</td>
-                                <td>visual</td>
-                                <td>layout</td>
-                            </tr>
-                            <tr>
-                                <td>1,010</td>
-                                <td>data</td>
-                                <td>rich</td>
-                                <td>dashboard</td>
-                                <td>tabular</td>
-                            </tr>
-                            <tr>
-                                <td>1,011</td>
-                                <td>information</td>
-                                <td>placeholder</td>
-                                <td>illustrative</td>
-                                <td>data</td>
-                            </tr>
-                            <tr>
-                                <td>1,012</td>
-                                <td>text</td>
-                                <td>placeholder</td>
-                                <td>layout</td>
-                                <td>dashboard</td>
-                            </tr>
-                            <tr>
-                                <td>1,013</td>
-                                <td>dashboard</td>
-                                <td>irrelevant</td>
-                                <td>text</td>
-                                <td>visual</td>
-                            </tr>
-                            <tr>
-                                <td>1,014</td>
-                                <td>dashboard</td>
-                                <td>illustrative</td>
-                                <td>rich</td>
-                                <td>data</td>
-                            </tr>
-                            <tr>
-                                <td>1,015</td>
-                                <td>random</td>
-                                <td>tabular</td>
-                                <td>information</td>
-                                <td>text</td>
-                            </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>

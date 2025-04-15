@@ -290,13 +290,17 @@ def recipe_view():
             # Extract form content fields
             extracted_data = {}
             extracted_data = parsed_json
+            dairyFree = extracted_data["dairyFree"]
+            glutenFree = extracted_data["glutenFree"]
+            vegan = extracted_data["vegan"]
+            vegetarian = extracted_data["vegetarian"]
 
             # Redirect/render index.html template. Pass results dictionary to index.html to be rendered.
             return render_template(
                 'recipe.html',
                 title='Recipe - Detail',
                 year=datetime.now().year,
-                recipes=extracted_data)
+                recipes=extracted_data, dairyFree=dairyFree, glutenFree=glutenFree, vegan=vegan, vegetarian=vegetarian)
         # API call has returned a response code other than 200
         else:
             # Render index.html page with message code alerting no results.

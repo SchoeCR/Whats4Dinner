@@ -309,3 +309,27 @@ def recipe_view():
             title='Home page',
             year=datetime.now().year,
             invalid_response='No results found.')
+
+def get_Recipe_Instructions(recipe_id):
+    # Get detailed recipe instructions and return as JSON
+    
+    base_url = "https://api.spoonacular.com/recipes/"
+    URL = f"{base_url}{recipe_id}/analyzedInstructions?apiKey={API_KEY}"
+
+    # API call via requests library
+    response = requests.get(URL)
+
+    # Verify response is valid
+    if response.status_code == 200:
+        # Assign API call results to data
+        parsed_json = response.json()
+        print(f'json: {parsed_json}')
+            
+        # Extract form content fields
+        extracted_data = {}
+        extracted_data = parsed_json
+
+        return extracted_data
+    
+    else:
+        return

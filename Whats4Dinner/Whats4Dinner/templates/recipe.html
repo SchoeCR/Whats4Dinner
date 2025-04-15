@@ -94,22 +94,23 @@
                             <img class="flex-grow-1" src="/static/knife.svg" alt="Ready in:" height="50" width="50" title="Ready in" />
                             <p class="flex-grow-1">{{ recipes.readyInMinutes }}</p>
                         </div>
-                        {% if dairyFree == True %}
-                        <img src="/static/dairy-free.svg" alt="Dairy Free" height="50" width="50" />
-                        {% endif %}
-                        {% if glutenFree == True %}
-                        <img src="/static/gluten-free_1.svg" alt="Gluten Free" height="50" width="50" />
-                        {% endif %}
-                        {% if vegan == True %}
-                        <img src="/static/vegan_1.svg" alt="Vegan" height="50" width="50" />
-                        {% endif %}
-                        {% if vegetarian == True %}
-                        <img src="/static/vegetables.svg" alt="Vegetarian" height="50" width="50" />
-                        {% endif %}
+                        <div class="d-inline-flex">
+                            {% if dairyFree == True %}
+                            <img class="flex-grow-1 py-1" src="/static/dairy-free.svg" alt="Dairy Free" height="50" width="50" />
+                            {% endif %}
+                            {% if glutenFree == True %}
+                            <img class="flex-grow-1 py-1" src="/static/gluten-free_1.svg" alt="Gluten Free" height="50" width="50" />
+                            {% endif %}
+                            {% if vegan == True %}
+                            <img class="flex-grow-1 py-1" src="/static/vegan_1.svg" alt="Vegan" height="50" width="50" />
+                            {% endif %}
+                            {% if vegetarian == True %}
+                            <img class="flex-grow-1 py-1" src="/static/vegetables.svg" alt="Vegetarian" height="50" width="50" />
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
                 {% endif %}
-                
 
                 <h2>Ingredients</h2>
                 <div class="table-responsive">

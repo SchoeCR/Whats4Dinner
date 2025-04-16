@@ -1,4 +1,6 @@
 import sqlite3
+import requests
+from .config import API_KEY
 
 def db_insert(table, columns, values):
     placeholders = ", ".join(["?"] * len(values))  # Create placeholders dynamically
@@ -29,6 +31,60 @@ def get_Recipe_Instructions(recipe_id):
     
     base_url = "https://api.spoonacular.com/recipes/"
     URL = f"{base_url}{recipe_id}/analyzedInstructions?apiKey={API_KEY}"
+
+    # API call via requests library
+    response = requests.get(URL)
+
+    # Verify response is valid
+    if response.status_code == 200:
+        # Assign API call results to data
+        parsed_json = response.json()
+        print(f'json: {parsed_json}')
+            
+        # Extract form content fields
+        extracted_data = {}
+
+        # Loop over each instruction set (main recipe, sub-recipes like sauces, etc.)
+        for instruction_set in parsed_json:
+            for instruction in instruction_set['steps']:
+                extracted_data[instruction['number']] = {
+                    'number': instruction['number'],
+                    'step': instruction['step']
+                }
+
+        return extracted_data
+    else:
+        return {}
+
+def get_Nutrition(recipe_id):
+    # Get recipe nutrition information and return as JSON
+    
+    base_url = "https://api.spoonacular.com/recipes/"
+    URL = f"{base_url}{recipe_id}/nutritionWidget.json?apiKey={API_KEY}"
+
+    # API call via requests library
+    response = requests.get(URL)
+
+    # Verify response is valid
+    if response.status_code == 200:
+        # Assign API call results to data
+        parsed_json = response.json()
+        print(f'json: {parsed_json}')
+            
+        # Extract form content fields
+        extracted_data = {}
+        extracted_data = parsed_json
+
+        return extracted_data
+    
+    else:
+        return
+
+def get_Recipe_Summary(recipe_id):
+    # Get recipe summary and return
+
+    base_url = "https://api.spoonacular.com/recipes/"
+    URL = f"{base_url}{recipe_id}/summary?apiKey={API_KEY}"
 
     # API call via requests library
     response = requests.get(URL)

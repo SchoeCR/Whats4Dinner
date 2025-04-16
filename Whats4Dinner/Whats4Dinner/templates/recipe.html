@@ -96,16 +96,16 @@
                         </div>
                         <div class="d-inline-flex">
                             {% if dairyFree == True %}
-                            <img class="flex-grow-1 py-1" src="/static/dairy-free.svg" alt="Dairy Free" height="50" width="50" />
+                            <img class="flex-grow-1 py-1" src="/static/dairy-free.svg" alt="Dairy Free" height="50" width="50" title="Dairy Free" />
                             {% endif %}
                             {% if glutenFree == True %}
-                            <img class="flex-grow-1 py-1" src="/static/gluten-free_1.svg" alt="Gluten Free" height="50" width="50" />
+                            <img class="flex-grow-1 py-1" src="/static/gluten-free_1.svg" alt="Gluten Free" height="50" width="50" title="Gluten Free" />
                             {% endif %}
                             {% if vegan == True %}
-                            <img class="flex-grow-1 py-1" src="/static/vegan_1.svg" alt="Vegan" height="50" width="50" />
+                            <img class="flex-grow-1 py-1" src="/static/vegan_1.svg" alt="Vegan" height="50" width="50" title="Vegan" />
                             {% endif %}
                             {% if vegetarian == True %}
-                            <img class="flex-grow-1 py-1" src="/static/vegetables.svg" alt="Vegetarian" height="50" width="50" />
+                            <img class="flex-grow-1 py-1" src="/static/vegetables.svg" alt="Vegetarian" height="50" width="50" title="Vegetarian" />
                             {% endif %}
                         </div>
                     </div>
@@ -123,22 +123,46 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% if recipes %}
                             {% for ingredient in recipes.extendedIngredients %}
                             <tr>
                                 <td>{{ ingredient.name }}</td>
                                 {% if ingredient.measures.us.amount and ingredient.measures.metric.amount %}
-                                    {% if ingredient.measures.us.amount != ingredient.measures.metric.amount %}
-                                        <td>{{ ingredient.measures.us.amount }} {{ ingredient.measures.us.unitShort }} ({{ ingredient.measures.metric.amount }} {{ ingredient.measures.metric.unitShort }})</td>
-                                    {% else %}
-                                        <td>{{ ingredient.measures.us.amount }} {{ ingredient.measures.us.unitShort }}</td>
-                                    {% endif %}
+                                {% if ingredient.measures.us.amount != ingredient.measures.metric.amount %}
+                                <td>{{ ingredient.measures.us.amount }} {{ ingredient.measures.us.unitShort }} ({{ ingredient.measures.metric.amount }} {{ ingredient.measures.metric.unitShort }})</td>
                                 {% else %}
-                                    <td>{{ ingredient.measures.us.amount }} {{ ingredient.measures.us.unitShort }}</td>
+                                <td>{{ ingredient.measures.us.amount }} {{ ingredient.measures.us.unitShort }}</td>
+                                {% endif %}
+                                {% else %}
+                                <td>{{ ingredient.measures.us.amount }} {{ ingredient.measures.us.unitShort }}</td>
                                 {% endif %}
                                 <td><img class="rounded" src="https://spoonacular.com/cdn/ingredients_100x100/{{ ingredient.image }}" /></td>
                             </tr>
                             {% endfor %}
+                            {% endif %}
                         </tbody>
+                    </table>
+                </div>
+
+                <h2>Instructions</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Step</th>
+                            </tr>
+                        </thead>
+                        {% if instructions %}
+                        <tbody>
+                            {% for number, instruction in instructions.items() %}
+                            <tr>
+                                <td>{{ instruction.number }}</td>
+                                <td>{{ instruction.step }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        {% endif %}
                     </table>
                 </div>
             </main>

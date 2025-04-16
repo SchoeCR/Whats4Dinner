@@ -285,22 +285,28 @@ def recipe_view():
         if response.status_code == 200:
             # Assign API call results to data
             parsed_json = response.json()
-            print(f'json: {parsed_json}')
+            #print(f'json: {parsed_json}')
             
             # Extract form content fields
             extracted_data = {}
+            instructions = {}
+            nutrition = {}
+            recipe_summary = {}
             extracted_data = parsed_json
             dairyFree = extracted_data["dairyFree"]
             glutenFree = extracted_data["glutenFree"]
             vegan = extracted_data["vegan"]
             vegetarian = extracted_data["vegetarian"]
+            instructions = get_Recipe_Instructions(recipe_id)
+            nutrition = get_Nutrition(recipe_id)
+            recipe_summary = get_Recipe_Summary(recipe_id)
 
             # Redirect/render index.html template. Pass results dictionary to index.html to be rendered.
             return render_template(
                 'recipe.html',
                 title='Recipe - Detail',
                 year=datetime.now().year,
-                recipes=extracted_data, dairyFree=dairyFree, glutenFree=glutenFree, vegan=vegan, vegetarian=vegetarian)
+                recipes=extracted_data, dairyFree=dairyFree, glutenFree=glutenFree, vegan=vegan, vegetarian=vegetarian, instructions=instructions)
         # API call has returned a response code other than 200
         else:
             # Render index.html page with message code alerting no results.

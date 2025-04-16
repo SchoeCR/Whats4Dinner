@@ -6,7 +6,7 @@ import sqlite3
 import tkinter.messagebox
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-from flask import render_template, request, flash, redirect, session, json
+from flask import render_template, request, flash, redirect, session, json, Flask
 from Whats4Dinner import app
 from .utils import *
 import requests
@@ -315,3 +315,21 @@ def recipe_view():
             title='Home page',
             year=datetime.now().year,
             invalid_response='No results found.')
+
+
+@app.route('/favourite-recipe')
+def add_favourite():
+    """Adds a favourite for a user."""
+    
+    # Validate inputs
+    # Save to Database
+    # Return https 200 for success and 500 (error?!?)
+
+    # Duplicate for /unfavourite-recipe
+    
+    return render_template(
+        'profile.html',
+        title='User Profile',
+        year=datetime.now().year,
+        message='Your contact page.'
+    )

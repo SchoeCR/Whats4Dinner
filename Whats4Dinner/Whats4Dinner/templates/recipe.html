@@ -70,6 +70,7 @@
                     <h1 class="h2">{{ recipes.title }}</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group me-2">
+                            <button type="button" class="btn btn-primary" name="btn_favourite" id="btn_favourite_id">Add Favourite</button>
                             <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
                             <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
                         </div>
@@ -170,5 +171,48 @@
     </div>
 
 </body>
+
+<script>
+
+    $(function () {
+
+        $("#btn_favourite_id").click(function () {
+
+            // This worked. ;)
+            //$("#btn_favourite_id").text("Favourited");
+
+            // This should work. 
+            if ($("#btn_favourite_id").text() == "Add Favourite") {
+                // Next step would be to do an ajax call to the server.
+
+                $("#btn_favourite_id").text("Favourited");
+
+                //$.post("/favourite-recipe",
+                //{
+                //    user_id: 1,
+                //    recipe_id: 1234
+                //},
+                //function (data, status) {
+                //    $("#btn_favourite_id").text("Favourited");
+                //});
+            }
+            else {
+                $("#btn_favourite_id").text("Add Favourite");
+                
+                //$.post("/unfavourite-recipe",
+                //    {
+                //        user_id: 1,
+                //        recipe_id: 1234
+                //    },
+                //    function (data, status) {
+                //        $("#btn_favourite_id").text("Add Favourite");
+                //    });
+            }
+
+        });  
+
+    });
+
+</script>
 
 {% endblock %}

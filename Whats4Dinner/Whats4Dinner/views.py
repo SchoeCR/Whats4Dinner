@@ -251,82 +251,71 @@ def search_recipe():
         # Otherwise, we need to process the JSON and return an array of data.
         # Review ... https://medium.com/@modimuskan397/how-to-parse-json-file-and-show-output-json-using-flask-c0b415f3f0a0
 
-@app.route('/recipe/view', methods=["GET","POST"])
-def recipe_view():
+@app.route('/recipe/view/<recipe_id>', methods=["GET"])
+def recipe_view(recipe_id):
     # Route for user to view recipe in detail.
     # User reached page via GET method.
-    if request.method == "GET":
+        
+    # Validate form input
+    if not recipe_id:
         return render_template(
         'recipe.html',
-        title='Recipe',
-        year=datetime.now().year
-        )
-    # User reached page via POST method.
-    if request.method == "POST":
+        title='Recipe - Detail',
+        year=datetime.now().year,
+        recipe_missing='Error - recipe ID cannot be found.')
+    
+    base_url = "https://api.spoonacular.com/recipes/"
         
-        # Assign form values to variables
-        recipe_id = request.form.get("recipe_id")
+    URL = f"{base_url}{recipe_id}/information?includeNutrition=true&addWinePairing=true&apiKey={API_KEY}"
 
-        # Validate form input
-        if not recipe_id:
-            return render_template(
+    # API call via requests library
+    response = requests.get(URL)
+
+    # Verify response is valid
+    if response.status_code == 200:
+        # Assign API call results to data
+        parsed_json = response.json()
+        #print(f'json: {parsed_json}')
+            
+        # Extract form content fields
+        extracted_data = {}
+        instructions = {}
+        nutrition = {}
+        recipe_summary = {}
+        extracted_data = parsed_json
+        dairyFree = extracted_data["dairyFree"]
+        glutenFree = extracted_data["glutenFree"]
+        vegan = extracted_data["vegan"]
+        vegetarian = extracted_data["vegetarian"]
+        instructions = get_Recipe_Instructions(recipe_id)
+        nutrition = get_Nutrition(recipe_id)
+        recipe_summary = get_Recipe_Summary(recipe_id)
+        similar = get_Recipe_Similar(recipe_id)
+        wine_pair = extracted_data["winePairing"]
+
+        # Redirect/render index.html template. Pass results dictionary to index.html to be rendered.
+        return render_template(
             'recipe.html',
             title='Recipe - Detail',
             year=datetime.now().year,
-            recipe_missing='Error - recipe ID cannot be found.')
-    
-        base_url = "https://api.spoonacular.com/recipes/"
+            recipes=extracted_data, 
+            dairyFree=dairyFree, 
+            glutenFree=glutenFree, 
+            vegan=vegan, 
+            vegetarian=vegetarian, 
+            instructions=instructions, 
+            nutrition=nutrition,
+            similar=similar,
+            wine_pair=wine_pair)
         
-        URL = f"{base_url}{recipe_id}/information?includeNutrition=true&addWinePairing=true&apiKey={API_KEY}"
-
-        # API call via requests library
-        response = requests.get(URL)
-
-        # Verify response is valid
-        if response.status_code == 200:
-            # Assign API call results to data
-            parsed_json = response.json()
-            #print(f'json: {parsed_json}')
-            
-            # Extract form content fields
-            extracted_data = {}
-            instructions = {}
-            nutrition = {}
-            recipe_summary = {}
-            extracted_data = parsed_json
-            dairyFree = extracted_data["dairyFree"]
-            glutenFree = extracted_data["glutenFree"]
-            vegan = extracted_data["vegan"]
-            vegetarian = extracted_data["vegetarian"]
-            instructions = get_Recipe_Instructions(recipe_id)
-            nutrition = get_Nutrition(recipe_id)
-            recipe_summary = get_Recipe_Summary(recipe_id)
-            similar = get_Recipe_Similar(recipe_id)
-            wine_pair = extracted_data["winePairing"]
-
-            # Redirect/render index.html template. Pass results dictionary to index.html to be rendered.
-            return render_template(
-                'recipe.html',
-                title='Recipe - Detail',
-                year=datetime.now().year,
-                recipes=extracted_data, 
-                dairyFree=dairyFree, 
-                glutenFree=glutenFree, 
-                vegan=vegan, 
-                vegetarian=vegetarian, 
-                instructions=instructions, 
-                nutrition=nutrition,
-                similar=similar,
-                wine_pair=wine_pair)
-        
-        # API call has returned a response code other than 200
-        else:
-            # Render index.html page with message code alerting no results.
-            return render_template(
-            'index.html',
-            title='Home page',
-            year=datetime.now().year,
-            invalid_response='No results found.')
+    # API call has returned a response code other than 200
+    else:
+        # Render index.html page with message code alerting no results.
+        return render_template(
+        'index.html',
+        title='Home page',
+        year=datetime.now().year,
+        invalid_response='No results found.')
 
 
 @app.route('/favourite-recipe')

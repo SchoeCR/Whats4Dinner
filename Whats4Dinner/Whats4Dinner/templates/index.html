@@ -42,10 +42,9 @@
                     <tr>
                         <td>{{ recipe.title }}</td>
                         <td><img class="rounded" src="{{ recipe.image }}" alt="Mmm, yum yum" /></td>
-                        <td><form action="/recipe/view" method="post">
-                            <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
-                            <button class="btn btn-primary" type="submit">View</button>
-                        </form></td>
+                        <td>
+                            <a href="/recipe/view/{{ recipe.id }}">View</a>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>

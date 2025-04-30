@@ -287,10 +287,10 @@ def recipe_view(recipe_id):
         glutenFree = extracted_data["glutenFree"]
         vegan = extracted_data["vegan"]
         vegetarian = extracted_data["vegetarian"]
-        instructions = get_Recipe_Instructions(recipe_id)
+        instructions = {} #get_Recipe_Instructions(recipe_id)
         nutrition = get_Nutrition(recipe_id)
-        recipe_summary = get_Recipe_Summary(recipe_id)
-        similar = get_Recipe_Similar(recipe_id)
+        recipe_summary = {} #get_Recipe_Summary(recipe_id)
+        similar = {} #get_Recipe_Similar(recipe_id)
         wine_pair = extracted_data["winePairing"]
 
         # Redirect/render index.html template. Pass results dictionary to index.html to be rendered.
@@ -317,6 +317,12 @@ def recipe_view(recipe_id):
         year=datetime.now().year,
         invalid_response='No results found.')
 
+@app.route('/recipe/instructions/<recipe_id>', methods=["GET"])
+def get_recipe_instructions(recipe_id):
+
+    instructions_json = get_Recipe_Instructions(recipe_id)
+    return instructions_json
+    
 
 @app.route('/favourite-recipe')
 def add_favourite():

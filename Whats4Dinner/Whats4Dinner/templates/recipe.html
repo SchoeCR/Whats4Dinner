@@ -74,7 +74,7 @@
                 <div class="d-flex">
                     <div class="flex-grow-1">
                         <img class="rounded" src="{{ recipes.image }}" />
-                        <p class="fs-10 fw-light fst-italic">{{ recipes.id }}</p>
+                        <p id="recipe_id" class="fs-10 fw-light fst-italic">{{ recipes.id }}</p>
                     </div>
                     <div class="flex-grow-1">
                         <div class="d-flex mb-3">
@@ -153,7 +153,7 @@
                     <!--Accordion item two-->
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo">
+                            <button id="btn_instructions" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo">
                                 Instructions
                             </button>
                         </h2>
@@ -168,16 +168,13 @@
                                                 <th scope="col">Step</th>
                                             </tr>
                                         </thead>
-                                        {% if instructions %}
-                                        <tbody>
-                                            {% for number, instruction in instructions.items() %}
-                                            <tr>
-                                                <td>{{ instruction.number }}</td>
-                                                <td>{{ instruction.step }}</td>
-                                            </tr>
-                                            {% endfor %}
+                                        <tbody id="instructions_tbody">
+                                            {% if instructions %}
+                                                {% for number, instruction in instructions.items() %}
+                                                <tr><td>{{ instruction.number }}</td><td>{{ instruction.step }}</td></tr>
+                                                {% endfor %}
+                                            {% endif %}
                                         </tbody>
-                                        {% endif %}
                                     </table>
                                 </div>
                             </div>
@@ -323,6 +320,43 @@
             }
 
         });  
+
+        $("#btn_instructions").click(function () {
+
+            // AJAX Call to Get our Data. This will do an API call.
+            if ($("#recipe_id").text() != null) {
+
+                let recipe_id = $("#recipe_id").text();
+
+                $.get("/recipe/instructions/" + recipe_id, function (data) {
+
+                    console.log(data);
+
+                    if ($.isArray(data)) {
+                        // Iterate over an array
+                        $.each(data, function (index, value) {
+                            $("#instructions_tbody").append("<tr><td>" + instruction.number + "</td><td>" + instruction.step + "</td></tr>");
+                        });
+                    } else if ($.isPlainObject(data)) {
+                        // Iterate over an object
+                        $.each(data, function (key, value) {
+                            // Do something with key and value
+                            // console.log(key + ': ' + value);
+                            $("#instructions_tbody").append("<tr><td>" + value.number + "</td><td>" + value.step + "</td></tr>");
+                        });
+                    } else {
+                        // Handle other data types or errors
+                        console.log('Data is not an array or object.');
+                    }
+                }).fail(function () {
+                    console.log('An error occurred.');
+                });
+
+            }
+            // Render the data with jquery append or so. 
+
+
+        });
 
     });
 

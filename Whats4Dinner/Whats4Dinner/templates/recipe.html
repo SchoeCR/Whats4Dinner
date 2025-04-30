@@ -51,12 +51,6 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">
-                                <span data-feather="users"></span>
-                                Wine pairing
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
                                 <span data-feather="bar-chart-2"></span>
                                 Similar recipes
                             </a>
@@ -112,64 +106,183 @@
                     </div>
                 </div>
                 {% endif %}
-
-                <h2>Ingredients</h2>
-                <div class="table-responsive">
-                    <table class="table table-striped table-sm">
-                        <thead>
-                            <tr>
-                                <th scope="col">Item</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% if recipes %}
-                            {% for ingredient in recipes.extendedIngredients %}
-                            <tr>
-                                <td>{{ ingredient.name }}</td>
-                                {% if ingredient.measures.us.amount and ingredient.measures.metric.amount %}
-                                {% if ingredient.measures.us.amount != ingredient.measures.metric.amount %}
-                                <td>{{ ingredient.measures.us.amount }} {{ ingredient.measures.us.unitShort }} ({{ ingredient.measures.metric.amount }} {{ ingredient.measures.metric.unitShort }})</td>
-                                {% else %}
-                                <td>{{ ingredient.measures.us.amount }} {{ ingredient.measures.us.unitShort }}</td>
-                                {% endif %}
-                                {% else %}
-                                <td>{{ ingredient.measures.us.amount }} {{ ingredient.measures.us.unitShort }}</td>
-                                {% endif %}
-                                <td><img class="rounded" src="https://spoonacular.com/cdn/ingredients_100x100/{{ ingredient.image }}" /></td>
-                            </tr>
-                            {% endfor %}
+                
+                <div class="accordion" id="accordionPanelsStayOpenExample">
+                    <!--Accordion item one-->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                                Ingredients
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                            <div class="accordion-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Item</th>
+                                                <th scope="col">Quantity</th>
+                                                <th scope="col"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% if recipes %}
+                                            {% for ingredient in recipes.extendedIngredients %}
+                                            <tr>
+                                                <td>{{ ingredient.name }}</td>
+                                                {% if ingredient.measures.us.amount and ingredient.measures.metric.amount %}
+                                                {% if ingredient.measures.us.amount != ingredient.measures.metric.amount %}
+                                                <td>{{ ingredient.measures.us.amount }} {{ ingredient.measures.us.unitShort }} ({{ ingredient.measures.metric.amount }} {{ ingredient.measures.metric.unitShort }})</td>
+                                                {% else %}
+                                                <td>{{ ingredient.measures.us.amount }} {{ ingredient.measures.us.unitShort }}</td>
+                                                {% endif %}
+                                                {% else %}
+                                                <td>{{ ingredient.measures.us.amount }} {{ ingredient.measures.us.unitShort }}</td>
+                                                {% endif %}
+                                                <td><img class="rounded" src="https://spoonacular.com/cdn/ingredients_100x100/{{ ingredient.image }}" /></td>
+                                            </tr>
+                                            {% endfor %}
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Accordion item two-->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo">
+                                Instructions
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+                            <div class="accordion-body">
+                                <h2>Instructions</h2>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Step</th>
+                                            </tr>
+                                        </thead>
+                                        {% if instructions %}
+                                        <tbody>
+                                            {% for number, instruction in instructions.items() %}
+                                            <tr>
+                                                <td>{{ instruction.number }}</td>
+                                                <td>{{ instruction.step }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                        {% endif %}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Accordion item three-->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="true" aria-controls="panelsStayOpen-collapseThree">
+                                Nutrition
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">
+                            <div class="accordion-body">
+                                <h2>Nutrition</h2>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Amount</th>
+                                                <th scope="col">% Daily</th>
+                                            </tr>
+                                        </thead>
+                                        {% if nutrition %}
+                                        <tbody>
+                                            {% for n in nutrition['nutrients'] %}
+                                            <tr>
+                                                <td>{{ n.name }}</td>
+                                                <td>{{ n.amount }}{{ n.unit }}</td>
+                                                <td>{{ n.percentOfDailyNeeds }}%</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                        {% endif %}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Accordion item four-->
+                    <div class="accordion-item">
+                        <!--Similar recipes-->
+                        <h2 class="accordion-header" id="panelsStayOpen-headingFour">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="true" aria-controls="panelsStayOpen-collapseFour">
+                                Similar recipes
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingFour">
+                            <h2>Similar recipes</h2>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Recipe</th>
+                                            <th scope="col">Ready in (min)</th>
+                                            <th scope="col">Servings</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    {% if similar %}
+                                    <tbody>
+                                        {% for s in similar %}
+                                        <tr>
+                                            <td>{{ s.title }}</td>
+                                            <td>{{ s.readyInMinutes }}</td>
+                                            <td>{{ s.servings }}</td>
+                                            <td>
+                                                <form action="/recipe/view" method="post">
+                                                    <input type="hidden" name="recipe_id" value="{{ s.id }}">
+                                                    <button class="btn btn-primary" type="submit">View</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    {% endif %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Accordion item five-->
+                    <div class="accordion-item">
+                        <!--Wine pairing-->
+                        <h2 class="accordion-header" id="panelsStayOpen-headingFive">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFive" aria-expanded="true" aria-controls="panelsStayOpen-collapseFive">
+                                Wine pairings
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseFive" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingFive">
+                            <h2>Wine pairings</h2>
+                            {% if wine_pair %}
+                                <h4>{{ wine_pair.pairingText }}</h4>
+                                <ul>
+                                    {% for w in wine_pair['pairedWines'] %}
+                                    <li>{{ w }}</li>
+                                    {% endfor %}
+                                </ul>
                             {% endif %}
-                        </tbody>
-                    </table>
-                </div>
-
-                <h2>Instructions</h2>
-                <div class="table-responsive">
-                    <table class="table table-striped table-sm">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Step</th>
-                            </tr>
-                        </thead>
-                        {% if instructions %}
-                        <tbody>
-                            {% for number, instruction in instructions.items() %}
-                            <tr>
-                                <td>{{ instruction.number }}</td>
-                                <td>{{ instruction.step }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                        {% endif %}
-                    </table>
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>
     </div>
-
 </body>
 
 <script>

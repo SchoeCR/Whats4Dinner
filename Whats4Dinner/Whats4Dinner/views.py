@@ -187,7 +187,7 @@ def logout():
 @app.route('/search', methods=["GET","POST"])
 def search_recipe():
     """Route for user to search for recipe on root page"""
-    if request.method == "GET":
+    if request.method == "GET":       
         render_template(
             'index.html',
             title='Home page',
@@ -209,8 +209,9 @@ def search_recipe():
         base_url = "https://api.spoonacular.com/recipes/complexSearch"
         query = query_input 
         number = 5
+        offset = get_random_Int(0,500)
        
-        URL = f"{base_url}?query={query}&number={number}&apiKey={API_KEY}"
+        URL = f"{base_url}?query={query}&number={number}&offset={offset}&apiKey={API_KEY}"
 
         # API call via requests library
         response = requests.get(URL)
@@ -300,13 +301,24 @@ def recipe_view():
             instructions = get_Recipe_Instructions(recipe_id)
             nutrition = get_Nutrition(recipe_id)
             recipe_summary = get_Recipe_Summary(recipe_id)
+            similar = get_Recipe_Similar(recipe_id)
+            wine_pair = extracted_data["winePairing"]
 
             # Redirect/render index.html template. Pass results dictionary to index.html to be rendered.
             return render_template(
                 'recipe.html',
                 title='Recipe - Detail',
                 year=datetime.now().year,
-                recipes=extracted_data, dairyFree=dairyFree, glutenFree=glutenFree, vegan=vegan, vegetarian=vegetarian, instructions=instructions)
+                recipes=extracted_data, 
+                dairyFree=dairyFree, 
+                glutenFree=glutenFree, 
+                vegan=vegan, 
+                vegetarian=vegetarian, 
+                instructions=instructions, 
+                nutrition=nutrition,
+                similar=similar,
+                wine_pair=wine_pair)
+        
         # API call has returned a response code other than 200
         else:
             # Render index.html page with message code alerting no results.

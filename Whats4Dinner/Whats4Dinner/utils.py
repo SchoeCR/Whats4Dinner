@@ -75,7 +75,7 @@ def get_Nutrition(recipe_id):
             
         # Extract form content fields
         extracted_data = {}
-        extracted_data = parsed_json
+        extracted_data = parsed_json["nutrients"]
 
         return extracted_data
     

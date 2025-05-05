@@ -33,26 +33,32 @@
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="#">
-                                <span data-feather="home"></span>
                                 Overview
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file"></span>
+                            <a class="nav-link" href="#panelsStayOpen-headingOne">
                                 Ingredients
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="shopping-cart"></span>
+                            <a class="nav-link" href="#panelsStayOpen-headingTwo">
+                                Instructions
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#panelsStayOpen-headingThree">
                                 Nutrition
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="bar-chart-2"></span>
+                            <a class="nav-link" href="#panelsStayOpen-headingFour">
                                 Similar recipes
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#panelsStayOpen-headingFive">
+                                Wine pairing
                             </a>
                         </li>
                     </ul>
@@ -183,7 +189,7 @@
                     <!--Accordion item three-->
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="panelsStayOpen-headingThree">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="true" aria-controls="panelsStayOpen-collapseThree">
+                            <button id="btn_nutrition" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="true" aria-controls="panelsStayOpen-collapseThree">
                                 Nutrition
                             </button>
                         </h2>
@@ -199,17 +205,13 @@
                                                 <th scope="col">% Daily</th>
                                             </tr>
                                         </thead>
-                                        {% if nutrition %}
-                                        <tbody>
-                                            {% for n in nutrition['nutrients'] %}
-                                            <tr>
-                                                <td>{{ n.name }}</td>
-                                                <td>{{ n.amount }}{{ n.unit }}</td>
-                                                <td>{{ n.percentOfDailyNeeds }}%</td>
-                                            </tr>
-                                            {% endfor %}
+                                        <tbody id="nutrition_tbody">
+                                            {% if nutrition %}
+                                                {% for n in nutrition %}
+                                                <tr><td>{{ n.name }}</td><td>{{ n.amount }}{{ n.unit }}</td><td>{{ n.percentOfDailyNeeds }}%</td></tr>
+                                                {% endfor %}
+                                            {% endif %}
                                         </tbody>
-                                        {% endif %}
                                     </table>
                                 </div>
                             </div>
@@ -335,7 +337,7 @@
                     if ($.isArray(data)) {
                         // Iterate over an array
                         $.each(data, function (index, value) {
-                            $("#instructions_tbody").append("<tr><td>" + instruction.number + "</td><td>" + instruction.step + "</td></tr>");
+                            $("#instructions_tbody").append("<tr><td>" + value.number + "</td><td>" + value.step + "</td></tr>");
                         });
                     } else if ($.isPlainObject(data)) {
                         // Iterate over an object
@@ -351,12 +353,48 @@
                 }).fail(function () {
                     console.log('An error occurred.');
                 });
-
             }
-            // Render the data with jquery append or so. 
-
-
         });
+
+        $("#btn_nutrition").click(function () {
+
+            // AJAX Call to Get our Data. This will do an API call.
+            if ($("#recipe_id").text() != null) {
+
+                let recipe_id = $("#recipe_id").text();
+
+                $.get("/recipe/nutrition/" + recipe_id, function (data) {
+
+                    console.log(data);
+
+                    if ($.isArray(data)) {
+                        // Iterate over an array
+                        $.each(data, function (index, value) {
+                            // Format percentOfDailyNeeds to two decimal places
+                            let percent = value.percentOfDailyNeeds;
+                            let percentFixed = percent.toFixed(2);
+                            $("#nutrition_tbody").append("<tr><td>" + value.name + "</td><td>" + value.amount + value.unit + "</td><td>" + percentFixed + "%</td></tr>");
+                        });
+                    } else if ($.isPlainObject(data)) {
+                        // Iterate over an object
+                        $.each(data, function (key, value) {
+                            // Do something with key and value
+                            // console.log(key + ': ' + value);
+                            // Format percentOfDailyNeeds to two decimal places
+                            let percent = value.percentOfDailyNeeds;
+                            let percentFixed = percent.toFixed(2);
+                            $("#nutrition_tbody").append("<tr><td>" + value.name + "</td><td>" + value.amount + value.unit + "</td><td>" + percentFixed + "%</td></tr>");
+                        });
+                    } else {
+                        // Handle other data types or errors
+                        console.log('Data is not an array or object.');
+                    }
+                }).fail(function () {
+                    console.log('An error occurred.');
+                });
+            }
+        });
+
 
     });
 

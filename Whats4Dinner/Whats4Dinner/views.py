@@ -209,7 +209,7 @@ def search_recipe():
         base_url = "https://api.spoonacular.com/recipes/complexSearch"
         query = query_input 
         number = 5
-        offset = get_random_Int(0,500)
+        offset = get_random_Int(0,150)
        
         URL = f"{base_url}?query={query}&number={number}&offset={offset}&apiKey={API_KEY}"
 
@@ -266,7 +266,7 @@ def recipe_view(recipe_id):
     
     base_url = "https://api.spoonacular.com/recipes/"
         
-    URL = f"{base_url}{recipe_id}/information?includeNutrition=true&addWinePairing=true&apiKey={API_KEY}"
+    URL = f"{base_url}{recipe_id}/information?addWinePairing=true&apiKey={API_KEY}"
 
     # API call via requests library
     response = requests.get(URL)
@@ -288,7 +288,7 @@ def recipe_view(recipe_id):
         vegan = extracted_data["vegan"]
         vegetarian = extracted_data["vegetarian"]
         instructions = {} #get_Recipe_Instructions(recipe_id)
-        nutrition = get_Nutrition(recipe_id)
+        nutrition = {} #get_Nutrition(recipe_id)
         recipe_summary = {} #get_Recipe_Summary(recipe_id)
         similar = {} #get_Recipe_Similar(recipe_id)
         wine_pair = extracted_data["winePairing"]
@@ -322,7 +322,12 @@ def get_recipe_instructions(recipe_id):
 
     instructions_json = get_Recipe_Instructions(recipe_id)
     return instructions_json
-    
+
+@app.route('/recipe/nutrition/<recipe_id>', methods=["GET"])
+def get_recipe_nutrition(recipe_id):
+
+    nutrition_json = get_Nutrition(recipe_id)
+    return nutrition_json
 
 @app.route('/favourite-recipe')
 def add_favourite():

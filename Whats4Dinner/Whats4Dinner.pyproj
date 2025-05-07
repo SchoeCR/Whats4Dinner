@@ -63,6 +63,7 @@
     <Content Include="Whats4Dinner\static\food-preparation-_1_.svg" />
     <Content Include="Whats4Dinner\static\gluten-free_1.svg" />
     <Content Include="Whats4Dinner\static\knife.svg" />
+    <Content Include="Whats4Dinner\static\loading.gif" />
     <Content Include="Whats4Dinner\static\scripts\bootstrap.js" />
     <Content Include="Whats4Dinner\static\scripts\bootstrap.min.js" />
     <Content Include="Whats4Dinner\static\scripts\jquery-1.10.2.intellisense.js" />

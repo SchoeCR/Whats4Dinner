@@ -329,6 +329,12 @@ def get_recipe_nutrition(recipe_id):
     nutrition_json = get_Nutrition(recipe_id)
     return nutrition_json
 
+@app.route('/recipe/similar/<recipe_id>', methods=["GET"])
+def get_recipe_similar(recipe_id):
+
+    similar_json = get_Recipe_Similar(recipe_id)
+    return similar_json
+
 @app.route('/favourite-recipe')
 def add_favourite():
     """Adds a favourite for a user."""

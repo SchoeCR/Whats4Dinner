@@ -9,7 +9,6 @@
 <div class="text-danger" style="text-col">
     Error: {{ validation_error }}
 </div>
-<hr />
 
 {% endif %}
 
@@ -25,6 +24,10 @@
             </form>
         </div>
     </header>
+
+    <!--Loading spinner GIF overlay during AJAX calls-->
+    <div id="loadingOverlay"></div>
+    <img id="loadingGif" src="/static/Spinner@1x-1.0s-200px-200px.gif" alt="Loading..." />
 
     <div class="container-fluid">
         <div class="row">
@@ -112,7 +115,7 @@
                     </div>
                 </div>
                 {% endif %}
-                
+
                 <div class="accordion" id="accordionPanelsStayOpenExample">
                     <!--Accordion item one-->
                     <div class="accordion-item">
@@ -176,9 +179,9 @@
                                         </thead>
                                         <tbody id="instructions_tbody">
                                             {% if instructions %}
-                                                {% for number, instruction in instructions.items() %}
-                                                <tr><td>{{ instruction.number }}</td><td>{{ instruction.step }}</td></tr>
-                                                {% endfor %}
+                                            {% for number, instruction in instructions.items() %}
+                                            <tr><td>{{ instruction.number }}</td><td>{{ instruction.step }}</td></tr>
+                                            {% endfor %}
                                             {% endif %}
                                         </tbody>
                                     </table>
@@ -207,9 +210,9 @@
                                         </thead>
                                         <tbody id="nutrition_tbody">
                                             {% if nutrition %}
-                                                {% for n in nutrition %}
-                                                <tr><td>{{ n.name }}</td><td>{{ n.amount }}{{ n.unit }}</td><td>{{ n.percentOfDailyNeeds }}%</td></tr>
-                                                {% endfor %}
+                                            {% for n in nutrition %}
+                                            <tr><td>{{ n.name }}</td><td>{{ n.amount }}{{ n.unit }}</td><td>{{ n.percentOfDailyNeeds }}%</td></tr>
+                                            {% endfor %}
                                             {% endif %}
                                         </tbody>
                                     </table>
@@ -246,7 +249,6 @@
                                             {% endif %}
                                         </tbody>
                                     </table>
-                                    <img id="loadingGif" src="/static/loading.gif" style="display: none;" alt="Loading..." />
                                 </div>
                             </div>
                         </div>
@@ -324,10 +326,13 @@
             if ($("#recipe_id").text() != null) {
 
                 let recipe_id = $("#recipe_id").text();
+                // Show the loader before the AJAX call
+                $("#loadingOverlay, #loadingGif").show();
 
                 $.get("/recipe/instructions/" + recipe_id, function (data) {
 
                     console.log(data);
+                    $("#similar_tbody").empty(); // Clear old rows
 
                     if ($.isArray(data)) {
                         // Iterate over an array
@@ -347,6 +352,10 @@
                     }
                 }).fail(function () {
                     console.log('An error occurred.');
+                })
+                .always(function () {
+                    // Hide the loader after the AJAX call completes (success or fail)
+                    $("#loadingOverlay, #loadingGif").hide();
                 });
             }
         });
@@ -358,9 +367,13 @@
 
                 let recipe_id = $("#recipe_id").text();
 
+                // Show the loader before the AJAX call
+                $("#loadingOverlay, #loadingGif").show();
+
                 $.get("/recipe/nutrition/" + recipe_id, function (data) {
 
                     console.log(data);
+                    $("#similar_tbody").empty(); // Clear old rows
 
                     if ($.isArray(data)) {
                         // Iterate over an array
@@ -386,6 +399,10 @@
                     }
                 }).fail(function () {
                     console.log('An error occurred.');
+                })
+                  .always(function () {
+                    // Hide the loader after the AJAX call completes (success or fail)
+                    $("#loadingOverlay, #loadingGif").hide();
                 });
             }
         });
@@ -397,9 +414,13 @@
 
                 let recipe_id = $("#recipe_id").text();
 
+                // Show the loader before the AJAX call
+                $("#loadingOverlay, #loadingGif").show();
+
                 $.get("/recipe/similar/" + recipe_id, function (data) {
 
                     console.log(data);
+                    $("#similar_tbody").empty(); // Clear old rows
 
                     if ($.isArray(data)) {
                         // Iterate over an array
@@ -419,6 +440,10 @@
                     }
                 }).fail(function () {
                     console.log('An error occurred.');
+                })
+                .always(function () {
+                    // Hide the loader after the AJAX call completes (success or fail)
+                    $("#loadingOverlay, #loadingGif").hide();
                 });
             }
         });

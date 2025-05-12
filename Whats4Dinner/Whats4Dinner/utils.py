@@ -1,4 +1,6 @@
+from ast import Return
 import sqlite3
+from flask import redirect, jsonify
 import requests
 import random
 from .config import API_KEY
@@ -13,6 +15,7 @@ def db_insert(table, columns, values):
     conn.commit()
     conn.close()
     return
+
 
 def db_select(qryStr):
     conn = get_db_connection()
@@ -131,3 +134,7 @@ def get_Recipe_Similar(recipe_id):
 
 def get_random_Int(min_val, max_val):
     return random.randint(min_val,max_val)
+
+def favourite_loginReq(recipe_id):
+    # User attempted to favourite a recipe without being logged in.
+    return

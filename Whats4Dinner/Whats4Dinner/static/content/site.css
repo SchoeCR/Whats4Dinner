@@ -60,3 +60,15 @@ input[type="checkbox"].input-validation-error {
     transform: translate(-50%, -50%);
     z-index: 9999;
 }
+
+#id_login-popup {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}

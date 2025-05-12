@@ -19,9 +19,6 @@
             <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <form action="/search/detail" method="post">
-                <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search" name="search_1">
-            </form>
         </div>
     </header>
 
@@ -70,7 +67,7 @@
 
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">{{ recipes.title }}</h1>
+                    <h1 id="recipe_title_id" class="h2">{{ recipes.title }}</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group me-2">
                             <button type="button" class="btn btn-primary" name="btn_favourite" id="btn_favourite_id">Add Favourite</button>
@@ -83,7 +80,7 @@
                 <div class="d-flex">
                     <div class="flex-grow-1">
                         <img class="rounded" src="{{ recipes.image }}" />
-                        <p id="recipe_id" class="fs-10 fw-light fst-italic">{{ recipes.id }}</p>
+                        <small id="recipe_image_id" style="display:none">{{ recipes.image }}</small>
                     </div>
                     <div class="flex-grow-1">
                         <div class="d-flex mb-3">
@@ -98,21 +95,33 @@
                             <img class="flex-grow-1" src="/static/knife.svg" alt="Ready in:" height="50" width="50" title="Ready in" />
                             <p class="flex-grow-1">{{ recipes.readyInMinutes }}</p>
                         </div>
-                        <div class="d-inline-flex">
+                        <div class="d-flex mb-3">
                             {% if dairyFree == True %}
                             <img class="flex-grow-1 py-1" src="/static/dairy-free.svg" alt="Dairy Free" height="50" width="50" title="Dairy Free" />
+                            <p class="flex-grow-1" style="color:#ffffff">#</p>
                             {% endif %}
+                        </div>
+                        <div class="d-flex mb-3">
                             {% if glutenFree == True %}
                             <img class="flex-grow-1 py-1" src="/static/gluten-free_1.svg" alt="Gluten Free" height="50" width="50" title="Gluten Free" />
+                            <p class="flex-grow-1" style="color:#ffffff">#</p>
                             {% endif %}
+                        </div>
+                        <div class="d-flex mb-3">
                             {% if vegan == True %}
                             <img class="flex-grow-1 py-1" src="/static/vegan_1.svg" alt="Vegan" height="50" width="50" title="Vegan" />
+                            <p class="flex-grow-1" style="color:#ffffff">#</p>
                             {% endif %}
+                        </div>
+                        <div class="d-flex mb-3">
                             {% if vegetarian == True %}
                             <img class="flex-grow-1 py-1" src="/static/vegetables.svg" alt="Vegetarian" height="50" width="50" title="Vegetarian" />
+                            <p class="flex-grow-1" style="color:#ffffff">#</p>
                             {% endif %}
                         </div>
                     </div>
+                    <div class="d-flex mb-3"><sub id="recipe_id" class="fs-10 fw-light">{{ recipes.id }}</sub></div>
+                    <small id="recipe_summary_id" style="display:none">{{ recipes.summary }}</small>
                 </div>
                 {% endif %}
 
@@ -285,41 +294,6 @@
 
     $(function () {
 
-        $("#btn_favourite_id").click(function () {
-
-            // This worked. ;)
-            //$("#btn_favourite_id").text("Favourited");
-
-            // This should work. 
-            if ($("#btn_favourite_id").text() == "Add Favourite") {
-                // Next step would be to do an ajax call to the server.
-
-                $("#btn_favourite_id").text("Favourited");
-
-                //$.post("/favourite-recipe",
-                //{
-                //    user_id: 1,
-                //    recipe_id: 1234
-                //},
-                //function (data, status) {
-                //    $("#btn_favourite_id").text("Favourited");
-                //});
-            }
-            else {
-                $("#btn_favourite_id").text("Add Favourite");
-                
-                //$.post("/unfavourite-recipe",
-                //    {
-                //        user_id: 1,
-                //        recipe_id: 1234
-                //    },
-                //    function (data, status) {
-                //        $("#btn_favourite_id").text("Add Favourite");
-                //    });
-            }
-
-        });  
-
         $("#btn_instructions").click(function () {
 
             // AJAX Call to Get our Data. This will do an API call.
@@ -448,6 +422,64 @@
             }
         });
 
+        $("#btn_favourite_id").click(function () {
+
+            if ($("#btn_favourite_id").text() == "Add Favourite") {
+                if ($("#recipe_id").text() != null) {
+                    let recipe_id = $("#recipe_id").text();
+                    let user_id = $("#user_id").text();
+                    let recipe_name = $("#recipe_title_id").text();
+                    let recipe_summary = $("#recipe_summary_id").text();
+                    let recipe_image = $("#recipe_image_id").text();
+
+                    if (!user_id) {
+                        ($("#id_login-popup").show());
+                        return;
+                    }
+                    $.post("/favourite-recipe",
+                        {
+                            recipe_id: recipe_id,
+                            user_id: user_id,
+                            recipe_name: recipe_name,
+                            recipe_summary: recipe_summary,
+                            recipe_image: recipe_image
+                        })
+                    
+                    .done(function (response) {
+                        window.alert(response.message);
+                        $("#btn_favourite_id").text("Favourited");
+                    })
+                    .fail(function (xhr) {
+                        alert("Failed to add to favourites: " + xhr.responseText);
+                    });
+                }
+            }
+        });
+        
+
+        //        //        $.post("/favourite-recipe",
+        //        //            {
+        //        //                user_id: 1,
+        //        //                recipe_id: 1234
+        //        //            },
+        //        //            function (data, status) {
+        //        //                $("#btn_favourite_id").text("Favourited");
+        //        //            });
+        //        //    } else {
+        //        //        $("#btn_favourite_id").text("Add Favourite");
+
+        //        //        //$.post("/unfavourite-recipe",
+        //        //        //    {
+        //        //        //        user_id: 1,
+        //        //        //        recipe_id: 1234
+        //        //        //    },
+        //        //        //    function (data, status) {
+        //        //        //        $("#btn_favourite_id").text("Add Favourite");
+        //        //        //    });
+        //        //    }
+
+        //        //}); 
+          
     });
 
 </script>

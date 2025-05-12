@@ -4,9 +4,10 @@ Routes and views for the flask application.
 
 import sqlite3
 import tkinter.messagebox
+from urllib import response
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-from flask import render_template, request, flash, redirect, session, json, Flask
+from flask import render_template, request, flash, redirect, session, json, Flask, jsonify
 from Whats4Dinner import app
 from .utils import *
 import requests
@@ -335,19 +336,26 @@ def get_recipe_similar(recipe_id):
     similar_json = get_Recipe_Similar(recipe_id)
     return similar_json
 
-@app.route('/favourite-recipe')
+@app.route('/favourite-recipe', methods=["POST"])
 def add_favourite():
     """Adds a favourite for a user."""
-    
-    # Validate inputs
-    # Save to Database
-    # Return https 200 for success and 500 (error?!?)
+    user_id = request.form.get("user_id")
+    recipe_id = request.form.get("recipe_id")
+    recipe_name = request.form.get("recipe_name")
+    recipe_summary = request.form.get("recipe_summary")
+    recipe_image = request.form.get("recipe_image")
 
-    # Duplicate for /unfavourite-recipe
+    # Validate inputs
+    if not user_id:
+        return jsonify({'success': False, 'message': "Invalid user"}), 400
+    if not recipe_id or not recipe_name:
+        return jsonify({'success': False, 'message': "Invalid recipe"}), 400
+
+    # Save to Database
+    try:
+        db_insert("favourite_Recipes", ["user_id", "recipe_id", "recipe_name", "recipe_summary", "recipe_image"],
+                  [user_id, recipe_id, recipe_name, recipe_summary, recipe_image])
+        return jsonify({'success': True, 'message': "Recipe added to favourites"}), 200
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)}), 500
     
-    return render_template(
-        'profile.html',
-        title='User Profile',
-        year=datetime.now().year,
-        message='Your contact page.'
-    )

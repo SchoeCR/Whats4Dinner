@@ -2,6 +2,7 @@
 Routes and views for the flask application.
 """
 
+from asyncio.windows_events import NULL
 import sqlite3
 import tkinter.messagebox
 from urllib import response
@@ -353,9 +354,16 @@ def add_favourite():
 
     # Save to Database
     try:
-        db_insert("favourite_Recipes", ["user_id", "recipe_id", "recipe_name", "recipe_summary", "recipe_image"],
-                  [user_id, recipe_id, recipe_name, recipe_summary, recipe_image])
-        return jsonify({'success': True, 'message': "Recipe added to favourites"}), 200
+
+        # Check to see if it's already favourited. 
+        existing_favourite_id = db_select(f"SELECT favourite_id FROM favourite_Recipes WHERE user_id = {user_id} AND recipe_id = {recipe_id}")
+
+        if not existing_favourite_id:
+            db_insert("favourite_Recipes", ["user_id", "recipe_id", "recipe_name", "recipe_summary", "recipe_image"],
+                      [user_id, recipe_id, recipe_name, recipe_summary, recipe_image])
+            return jsonify({'success': True, 'message': "Recipe added to favourites"}), 200
+        else:
+            return jsonify({'success': True, 'message': "You've already favourited this recipe. ;)"}), 200
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
     

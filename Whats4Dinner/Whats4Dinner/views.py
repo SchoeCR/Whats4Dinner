@@ -367,3 +367,19 @@ def add_favourite():
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
     
+@app.route('/favourite-recipe/<recipe_id>/user/<user_id>/check', methods=["GET"])
+def check_favourite_recipe(recipe_id, user_id):
+       
+    # Validate inputs
+    if not user_id:
+        return jsonify({'success': False, 'message': "Invalid user"}), 400
+    if not recipe_id:
+        return jsonify({'success': False, 'message': "Invalid recipe"}), 400
+
+    # Check to see if it's already favourited. 
+    existing_favourite_id = db_select(f"SELECT favourite_id FROM favourite_Recipes WHERE user_id = {user_id} AND recipe_id = {recipe_id}")
+        
+    if existing_favourite_id:
+        return jsonify({'success': True, 'message': "Recipe already favourited. :)"}), 200
+    else:
+        return jsonify({'success': False, 'message': "Recipe not favourited :("}), 400

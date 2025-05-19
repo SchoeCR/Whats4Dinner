@@ -477,4 +477,22 @@
     }
 </script>
 
+<script>
+    $(document).ready(function () {
+        // Code to execute when the DOM is ready
+        console.log("DOM is ready!");
+        // Get parameters for query
+        if ($("#recipe_id").text() != null) {
+            let recipe_id = $("#recipe_id").text();
+            let user_id = $("#user_id").text();
+
+            // Call function to query database
+            $.get("/favourite-recipe/" + recipe_id + "/user/" + user_id + "/check", function (data, status) {
+                if (status == "success") {
+                    $("#btn_favourite_id").text("Favourited");
+                }
+            });
+        }
+    });
+</script>
 {% endblock %}

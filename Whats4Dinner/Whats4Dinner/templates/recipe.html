@@ -294,45 +294,45 @@
 
     $(function () {
 
-        $("#btn_instructions").click(function () {
+        //$("#btn_instructions").click(function () {
 
-            // AJAX Call to Get our Data. This will do an API call.
-            if ($("#recipe_id").text() != null) {
+        //    // AJAX Call to Get our Data. This will do an API call.
+        //    if ($("#recipe_id").text() != null) {
 
-                let recipe_id = $("#recipe_id").text();
-                // Show the loader before the AJAX call
-                $("#loadingOverlay, #loadingGif").show();
+        //        let recipe_id = $("#recipe_id").text();
+        //        // Show the loader before the AJAX call
+        //        $("#loadingOverlay, #loadingGif").show();
 
-                $.get("/recipe/instructions/" + recipe_id, function (data) {
+        //        $.get("/recipe/instructions/" + recipe_id, function (data) {
 
-                    console.log(data);
-                    $("#similar_tbody").empty(); // Clear old rows
+        //            console.log(data);
+        //            $("#similar_tbody").empty(); // Clear old rows
 
-                    if ($.isArray(data)) {
-                        // Iterate over an array
-                        $.each(data, function (index, value) {
-                            $("#instructions_tbody").append("<tr><td>" + value.number + "</td><td>" + value.step + "</td></tr>");
-                        });
-                    } else if ($.isPlainObject(data)) {
-                        // Iterate over an object
-                        $.each(data, function (key, value) {
-                            // Do something with key and value
-                            // console.log(key + ': ' + value);
-                            $("#instructions_tbody").append("<tr><td>" + value.number + "</td><td>" + value.step + "</td></tr>");
-                        });
-                    } else {
-                        // Handle other data types or errors
-                        console.log('Data is not an array or object.');
-                    }
-                }).fail(function () {
-                    console.log('An error occurred.');
-                })
-                .always(function () {
-                    // Hide the loader after the AJAX call completes (success or fail)
-                    $("#loadingOverlay, #loadingGif").hide();
-                });
-            }
-        });
+        //            if ($.isArray(data)) {
+        //                // Iterate over an array
+        //                $.each(data, function (index, value) {
+        //                    $("#instructions_tbody").append("<tr><td>" + value.number + "</td><td>" + value.step + "</td></tr>");
+        //                });
+        //            } else if ($.isPlainObject(data)) {
+        //                // Iterate over an object
+        //                $.each(data, function (key, value) {
+        //                    // Do something with key and value
+        //                    // console.log(key + ': ' + value);
+        //                    $("#instructions_tbody").append("<tr><td>" + value.number + "</td><td>" + value.step + "</td></tr>");
+        //                });
+        //            } else {
+        //                // Handle other data types or errors
+        //                console.log('Data is not an array or object.');
+        //            }
+        //        }).fail(function () {
+        //            console.log('An error occurred.');
+        //        })
+        //        .always(function () {
+        //            // Hide the loader after the AJAX call completes (success or fail)
+        //            $("#loadingOverlay, #loadingGif").hide();
+        //        });
+        //    }
+        //});
 
         $("#btn_nutrition").click(function () {
 
@@ -460,6 +460,7 @@
 
     
 </script>
+
 <script>
     // Get the modal
     var modal = document.getElementById("myModal");
@@ -494,5 +495,81 @@
             });
         }
     });
+</script>
+
+<script>
+    // Script to detect state of accordion elements and either run API call or not
+    // Listen for accordion toggle events
+
+    //
+    $(document).ready(function () {
+        $('#panelsStayOpen-collapseTwo')
+            .on('show.bs.collapse', function () {
+                console.log('Accordion is about to expand');
+                if ($("#instructions_tbody").children().length > 0) {
+                    console.log("Instructions already loaded, skipping AJAX.");
+                    return;
+                }
+
+                // AJAX Call to Get our Data. This will do an API call.
+                if ($("#recipe_id").text() != null) {
+
+                    let recipe_id = $("#recipe_id").text();
+                    // Show the loader before the AJAX call
+                    $("#loadingOverlay, #loadingGif").show();
+
+                    $.get("/recipe/instructions/" + recipe_id, function (data) {
+
+                        console.log(data);
+                        $("#similar_tbody").empty(); // Clear old rows
+
+                        if ($.isArray(data)) {
+                            // Iterate over an array
+                            $.each(data, function (index, value) {
+                                $("#instructions_tbody").append("<tr><td>" + value.number + "</td><td>" + value.step + "</td></tr>");
+                            });
+                        } else if ($.isPlainObject(data)) {
+                            // Iterate over an object
+                            $.each(data, function (key, value) {
+                                // Do something with key and value
+                                // console.log(key + ': ' + value);
+                                $("#instructions_tbody").append("<tr><td>" + value.number + "</td><td>" + value.step + "</td></tr>");
+                            });
+                        } else {
+                            // Handle other data types or errors
+                            console.log('Data is not an array or object.');
+                        }
+                    }).fail(function () {
+                        console.log('An error occurred.');
+                    })
+                        .always(function () {
+                            // Hide the loader after the AJAX call completes (success or fail)
+                            $("#loadingOverlay, #loadingGif").hide();
+                        });
+                }
+
+            })
+            .on('hide.bs.collapse', function () {
+                console.log('Accordion is about to collapse');
+
+            })
+    });
+    
+    //$("#btn_instructions").click(function () {
+    //    if ($("#panelsStayOpen-collapseTwo").hasClass('show')) {
+    //        window.alert("Hide")
+    //    } else {
+    //        window.alert("Show")
+    //    }
+    //});
+
+    //$('#panelsStayOpen-collapseTwo').on('shown.bs.collapse hidden.bs.collapse', function () {
+    //    if ($(this).hasClass('show')) {
+    //        console.log('Accordion is expanded');
+    //    } else {
+    //        console.log('Accordion is collapsed');
+    //    }
+    //});
+
 </script>
 {% endblock %}

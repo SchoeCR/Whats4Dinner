@@ -16,15 +16,19 @@
 </head>
 
 <body>
-
-    <div id="id_login-popup">
-        <label>Username:</label><br>
-        <input type="text" name="username"><br><br>
-        <label>Password:</label><br>
-        <input type="password" name="password"><br><br>
-        <input id="id_btn-submit_login-popup" type="submit" value="Login">
+    
+    <div id="myModal" class="modal-div">
+        <div id="login-popup" class="modal-login_popup">
+            <span class="close">&times;</span>
+            <label>Username:</label><br>
+            <input id="username_id" type="text" name="username" style="max-width:none; width:400px"><br><br>
+            <label>Password:</label><br>
+            <input id="password_id" type="password" name="password" style="max-width:none; width:400px"><br><br>
+            <input id="id_btn-submit_login-popup" type="submit" value="Login">
+            <input id="id_btn-submit-register-popup" type="submit" value="Register">
+        </div>
     </div>
-
+            
     <div class="col-lg-8 mx-auto p-3 py-md-5">
         <div class="w-100 h-auto">
             <titleheader class="pb-3 mb-5 border-bottom">
@@ -99,12 +103,22 @@
 
 
 
-    <script src="/static/scripts/jquery-1.10.2.js"></script>
-    <script src="/static/scripts/bootstrap.js"></script>
-    <script src="/static/scripts/respond.js"></script>
-    {% block scripts %}{% endblock %}
+        <script src="/static/scripts/jquery-1.10.2.js"></script>
+        <script src="/static/scripts/bootstrap.js"></script>
+        <script src="/static/scripts/respond.js"></script>
+        {% block scripts %}{% endblock %}
 
-    <script></script>
+        <script>
+
+            $(function () {
+                $("#id_btn-submit_login-popup").click(function () {
+                    let username_id = $("#username_id").text();
+                    let password_id = $("#password_id").text();
+                    if
+                    window.alert("Login");
+                });
+            });
+        </script>
 
 </body>
 </html>

@@ -334,93 +334,93 @@
         //    }
         //});
 
-        $("#btn_nutrition").click(function () {
+        //$("#btn_nutrition").click(function () {
 
-            // AJAX Call to Get our Data. This will do an API call.
-            if ($("#recipe_id").text() != null) {
+        //    // AJAX Call to Get our Data. This will do an API call.
+        //    if ($("#recipe_id").text() != null) {
 
-                let recipe_id = $("#recipe_id").text();
+        //        let recipe_id = $("#recipe_id").text();
 
-                // Show the loader before the AJAX call
-                $("#loadingOverlay, #loadingGif").show();
+        //        // Show the loader before the AJAX call
+        //        $("#loadingOverlay, #loadingGif").show();
 
-                $.get("/recipe/nutrition/" + recipe_id, function (data) {
+        //        $.get("/recipe/nutrition/" + recipe_id, function (data) {
 
-                    console.log(data);
-                    $("#similar_tbody").empty(); // Clear old rows
+        //            console.log(data);
+        //            $("#similar_tbody").empty(); // Clear old rows
 
-                    if ($.isArray(data)) {
-                        // Iterate over an array
-                        $.each(data, function (index, value) {
-                            // Format percentOfDailyNeeds to two decimal places
-                            let percent = value.percentOfDailyNeeds;
-                            let percentFixed = percent.toFixed(2);
-                            $("#nutrition_tbody").append("<tr><td>" + value.name + "</td><td>" + value.amount + value.unit + "</td><td>" + percentFixed + "%</td></tr>");
-                        });
-                    } else if ($.isPlainObject(data)) {
-                        // Iterate over an object
-                        $.each(data, function (key, value) {
-                            // Do something with key and value
-                            // console.log(key + ': ' + value);
-                            // Format percentOfDailyNeeds to two decimal places
-                            let percent = value.percentOfDailyNeeds;
-                            let percentFixed = percent.toFixed(0);
-                            $("#nutrition_tbody").append("<tr><td>" + value.name + "</td><td>" + value.amount + value.unit + "</td><td>" + percentFixed + "%</td></tr>");
-                        });
-                    } else {
-                        // Handle other data types or errors
-                        console.log('Data is not an array or object.');
-                    }
-                }).fail(function () {
-                    console.log('An error occurred.');
-                })
-                  .always(function () {
-                    // Hide the loader after the AJAX call completes (success or fail)
-                    $("#loadingOverlay, #loadingGif").hide();
-                });
-            }
-        });
+        //            if ($.isArray(data)) {
+        //                // Iterate over an array
+        //                $.each(data, function (index, value) {
+        //                    // Format percentOfDailyNeeds to two decimal places
+        //                    let percent = value.percentOfDailyNeeds;
+        //                    let percentFixed = percent.toFixed(2);
+        //                    $("#nutrition_tbody").append("<tr><td>" + value.name + "</td><td>" + value.amount + value.unit + "</td><td>" + percentFixed + "%</td></tr>");
+        //                });
+        //            } else if ($.isPlainObject(data)) {
+        //                // Iterate over an object
+        //                $.each(data, function (key, value) {
+        //                    // Do something with key and value
+        //                    // console.log(key + ': ' + value);
+        //                    // Format percentOfDailyNeeds to two decimal places
+        //                    let percent = value.percentOfDailyNeeds;
+        //                    let percentFixed = percent.toFixed(0);
+        //                    $("#nutrition_tbody").append("<tr><td>" + value.name + "</td><td>" + value.amount + value.unit + "</td><td>" + percentFixed + "%</td></tr>");
+        //                });
+        //            } else {
+        //                // Handle other data types or errors
+        //                console.log('Data is not an array or object.');
+        //            }
+        //        }).fail(function () {
+        //            console.log('An error occurred.');
+        //        })
+        //          .always(function () {
+        //            // Hide the loader after the AJAX call completes (success or fail)
+        //            $("#loadingOverlay, #loadingGif").hide();
+        //        });
+        //    }
+        //});
 
-        $("#btn_similar").click(function () {
+        //$("#btn_similar").click(function () {
 
-            // AJAX Call to Get our Data. This will do an API call.
-            if ($("#recipe_id").text() != null) {
+        //    // AJAX Call to Get our Data. This will do an API call.
+        //    if ($("#recipe_id").text() != null) {
 
-                let recipe_id = $("#recipe_id").text();
+        //        let recipe_id = $("#recipe_id").text();
 
-                // Show the loader before the AJAX call
-                $("#loadingOverlay, #loadingGif").show();
+        //        // Show the loader before the AJAX call
+        //        $("#loadingOverlay, #loadingGif").show();
 
-                $.get("/recipe/similar/" + recipe_id, function (data) {
+        //        $.get("/recipe/similar/" + recipe_id, function (data) {
 
-                    console.log(data);
-                    $("#similar_tbody").empty(); // Clear old rows
+        //            console.log(data);
+        //            $("#similar_tbody").empty(); // Clear old rows
 
-                    if ($.isArray(data)) {
-                        // Iterate over an array
-                        $.each(data, function (index, value) {
-                            $("#similar_tbody").append("<tr><td>" + value.title + "</td><td>" + value.readyInMinutes + "</td><td>" + value.servings + "</td><td><a href=/recipe/view/" + recipe_id + ">View</a></td></tr>");
-                        });
-                    } else if ($.isPlainObject(data)) {
-                        // Iterate over an object
-                        $.each(data, function (key, value) {
-                            // Do something with key and value
-                            // console.log(key + ': ' + value);
-                            $("#similar_tbody").append("<tr><td>" + value.title + "</td><td>" + value.readyInMinutes + "</td><td>" + value.servings + "</td><td><a href=/recipe/view/" + recipe_id + ">View</a></td></tr>");
-                        });
-                    } else {
-                        // Handle other data types or errors
-                        console.log('Data is not an array or object.');
-                    }
-                }).fail(function () {
-                    console.log('An error occurred.');
-                })
-                .always(function () {
-                    // Hide the loader after the AJAX call completes (success or fail)
-                    $("#loadingOverlay, #loadingGif").hide();
-                });
-            }
-        });
+        //            if ($.isArray(data)) {
+        //                // Iterate over an array
+        //                $.each(data, function (index, value) {
+        //                    $("#similar_tbody").append("<tr><td>" + value.title + "</td><td>" + value.readyInMinutes + "</td><td>" + value.servings + "</td><td><a href=/recipe/view/" + recipe_id + ">View</a></td></tr>");
+        //                });
+        //            } else if ($.isPlainObject(data)) {
+        //                // Iterate over an object
+        //                $.each(data, function (key, value) {
+        //                    // Do something with key and value
+        //                    // console.log(key + ': ' + value);
+        //                    $("#similar_tbody").append("<tr><td>" + value.title + "</td><td>" + value.readyInMinutes + "</td><td>" + value.servings + "</td><td><a href=/recipe/view/" + recipe_id + ">View</a></td></tr>");
+        //                });
+        //            } else {
+        //                // Handle other data types or errors
+        //                console.log('Data is not an array or object.');
+        //            }
+        //        }).fail(function () {
+        //            console.log('An error occurred.');
+        //        })
+        //        .always(function () {
+        //            // Hide the loader after the AJAX call completes (success or fail)
+        //            $("#loadingOverlay, #loadingGif").hide();
+        //        });
+        //    }
+        //});
 
         $("#btn_favourite_id").click(function () {
 
@@ -498,12 +498,10 @@
 </script>
 
 <script>
-    // Script to detect state of accordion elements and either run API call or not
-    // Listen for accordion toggle events
-
-    //
+    // Instructions
+    // Script to detect state of accordion element "Instructions" and either run API call or not
     $(document).ready(function () {
-        $('#panelsStayOpen-collapseTwo')
+        $('#panelsStayOpen-collapseTwo') // Instructions accordion
             .on('show.bs.collapse', function () {
                 console.log('Accordion is about to expand');
                 if ($("#instructions_tbody").children().length > 0) {
@@ -521,7 +519,7 @@
                     $.get("/recipe/instructions/" + recipe_id, function (data) {
 
                         console.log(data);
-                        $("#similar_tbody").empty(); // Clear old rows
+                        $("#instructions_tbody").empty(); // Clear old rows
 
                         if ($.isArray(data)) {
                             // Iterate over an array
@@ -554,22 +552,124 @@
 
             })
     });
-    
-    //$("#btn_instructions").click(function () {
-    //    if ($("#panelsStayOpen-collapseTwo").hasClass('show')) {
-    //        window.alert("Hide")
-    //    } else {
-    //        window.alert("Show")
-    //    }
-    //});
-
-    //$('#panelsStayOpen-collapseTwo').on('shown.bs.collapse hidden.bs.collapse', function () {
-    //    if ($(this).hasClass('show')) {
-    //        console.log('Accordion is expanded');
-    //    } else {
-    //        console.log('Accordion is collapsed');
-    //    }
-    //});
-
 </script>
+
+<script>
+    // Nutrition
+    // Script to detect state of accordion element "Nutrition" and either run API call or not
+    $(document).ready(function () {
+        $('#panelsStayOpen-collapseThree') // Nutrition accordion
+            .on('show.bs.collapse', function () {
+                console.log('Accordion is about to expand');
+                if ($("#nutrition_tbody").children().length > 0) {
+                    console.log("Instructions already loaded, skipping AJAX.");
+                    return;
+                }
+                // AJAX Call to Get our Data. This will do an API call.
+                if ($("#recipe_id").text() != null) {
+
+                    let recipe_id = $("#recipe_id").text();
+
+                    // Show the loader before the AJAX call
+                    $("#loadingOverlay, #loadingGif").show();
+
+                    $.get("/recipe/nutrition/" + recipe_id, function (data) {
+
+                        console.log(data);
+                        $("#nutrition_tbody").empty(); // Clear old rows
+
+                        if ($.isArray(data)) {
+                            // Iterate over an array
+                            $.each(data, function (index, value) {
+                                // Format percentOfDailyNeeds to two decimal places
+                                let percent = value.percentOfDailyNeeds;
+                                let percentFixed = percent.toFixed(2);
+                                $("#nutrition_tbody").append("<tr><td>" + value.name + "</td><td>" + value.amount + value.unit + "</td><td>" + percentFixed + "%</td></tr>");
+                            });
+                        } else if ($.isPlainObject(data)) {
+                            // Iterate over an object
+                            $.each(data, function (key, value) {
+                                // Do something with key and value
+                                // console.log(key + ': ' + value);
+                                // Format percentOfDailyNeeds to two decimal places
+                                let percent = value.percentOfDailyNeeds;
+                                let percentFixed = percent.toFixed(0);
+                                $("#nutrition_tbody").append("<tr><td>" + value.name + "</td><td>" + value.amount + value.unit + "</td><td>" + percentFixed + "%</td></tr>");
+                            });
+                        } else {
+                            // Handle other data types or errors
+                            console.log('Data is not an array or object.');
+                        }
+                    }).fail(function () {
+                        console.log('An error occurred.');
+                    })
+                        .always(function () {
+                            // Hide the loader after the AJAX call completes (success or fail)
+                            $("#loadingOverlay, #loadingGif").hide();
+                        });
+                }
+            })
+            .on('hide.bs.collapse', function () {
+                console.log('Accordion is about to collapse');
+
+            })
+    });
+</script>
+
+<script>
+    // Similar
+    // Script to detect state of accordion element "Similar Recipes" and either run API call or not
+    $(document).ready(function () {
+        $('#panelsStayOpen-collapseFour') // Similar accordion
+            .on('show.bs.collapse', function () {
+                console.log('Accordion is about to expand');
+                if ($("#similar_tbody").children().length > 0) {
+                    console.log("Instructions already loaded, skipping AJAX.");
+                    return;
+                }
+                // AJAX Call to Get our Data. This will do an API call.
+                if ($("#recipe_id").text() != null) {
+
+                    let recipe_id = $("#recipe_id").text();
+
+                    // Show the loader before the AJAX call
+                    $("#loadingOverlay, #loadingGif").show();
+
+                    $.get("/recipe/similar/" + recipe_id, function (data) {
+
+                        console.log(data);
+                        $("#similar_tbody").empty(); // Clear old rows
+
+                        if ($.isArray(data)) {
+                            // Iterate over an array
+                            $.each(data, function (index, value) {
+                                $("#similar_tbody").append("<tr><td>" + value.title + "</td><td>" + value.readyInMinutes + "</td><td>" + value.servings + "</td><td><a href=/recipe/view/" + recipe_id + ">View</a></td></tr>");
+                            });
+                        } else if ($.isPlainObject(data)) {
+                            // Iterate over an object
+                            $.each(data, function (key, value) {
+                                // Do something with key and value
+                                // console.log(key + ': ' + value);
+                                $("#similar_tbody").append("<tr><td>" + value.title + "</td><td>" + value.readyInMinutes + "</td><td>" + value.servings + "</td><td><a href=/recipe/view/" + recipe_id + ">View</a></td></tr>");
+                            });
+                        } else {
+                            // Handle other data types or errors
+                            console.log('Data is not an array or object.');
+                        }
+                    }).fail(function () {
+                        console.log('An error occurred.');
+                    })
+                        .always(function () {
+                            // Hide the loader after the AJAX call completes (success or fail)
+                            $("#loadingOverlay, #loadingGif").hide();
+                        });
+                }
+            })
+            .on('hide.bs.collapse', function () {
+                console.log('Accordion is about to collapse');
+
+            })
+    });
+</script>
+
 {% endblock %}

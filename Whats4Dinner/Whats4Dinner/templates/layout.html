@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    
+
     <div id="myModal" class="modal-div">
         <div id="login-popup" class="modal-login_popup">
             <span class="close">&times;</span>
@@ -28,97 +28,106 @@
             <input id="id_btn-submit-register-popup" type="submit" value="Register">
         </div>
     </div>
-            
-    <div class="col-lg-8 mx-auto p-3 py-md-5">
-        <div class="w-100 h-auto">
-            <titleheader class="pb-3 mb-5 border-bottom">
-                <!-- Logo Section -->
-                <div class="d-flex align-items-center mb-3">
-                    <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
-                        <img src="/static/knife.svg" alt="knife and fork on plate" height="87" width="87" />
-                        <span class="fs-4">Whats4Dinner</span>
-                    </a>
-                </div>
-            </titleheader>
+
+    <header class="header-band">
+        <div class="container d-flex align-items-center">
+            <a href="/" class="d-flex align-items-center text-white text-decoration-none">
+                <img src="/static/knife.svg" alt="knife and fork on plate" height="50" width="50" class="me-2" />
+                <h1 class="fs-4 mb-0">Whats4Dinner</h1>
+            </a>
         </div>
-        <!-- Nav Section -->
-        {% if session["user_id"] %}
-        <navheader>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="#"></a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Features</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/logout">Logout</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <sub id="user_id">{{ session.user_id }}</sub>
-            </nav>
+    </header>
 
-            {% else %}
-
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="#">Navbar</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/login">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/register">Register</a>
-                            </li>
-                        </ul>
-                    </div>
+    <!-- Nav Section -->
+    {% if session["user_id"] %}
+    <div style="padding-bottom:20px">
+        <!--class="nav-band"-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position:fixed; width:100%; top:82px;">
+            <!--navbar navbar-expand-lg navbar-light bg-light-->
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/profile">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Logout</a>
+                        </li>
+                    </ul>
                 </div>
-            </nav>
-            {% endif %}
-        </navheader>
+            </div>
+            <sub id="user_id" style="display:none">{{ session.user_id }}</sub>
+        </nav>
+    </div>
+    {% else %}
+    <div style="padding-bottom:20px">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position:fixed; width:100%; top:82px;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Navbar</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/register">Register</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    {% endif %}
+
+    <div class="col-lg-8 mx-auto p-3 py-md-5">
 
         <main>
             {% block content %}{% endblock %}
             <hr />
         </main>
-        <footer>
+
+        <!--<footer>
             <p>&copy; {{ year }} - Whats4Dinner</p>
             <a href="https://www.flaticon.com/free-icons/fork" title="fork icons">Fork icons created by Freepik - Flaticon</a>
+        </footer>-->
+
+        <footer class="footer-band">
+            <div class="container">
+                <p class="mb-1">&copy; {{ year }} - Whats4Dinner</p>
+                <small><a href="https://www.flaticon.com/free-icons/fork" class="text-white text-decoration-underline" title="fork icons">Fork icons by Freepik - Flaticon</a></small>
+            </div>
         </footer>
     </div>
 
 
 
 
-        <script src="/static/scripts/jquery-1.10.2.js"></script>
-        <script src="/static/scripts/bootstrap.js"></script>
-        <script src="/static/scripts/respond.js"></script>
-        {% block scripts %}{% endblock %}
+    <script src="/static/scripts/jquery-1.10.2.js"></script>
+    <script src="/static/scripts/bootstrap.js"></script>
+    <script src="/static/scripts/respond.js"></script>
+    {% block scripts %}{% endblock %}
 
-        <script>
+    <script>
 
-            $(function () {
-                $("#id_btn-submit_login-popup").click(function () {
-                    let username_id = $("#username_id").text();
-                    let password_id = $("#password_id").text();
-                    if
-                    window.alert("Login");
-                });
+        $(function () {
+            $("#id_btn-submit_login-popup").click(function () {
+                window.alert("Login")
+                let username_id = $("#username_id").text();
+                let password_id = $("#password_id").text();
+                
             });
-        </script>
+        });
+    </script>
 
 </body>
 </html>

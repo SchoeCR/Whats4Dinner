@@ -70,7 +70,7 @@ input[type="checkbox"].input-validation-error {
 .modal-div {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    z-index: 2000; /* Sit on top */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -135,7 +135,7 @@ input[type="checkbox"].input-validation-error {
     position: fixed; /* or 'fixed' if you want it always visible */
     top: 0;
     left: 0;
-    z-index: 1000; /* ensures it's above other elements */
+    z-index: 1500; /* ensures it's above other elements */
 }
 
 .footer-band {

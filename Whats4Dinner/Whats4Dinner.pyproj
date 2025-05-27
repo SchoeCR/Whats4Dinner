@@ -85,6 +85,7 @@
     <Content Include="Whats4Dinner\static\vegetables.svg" />
     <Content Include="Whats4Dinner\templates\about.html" />
     <Content Include="Whats4Dinner\templates\contact.html" />
+    <Content Include="Whats4Dinner\templates\favourites.html" />
     <Content Include="Whats4Dinner\templates\index.html" />
     <Content Include="Whats4Dinner\templates\layout.html" />
     <Content Include="Whats4Dinner\templates\login.html" />

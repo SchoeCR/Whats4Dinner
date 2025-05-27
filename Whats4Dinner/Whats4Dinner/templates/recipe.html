@@ -444,21 +444,21 @@
                             recipe_summary: recipe_summary,
                             recipe_image: recipe_image
                         })
-                    
-                    .done(function (response) {
-                        window.alert(response.message);
-                        $("#btn_favourite_id").text("Favourited");
-                    })
-                    .fail(function (xhr) {
-                        alert("Failed to add to favourites: " + xhr.responseText);
-                    });
+
+                        .done(function (response) {
+                            window.alert(response.message);
+                            $("#btn_favourite_id").text("Favourited");
+                        })
+                        .fail(function (xhr) {
+                            alert("Failed to add to favourites: " + xhr.responseText);
+                        });
                 }
             }
         });
-          
+
     });
 
-    
+
 </script>
 
 <script>

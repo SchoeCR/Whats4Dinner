@@ -383,3 +383,45 @@ def check_favourite_recipe(recipe_id, user_id):
         return jsonify({'success': True, 'message': "Recipe already favourited. :)"}), 200
     else:
         return jsonify({'success': False, 'message': "Recipe not favourited :("}), 400
+
+@app.route('/login/modal/user/<email>/password/<password>', methods=["POST"])
+def favourite_loginReq(email, password):
+    # User attempted to favourite a recipe without being logged in.
+        
+    # Validate input
+    if not email:
+        return jsonify({'success': False, 'message': "Email invalid"}), 400
+
+    # Check if password is null
+    if not password:
+        return jsonify({'success': False, 'message': "Password invalid"}), 400
+
+    # Query database for existing account with matching credentials
+    profile = db_select(f"SELECT * FROM users WHERE email='{email}'")
+
+    # Retrieve stored password hash
+    pswhash = profile[0]["hash"]
+
+    # Check if profile is null or passwords do not match
+    if len(profile) != 1 or not check_password_hash(pswhash,password):
+        return 
+
+    # Create new session for user_id
+    session['user_id'] = profile[0]['user_id']
+    session['first_name'] = profile[0]['first_name']
+
+    return jsonify({'success': True, 'message': "Logged in."})
+
+@app.route('/profile/user/favourites', methods=["GET"])
+def user_favourites():
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    return render_template(
+            'favourites.html',
+            title='Favourites',
+            year=datetime.now().year,
+            login_prompt='Favourite Recipes.'
+        )
+

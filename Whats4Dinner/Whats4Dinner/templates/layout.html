@@ -20,12 +20,19 @@
     <div id="myModal" class="modal-div">
         <div id="login-popup" class="modal-login_popup">
             <span class="close">&times;</span>
-            <label>Username:</label><br>
-            <input id="username_id" type="text" name="username" style="max-width:none; width:400px"><br><br>
-            <label>Password:</label><br>
-            <input id="password_id" type="password" name="password" style="max-width:none; width:400px"><br><br>
-            <input id="id_btn-submit_login-popup" type="submit" value="Login">
-            <input id="id_btn-submit-register-popup" type="submit" value="Register">
+            <label for="username_id" class="form-label">Username:</label>
+            <input id="username_id" type="text" name="username" style="max-width:none; width:400px" class="form-control">
+            <div id="username_feedback" class="invalid-feedback">
+                Please enter a valid email.
+            </div>
+            <label for="password_id" class="form-label">Password:</label>
+            <input id="password_id" type="password" name="password" style="max-width:none; width:400px" class="form-control">
+            <div id="password_feedback" class="invalid-feedback">
+                Please enter a valid password.
+            </div>
+            <br />
+            <input id="id_btn-submit_login-popup" type="submit" value="Login" class="btn btn-primary">
+            <input id="id_btn-submit-register-popup" type="submit" value="Register" class="btn btn-secondary">
         </div>
     </div>
 
@@ -42,7 +49,7 @@
     {% if session["user_id"] %}
     <div style="padding-bottom:20px">
         <!--class="nav-band"-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position:fixed; width:100%; top:82px;">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position:fixed; width:100%; top:82px; z-index:1500">
             <!--navbar navbar-expand-lg navbar-light bg-light-->
             <div class="container-fluid">
                 <a class="navbar-brand" href="#"></a>
@@ -109,9 +116,6 @@
         </footer>
     </div>
 
-
-
-
     <script src="/static/scripts/jquery-1.10.2.js"></script>
     <script src="/static/scripts/bootstrap.js"></script>
     <script src="/static/scripts/respond.js"></script>
@@ -121,10 +125,35 @@
 
         $(function () {
             $("#id_btn-submit_login-popup").click(function () {
-                window.alert("Login")
-                let username_id = $("#username_id").text();
-                let password_id = $("#password_id").text();
-                
+                let email = $("#username_id").val();
+                let password = $("#password_id").val();
+                let recipe_id = $("#recipe_id").val();
+
+                // Validate user input
+                if (!email) {
+                    $("#username_id").addClass("is-invalid");
+                    return;
+                }
+                if (!password) {
+                    $("#password_id").addClass("is-invalid");
+                    return;
+                }
+
+                // Call app route
+                $.post("/login/modal/user/" + email + "/password/" + password, function (data, status) {
+                    // Route is successful
+                    if (status === "success") {
+                        $("#username_id").removeClass("is-invalid").addClass("is-valid");
+                        $("#password_id").removeClass("is-invalid").addClass("is-valid");
+                        location.reload();
+                    }
+                    else {
+                        // Route is unsuccessful
+                        window.alert("Fail");
+                    }
+
+                });
+
             });
         });
     </script>

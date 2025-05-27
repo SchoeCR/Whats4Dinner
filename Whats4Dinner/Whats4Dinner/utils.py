@@ -134,7 +134,3 @@ def get_Recipe_Similar(recipe_id):
 
 def get_random_Int(min_val, max_val):
     return random.randint(min_val,max_val)
-
-def favourite_loginReq(recipe_id):
-    # User attempted to favourite a recipe without being logged in.
-    return

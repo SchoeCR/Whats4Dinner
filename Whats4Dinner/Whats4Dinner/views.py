@@ -199,6 +199,13 @@ def search_recipe():
 
         # Assign form values to variables
         query_input = request.form.get("keyword")
+        
+        # Loop through list items and return item name if it's checked
+        #intolerance_input = request.form.get("intolerances_id")
+
+        # Combine list into CSV string
+        intolerance_list = request.form.getlist("intolerances");
+        intolerance_csv_string = ",".join(intolerance_list)
 
         # Validate form input
         if not query_input:
@@ -213,7 +220,8 @@ def search_recipe():
         number = 5
         offset = get_random_Int(0,150)
        
-        URL = f"{base_url}?query={query}&number={number}&offset={offset}&apiKey={API_KEY}"
+        # TODO: Improve URL ecoding and string building
+        URL = f"{base_url}?query={query}&intolerances={intolerance_csv_string}&number={number}&offset={offset}&apiKey={API_KEY}"
 
         # API call via requests library
         response = requests.get(URL)

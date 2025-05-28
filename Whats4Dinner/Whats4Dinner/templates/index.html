@@ -28,13 +28,13 @@
                 <button class="btn btn-primary mb-2" type="submit">Search</button>
 
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                    <label class="form-check-label" for="flexSwitchCheckDefault">Advanced search</label>
+                    <input id="advanced_search_toggle_id" class="form-check-input" type="checkbox">
+                    <label class="form-check-label" for="advanced_search_toggle_id">Advanced search</label>
                 </div>
 
             </div>
 
-                <div class="row g-3">
+                <div id="advanced_search_container" class="row g-3" style="display:none">
 
                     <ul id="intolerances_id" class="list-group">
                         <li class="list-group-item">
@@ -93,5 +93,23 @@
             {% endif %}
     </div>
 </div>
+
+<script>
+
+    $(function () {
+        var toggle = $("#advanced_search_toggle_id");
+        toggle.click(function () {
+            var search_list = document.getElementById("advanced_search_container");
+
+            if (toggle.is(':checked')) {
+                search_list.style.display = "block";
+            }
+            else {
+                search_list.style.display = "none";
+            }
+
+        });
+    });
+</script>
 
 {% endblock %}

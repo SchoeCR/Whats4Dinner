@@ -134,3 +134,18 @@ def get_Recipe_Similar(recipe_id):
 
 def get_random_Int(min_val, max_val):
     return random.randint(min_val,max_val)
+
+def get_user_favourites(user_id):
+    # Get recipes that user has favourited
+
+    # Construct query string for db_select
+    qry_string = f"SELECT * FROM favourite_Recipes WHERE user_id = {user_id}"
+
+    # Call db_Select and pass in query string as argument
+    returned_data = db_select(qry_string)
+
+    # Check if any data has been returned, then return to calling function
+    if not returned_data:
+        return[]
+    return returned_data
+

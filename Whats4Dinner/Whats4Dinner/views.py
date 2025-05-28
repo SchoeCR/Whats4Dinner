@@ -413,15 +413,24 @@ def favourite_loginReq(email, password):
     return jsonify({'success': True, 'message': "Logged in."})
 
 @app.route('/profile/user/favourites', methods=["GET"])
-def user_favourites():
+def user_favourites(user_id):
 
     if "user_id" not in session:
         return redirect("/login")
 
-    return render_template(
+    data_json = get_user_favourites(user_id)
+
+    if not data_json:
+            return render_template(
+            'favourites.html', 
+            title='Favourites',
+            year=datetime.now().year,
+            validation_error='You do not have any favourites :(')
+    else:
+           return render_template(
             'favourites.html',
             title='Favourites',
             year=datetime.now().year,
-            login_prompt='Favourite Recipes.'
+            message='Favourite Recipes.'
         )
 

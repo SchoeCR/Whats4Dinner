@@ -4,6 +4,22 @@
 
 <body>
     <p>Hello</p>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            {% for fav in favourites}
+            <thead>
+                <tr>
+                    <th scope="col">Recipe</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody id="favourites_tbody">
+                <tr><td>{{ fav.title }}</td><td><img src="{{ fav.image }}"/></td><td><form action="/recipe/view" method="post"><input type="hidden" name="recipe_id" value="{{ fav.id }}"><button class="btn btn-primary" type="submit">View</button></form></td></tr>
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
 </body>
 
 {% endblock %}

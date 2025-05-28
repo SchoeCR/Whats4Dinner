@@ -19,12 +19,48 @@
             Find your first recipe.
         </p>
 
-        <form action="/search" method="post" class="row g-1">
+        <form action="/search" method="post" class="form-inline">
 
-            <div class="justify-content-center mb-2">
-                <label class="label-register">Keyword</label>
-                <input autofocus class="form-control w-auto" name="keyword" placeholder="Pizza" type="text">
+            <div class="row g-3">
+
+                <label for="searchKeywordInput">Keyword</label>
+                <input autofocus id="searchKeywordInput" class="form-control w-auto" name="keyword" placeholder="Pizza" type="text">
+                <button class="btn btn-primary mb-2" type="submit">Search</button>
+
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">Advanced search</label>
+                </div>
+
             </div>
+
+                <div class="row g-3">
+
+                    <ul id="intolerances_id" class="list-group">
+                        <li class="list-group-item">
+                            <input name="intolerances" class="form-check-input me-1" type="checkbox" value="Gluten">
+                            Gluten free
+                        </li>
+                        <li class="list-group-item">
+                            <input name="intolerances" class="form-check-input me-1" type="checkbox" value="Peanuts">
+                            Peanuts
+                        </li>
+                        <li class="list-group-item">
+                            <input name="intolerances" class="form-check-input me-1" type="checkbox" value="Eggs">
+                            Eggs
+                        </li>
+                        <li class="list-group-item">
+                            <input name="intolerances" class="form-check-input me-1" type="checkbox" value="Dairy">
+                            Dairy Free
+                        </li>
+                        <li class="list-group-item">
+                            <input name="intolerances" class="form-check-input me-1" type="checkbox" value="Seafood">
+                            Seafood
+                        </li>
+                    </ul>
+
+                </div>
+
         </form>
 
             {% if recipes %}

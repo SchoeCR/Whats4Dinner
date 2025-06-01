@@ -384,6 +384,7 @@ def check_favourite_recipe(recipe_id, user_id):
     if not recipe_id:
         return jsonify({'success': False, 'message': "Invalid recipe"}), 400
 
+    # TODO: Improve security
     # Check to see if it's already favourited. 
     existing_favourite_id = db_select(f"SELECT favourite_id FROM favourite_Recipes WHERE user_id = {user_id} AND recipe_id = {recipe_id}")
         
@@ -421,24 +422,23 @@ def favourite_loginReq(email, password):
     return jsonify({'success': True, 'message': "Logged in."})
 
 @app.route('/profile/user/favourites', methods=["GET"])
-def user_favourites(user_id):
-
+def user_favourites():
+    
     if "user_id" not in session:
         return redirect("/login")
-
-    data_json = get_user_favourites(user_id)
-
-    if not data_json:
-            return render_template(
-            'favourites.html', 
-            title='Favourites',
-            year=datetime.now().year,
-            validation_error='You do not have any favourites :(')
     else:
-           return render_template(
-            'favourites.html',
-            title='Favourites',
-            year=datetime.now().year,
-            message='Favourite Recipes.'
-        )
+        user_id = session["user_id"]
+
+    response = get_user_favourites(user_id)
+    # Convert to list of dictionaries
+    favourites = [dict(row) for row in response]
+
+    print(favourites)
+
+    return render_template(
+        "favourites.html",
+        title='My favourites',
+        year=datetime.now().year,
+        favourites=favourites)
+
 

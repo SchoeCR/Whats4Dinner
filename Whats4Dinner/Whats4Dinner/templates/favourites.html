@@ -2,11 +2,25 @@
 
 {% block content %}
 
-<body>
-    <p>Hello</p>
+<h3>My Favourites</h3>
+
+{% if validation_error %}
+
+<div class="text-danger" style="text-col">
+    Error: {{ validation_error }}
+</div>
+
+{% endif %}
+
+{% if message %}
+<h5>{{ message }}</h5>
+{% endif %}
+
+<main>
+    {% if favourites %}
+
     <div class="table-responsive">
-        <table class="table table-striped table-sm">
-            {% for fav in favourites}
+        <table class="table table-striped table-sm">   
             <thead>
                 <tr>
                     <th scope="col">Recipe</th>
@@ -15,11 +29,19 @@
                 </tr>
             </thead>
             <tbody id="favourites_tbody">
-                <tr><td>{{ fav.title }}</td><td><img src="{{ fav.image }}"/></td><td><form action="/recipe/view" method="post"><input type="hidden" name="recipe_id" value="{{ fav.id }}"><button class="btn btn-primary" type="submit">View</button></form></td></tr>
+                {% for fav in favourites %}
+                <tr>
+                    <td>{{ fav.recipe_name }}</td>
+                    <td><img class="rounded" src="{{ fav.recipe_image }}" alt="Mmm, yum yum" style="width:30%; height:30%" /></td>
+                    <td><input type="hidden" name="recipe_id" value="{{ fav.recipe_id }}"></td>
+                </tr>
+                {% endfor %}
             </tbody>
-            {% endfor %}
         </table>
     </div>
-</body>
 
+    {% else %}
+    <p>You dont have any favourites &#9785</p>
+    {% endif %}
+</main>
 {% endblock %}

@@ -16,7 +16,7 @@ def db_insert(table, columns, values):
     conn.close()
     return
 
-
+# TODO: Upgrade to paramterized query to prevent SQL injection
 def db_select(qryStr):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -138,6 +138,7 @@ def get_random_Int(min_val, max_val):
 def get_user_favourites(user_id):
     # Get recipes that user has favourited
 
+    #TODO: Upgrade to paramterized query to increase security
     # Construct query string for db_select
     qry_string = f"SELECT * FROM favourite_Recipes WHERE user_id = {user_id}"
 
@@ -145,7 +146,5 @@ def get_user_favourites(user_id):
     returned_data = db_select(qry_string)
 
     # Check if any data has been returned, then return to calling function
-    if not returned_data:
-        return[]
-    return returned_data
+    return returned_data or []
 

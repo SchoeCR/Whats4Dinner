@@ -20,7 +20,7 @@
     {% if favourites %}
 
     <div class="table-responsive">
-        <table class="table table-striped table-sm">   
+        <table class="table table-striped table-sm">
             <thead>
                 <tr>
                     <th scope="col">Recipe</th>
@@ -31,9 +31,9 @@
             <tbody id="favourites_tbody">
                 {% for fav in favourites %}
                 <tr>
-                    <td>{{ fav.recipe_name }}</td>
-                    <td><img class="rounded" src="{{ fav.recipe_image }}" alt="Mmm, yum yum" style="width:30%; height:30%" /></td>
-                    <td><input type="hidden" name="recipe_id" value="{{ fav.recipe_id }}"></td>
+                    <td><form action="" method="get"><button id="btn_recipe_id" class="btn">{{ fav.recipe_name }}</button></form></td>
+                    <td class="p-1 align-right" style="width:1%;white-space:nowrap"><img class="rounded" src="{{ fav.recipe_image }}" alt="Mmm, yum yum" style="max-width: 250px; height: auto; display: block;" /></td>
+                    <td><small id="recipe_id" value="{{ fav.recipe_id }}" style="display:none"></small></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -44,4 +44,5 @@
     <p>You dont have any favourites &#9785</p>
     {% endif %}
 </main>
+
 {% endblock %}

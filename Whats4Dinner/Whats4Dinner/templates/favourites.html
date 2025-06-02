@@ -31,7 +31,7 @@
             <tbody id="favourites_tbody">
                 {% for fav in favourites %}
                 <tr>
-                    <td><form action="" method="get"><button id="btn_recipe_id" class="btn">{{ fav.recipe_name }}</button></form></td>
+                    <td><form action="/recipe/view/{{ fav.recipe_id }}" method="get"><button id="btn_recipe_id" class="btn">{{ fav.recipe_name }}</button></form></td>
                     <td class="p-1 align-right" style="width:1%;white-space:nowrap"><img class="rounded" src="{{ fav.recipe_image }}" alt="Mmm, yum yum" style="max-width: 250px; height: auto; display: block;" /></td>
                     <td><small id="recipe_id" value="{{ fav.recipe_id }}" style="display:none"></small></td>
                 </tr>

@@ -17,10 +17,10 @@ def db_insert(table, columns, values):
     return
 
 # TODO: Upgrade to paramterized query to prevent SQL injection
-def db_select(qryStr):
+def db_select(qryStr, args=()):
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute(qryStr)  # Pass args as a tuple
+    cursor.execute(qryStr, args)  # Pass args as a tuple
     result = cursor.fetchall()  # Fetch data before closing
     conn.close()
     return result  # Now returning fetched data

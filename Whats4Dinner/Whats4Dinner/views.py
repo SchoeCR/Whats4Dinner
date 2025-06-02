@@ -103,8 +103,9 @@ def register():
             year=datetime.now().year,
             validation_error='Passwords do not match. Please fix.')
 
+        # TODO: Improve security by changing to parameterised query
         # Check if profile with received email already exists
-        profile = db_select("SELECT * FROM users WHERE email = ?",email)
+        profile = db_select("SELECT * FROM users WHERE email = ?",(email,))
         if len(profile) >= 1:
             return render_template(
             'register.html', title='Register',

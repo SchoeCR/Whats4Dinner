@@ -318,7 +318,7 @@
                         })
 
                         .done(function (response) {
-                            window.alert(response.message);
+                            showMessage("Recipe added to favourites")
                             $("#btn_favourite_id").text("Favourited");
                         })
                         .fail(function (xhr) {

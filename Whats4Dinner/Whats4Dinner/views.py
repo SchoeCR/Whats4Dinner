@@ -35,15 +35,14 @@ def profile():
         message='Your contact page.'
     )
 
-@app.route('/about')
-def about():
-    """Renders the about page."""
-    return render_template(
-        'about.html',
-        title='About',
-        year=datetime.now().year,
-        message='Your application description page.'
-    )
+@app.route('/flash', methods=["GET"])
+def flash(message,category):
+    """Renders the feedback message"""
+    # Validate category
+    approved_category = ["danger", "success", "warning", "info"]
+    if category in approved_category:
+        flash(message,category)
+        return
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
@@ -451,11 +450,7 @@ def delete_favourite(recipe_id, user_id, favourite_id):
         return
     # Call util function: Db_Delete
     if db_delete("favourite_Recipes","favourite_id",favourite_id) == 200:
-        return user_favourites()
+        return jsonify({'success': True, 'message': "Favourite deleted"})
     else:
-        return render_template(
-            "favourites.html",
-            title="My favourites",
-            year=datetime.now().year,
-            validation_error="An error has occurred")
+        return jsonify({'success': False, 'message': "Error"})
 

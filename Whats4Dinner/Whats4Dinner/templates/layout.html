@@ -17,6 +17,14 @@
 
 <body>
 
+    <!-- Toast Container -->
+    <!--# Code assistance by ChatGPT (OpenAI), prompted on June 4, 2025
+        # Prompt: "Implement a reuseable pop up message for user feedback with javascript/jquery"-->
+    <div id="popupMessage" style="display:none;" class="alert_popup">
+        <p id="popupText"></p>
+    </div>
+
+
     <div id="myModal" class="modal-div">
         <div id="login-popup" class="modal-login_popup">
             <span class="close">&times;</span>
@@ -112,6 +120,7 @@
             <div class="container">
                 <p class="mb-1">&copy; {{ year }} - Whats4Dinner</p>
                 <small><a href="https://www.flaticon.com/free-icons/fork" class="text-white text-decoration-underline" title="fork icons">Fork icons by Freepik - Flaticon</a></small>
+                {% block footer %}{% endblock %}
             </div>
         </footer>
     </div>
@@ -156,6 +165,17 @@
 
             });
         });
+    </script>
+
+    <script>
+        function showMessage(message, duration = 3000) {
+            $("#popupText").text(message);
+            $("#popupMessage").fadeIn();
+
+            setTimeout(function () {
+                $("#popupMessage").fadeOut();
+            }, duration);
+        }
     </script>
 
 </body>

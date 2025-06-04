@@ -27,15 +27,17 @@
                     <th scope="col"></th>
                     <th scope="col"></th>
                     <th scope="col"></th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody id="favourites_tbody">
                 {% for fav in favourites %}
-                <tr>
-                    <td><form action="/recipe/view/{{ fav.recipe_id }}" method="get"><button id="btn_recipe_id" class="btn">{{ fav.recipe_name }}</button></form></td>
+                <tr id="favourite_id-{{ fav.favourite_id }}">
+                    <td><button class="btn btn_recipe_id">{{ fav.recipe_name }}</button></td>
                     <td class="p-1 align-right" style="width:1%;white-space:nowrap"><img class="rounded" src="{{ fav.recipe_image }}" alt="Mmm, yum yum" style="max-width: 250px; height: auto; display: block;" /></td>
-                    <td><small id="favourite_id" value="{{ fav.favourite_id }}" style="display:none"></small></td>
-                    <td><form action="/favourite-recipe/{{ fav.recipe_id }}/user/{{ fav.user_id }}/delete/{{ fav.favourite_id }}" method="post"><button id="btn_fav-delete_id" class="btn"><img id="DeleteGif" src="/static/trash-xmark.png" alt="Delete" /></button></form></td>
+                    <td><small class="favourite_id" value="{{ fav.favourite_id }}" style="display:none"></small></td>
+                    <td><small class="recipe_id" value="{{ fav.recipe_id }}" style="display:none"></small></td>
+                    <td><button class="btn_fav-delete btn"><img id="DeleteGif" src="/static/trash-xmark.png" alt="Delete" /></button></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -46,5 +48,44 @@
     <p>You dont have any favourites &#9785</p>
     {% endif %}
 </main>
-<!--TODO attribution: <a href="https://www.flaticon.com/free-animated-icons/food-waste" title="food waste animated icons">Food waste animated icons created by Freepik - Flaticon</a>-->
+{% endblock %}
+{% block footer %}
+<a href="https://www.flaticon.com/free-animated-icons/food-waste" title="food waste animated icons">Food waste animated icons created by Freepik - Flaticon</a>
+{% endblock %}
+{% block scripts %}
+
+<script>
+    $(function () {
+
+        $(".btn_fav-delete").click(function () {
+            let row = $(this).closest("tr");
+            let recipe_id = row.find(".recipe_id").attr("value");
+            let favourite_id = row.find(".favourite_id").attr("value");
+            let user_id = $("#user_id").text();
+            
+            $.post("/favourite-recipe/" + recipe_id + "/user/" + user_id + "/delete/" + favourite_id,
+                {
+                    recipe_id: recipe_id,
+                    user_id: user_id,
+                    favourite_id: favourite_id
+                })
+
+                .done(function (response) {
+                    $("#favourite_id-" + favourite_id).remove(); // remove the recipe card or row
+                    showMessage("Recipe removed");
+                })
+                .fail(function (xhr) {
+                    showMessage("Error" + xhr.responseText);
+                });
+        });
+
+    });
+
+    $(function () {
+        //TODO - jquery script to view recipe
+        //<form action="/recipe/view/recipe_id" method="get">
+    })
+    
+</script>
+
 {% endblock %}

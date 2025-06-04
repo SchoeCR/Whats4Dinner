@@ -81,6 +81,7 @@
     <Content Include="Whats4Dinner\static\scripts\respond.min.js" />
     <Content Include="Whats4Dinner\static\scripts\_references.js" />
     <Content Include="Whats4Dinner\static\Spinner%401x-1.0s-200px-200px.gif" />
+    <Content Include="Whats4Dinner\static\trash-xmark.png" />
     <Content Include="Whats4Dinner\static\vegan_1.svg" />
     <Content Include="Whats4Dinner\static\vegetables.svg" />
     <Content Include="Whats4Dinner\templates\about.html" />

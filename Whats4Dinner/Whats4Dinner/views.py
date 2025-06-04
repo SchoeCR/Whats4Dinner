@@ -3,6 +3,7 @@ Routes and views for the flask application.
 """
 
 from asyncio.windows_events import NULL
+from importlib import reload
 import sqlite3
 import tkinter.messagebox
 from urllib import response
@@ -442,4 +443,19 @@ def user_favourites():
         year=datetime.now().year,
         favourites=favourites)
 
+@app.route('/favourite-recipe/<recipe_id>/user/<user_id>/delete/<favourite_id>', methods=["POST"])
+def delete_favourite(recipe_id, user_id, favourite_id):
+    # TODO
+    # Validate arguments
+    if not favourite_id:
+        return
+    # Call util function: Db_Delete
+    if db_delete("favourite_Recipes","favourite_id",favourite_id) == 200:
+        return user_favourites()
+    else:
+        return render_template(
+            "favourites.html",
+            title="My favourites",
+            year=datetime.now().year,
+            validation_error="An error has occurred")
 

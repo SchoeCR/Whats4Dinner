@@ -16,6 +16,24 @@ def db_insert(table, columns, values):
     conn.close()
     return
 
+def db_delete(table, column_reference, row_reference):
+    try:
+        # Validate inputs
+        if row_reference is None or table is None or column_reference is None:
+            return 400
+
+        sql = f"DELETE FROM {table} WHERE {column_reference}= ?"
+        args = (row_reference,)
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(sql, args)
+        conn.commit()
+        conn.close()
+        return 200
+    except:
+        return 500
+
+
 # TODO: Upgrade to paramterized query to prevent SQL injection
 def db_select(qryStr, args=()):
     conn = get_db_connection()

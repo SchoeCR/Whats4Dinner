@@ -6,7 +6,7 @@
 
 {% if validation_error %}
 
-<div class="text-danger" style="text-col">
+<div class="text-danger text-col">
     Error: {{ validation_error }}
 </div>
 
@@ -26,6 +26,7 @@
                     <th scope="col">Recipe</th>
                     <th scope="col"></th>
                     <th scope="col"></th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody id="favourites_tbody">
@@ -33,7 +34,8 @@
                 <tr>
                     <td><form action="/recipe/view/{{ fav.recipe_id }}" method="get"><button id="btn_recipe_id" class="btn">{{ fav.recipe_name }}</button></form></td>
                     <td class="p-1 align-right" style="width:1%;white-space:nowrap"><img class="rounded" src="{{ fav.recipe_image }}" alt="Mmm, yum yum" style="max-width: 250px; height: auto; display: block;" /></td>
-                    <td><small id="recipe_id" value="{{ fav.recipe_id }}" style="display:none"></small></td>
+                    <td><small id="favourite_id" value="{{ fav.favourite_id }}" style="display:none"></small></td>
+                    <td><form action="/favourite-recipe/{{ fav.recipe_id }}/user/{{ fav.user_id }}/delete/{{ fav.favourite_id }}" method="post"><button id="btn_fav-delete_id" class="btn"><img id="DeleteGif" src="/static/trash-xmark.png" alt="Delete" /></button></form></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -44,5 +46,5 @@
     <p>You dont have any favourites &#9785</p>
     {% endif %}
 </main>
-
+<!--TODO attribution: <a href="https://www.flaticon.com/free-animated-icons/food-waste" title="food waste animated icons">Food waste animated icons created by Freepik - Flaticon</a>-->
 {% endblock %}

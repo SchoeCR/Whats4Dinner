@@ -47,17 +47,4 @@
     </div>
 </main>
 
-<script>
-    $(document).ready(function () {
-        $("#btn_favourites_id").click(function () {
-            $.get("/profile/user/favourites", function (data, status) {
-                if (status == "success") {
-
-                }
-            });
-        });
-    });
-
-</script>
-
 {% endblock %}

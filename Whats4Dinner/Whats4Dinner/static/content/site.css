@@ -157,12 +157,14 @@ input[type="checkbox"].input-validation-error {
     z-index: 1000; /* ensures it's above other elements */
 }
 
-#btn_recipe_id {
+[id^="btn_recipe_id-"] {
     transition: background-color 0.5s ease;
     border-radius: 10px;
+    border:none;
+    background-color:none;
 }
 
-#btn_recipe_id:hover {
+[id^="btn_recipe_id-"]:hover {
     background-color: #343a40;
     color: white;
 }
@@ -185,4 +187,18 @@ input[type="checkbox"].input-validation-error {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     z-index: 9999;
+}
+
+.advanced_switch:hover {
+    cursor: pointer;
+}
+
+/*#ingredients_list_container, #lbl_including, #including_list, #lbl_excluding, #excluding_list {
+    display: none;
+}*/
+
+#ingredients_list_container {
+    background-color: #6c757d;
+    padding: 2px;
+    color: white;
 }

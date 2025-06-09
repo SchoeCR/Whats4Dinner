@@ -27,39 +27,73 @@
                 <input autofocus id="searchKeywordInput" class="form-control w-auto" name="keyword" placeholder="Pizza" type="text">
                 <button class="btn btn-primary mb-2" type="submit">Search</button>
 
-                <div class="form-check form-switch">
-                    <input id="advanced_search_toggle_id" class="form-check-input" type="checkbox">
-                    <label class="form-check-label" for="advanced_search_toggle_id">Advanced search</label>
+                <div id="advanced_switch_id" class="advanced_switch form-check form-switch">
+                    <input id="advanced_search_toggle_id" class="advanced_switch form-check-input" type="checkbox">
+                    <label class="form-check-label" for="advanced_switch advanced_search_toggle_id">Advanced search</label>
                 </div>
 
             </div>
 
-                <div id="advanced_search_container" class="row g-3" style="display:none">
+            <div id="advanced_search_container" class="" style="display:none">
 
-                    <ul id="intolerances_id" class="list-group">
-                        <li class="list-group-item">
-                            <input name="intolerances" class="form-check-input me-1" type="checkbox" value="Gluten">
-                            Gluten free
-                        </li>
-                        <li class="list-group-item">
-                            <input name="intolerances" class="form-check-input me-1" type="checkbox" value="Peanuts">
-                            Peanuts
-                        </li>
-                        <li class="list-group-item">
-                            <input name="intolerances" class="form-check-input me-1" type="checkbox" value="Eggs">
-                            Eggs
-                        </li>
-                        <li class="list-group-item">
-                            <input name="intolerances" class="form-check-input me-1" type="checkbox" value="Dairy">
-                            Dairy Free
-                        </li>
-                        <li class="list-group-item">
-                            <input name="intolerances" class="form-check-input me-1" type="checkbox" value="Seafood">
-                            Seafood
-                        </li>
-                    </ul>
-
+                <div class="input-group">
+                    <span class="input-group-text">Ingredients</span>
+                    <input id="id_ingredient_list" type="text" class="form-control ingredient_entry" style="max-width:500px">
+                    <button id="btn_add" class="btn btn-primary" type="button">&#x2795</button>
+                    <button id="btn_clear" class="btn btn-secondary" type="button">&#x2716</button>
+                    <!--<button id="button-addon" class="btn btn-primary" type="button">&#65291</button>-->
                 </div>
+                <div class="input-group">
+                    <small class="mr-3">Enter multiple ingredients seperated by a comma (,)</small>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="Including" checked>
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            Including
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="Excluding">
+                        <label class="form-check-label" for="flexRadioDefault2">
+                            Excluding
+                        </label>
+                    </div>
+                </div>
+                <div id="ingredients_list_container" style="display:none">
+                    <div>
+                        <label id="lbl_including" for="including_list" class="font-italic" style="font-size:small">Including:</label>
+                        <span id="including_list" name="including_list_name"></span>
+                        <input type="hidden" id="including_hidden_input" name="including_list">
+                    </div>
+                    <div>
+                        <label id="lbl_excluding" for="excluding_list" class="font-italic" style="font-size:small">Excluding:</label>
+                        <span id="excluding_list" name="excluding_list_name"></span>
+                        <input type="hidden" id="excluding_hidden_input" name="excluding_list">
+                    </div>
+                </div>
+                <br />
+                <h6>Intolerances and Allergens</h6>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Gluten">
+                    <label class="form-check-label" for="inlineCheckbox1">Gluten free</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Peanuts">
+                    <label class="form-check-label" for="inlineCheckbox2">Peanuts</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Eggs">
+                    <label class="form-check-label" for="inlineCheckbox3">Eggs</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="Dairy">
+                    <label class="form-check-label" for="inlineCheckbox4">Dairy free</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox5" value="Seafood">
+                    <label class="form-check-label" for="inlineCheckbox5">Seafood</label>
+                </div>
+
+            </div>
 
         </form>
 
@@ -110,6 +144,50 @@
 
         });
     });
+
+    $(function () {
+        var btn = $("#btn_clear");
+        btn.click(function () {
+            $("#id_ingredient_list").val("");
+        })
+    })
+
+    $(function () {
+        $("#btn_add").click(function () {
+            // Set user input to variable, check if input exists, end function if false
+            let user_input = $("#id_ingredient_list").val();
+            if (user_input.length === 0) {return}
+            // Get selection from include/exclude radio buttons
+            let radioSelection = $('input[name="flexRadioDefault"]:checked').val();
+            console.log(radioSelection);
+            // Create ingredients list container
+            let ingredients_list_container = document.getElementById("ingredients_list_container")
+            // Set output destination based upon radio selection
+            let destination;
+            if (radioSelection === "Including") {
+                destination = document.getElementById("including_list");
+                destination_hidden = document.getElementById("including_hidden_input")
+            }
+            else {
+                destination = document.getElementById("excluding_list");
+                destination_hidden = document.getElementById("excluding_hidden_input")
+            }
+            // Append user entry to list
+            if (destination.textContent.length > 0) {
+                destination.textContent = destination.textContent.concat(", ",user_input); // Append user input to end of existing string
+                $(destination_hidden).val($(destination).text());
+                //destination.textContent = destination.textContent.slice(0, -1); // Remove trailing comma
+            }
+            else {
+                destination.textContent = user_input;
+                $(destination_hidden).val($(destination).text());
+            }
+            ingredients_list_container.style.display = "block";
+            $("#id_ingredient_list").val("");
+            showMessage("Ingredients added.");
+        });
+    });
+
 </script>
 
 {% endblock %}

@@ -33,7 +33,7 @@
             <tbody id="favourites_tbody">
                 {% for fav in favourites %}
                 <tr id="favourite_id-{{ fav.favourite_id }}">
-                    <td><button class="btn btn_recipe_id">{{ fav.recipe_name }}</button></td>
+                    <td><form action="/recipe/view/{{ fav.recipe_id }}" method="get"><button id="btn_recipe_id-{{ fav.recipe_id }}" class="">{{ fav.recipe_name }}</button></form></td>
                     <td class="p-1 align-right" style="width:1%;white-space:nowrap"><img class="rounded" src="{{ fav.recipe_image }}" alt="Mmm, yum yum" style="max-width: 250px; height: auto; display: block;" /></td>
                     <td><small class="favourite_id" value="{{ fav.favourite_id }}" style="display:none"></small></td>
                     <td><small class="recipe_id" value="{{ fav.recipe_id }}" style="display:none"></small></td>
@@ -81,11 +81,6 @@
 
     });
 
-    $(function () {
-        //TODO - jquery script to view recipe
-        //<form action="/recipe/view/recipe_id" method="get">
-    })
-    
 </script>
 
 {% endblock %}

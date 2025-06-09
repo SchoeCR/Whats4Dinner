@@ -205,8 +205,14 @@ def search_recipe():
         #intolerance_input = request.form.get("intolerances_id")
 
         # Combine list into CSV string
-        intolerance_list = request.form.getlist("intolerances");
+        intolerance_list = request.form.getlist("intolerances")
         intolerance_csv_string = ",".join(intolerance_list)
+
+        # Retrieve list of ingredients (include and exclude)
+        including_list = request.form.get("including_list")
+        excluding_list = request.form.get("excluding_list")
+        print(including_list)
+        print(excluding_list)
 
         # Validate form input
         if not query_input:
@@ -217,12 +223,12 @@ def search_recipe():
             missing_input='Please enter a meal or ingredient to search')
     
         base_url = "https://api.spoonacular.com/recipes/complexSearch"
-        query = query_input 
+        query = query_input
         number = 5
-        offset = get_random_Int(0,150)
+        offset = 0#get_random_Int(0,150)
        
         # TODO: Improve URL ecoding and string building
-        URL = f"{base_url}?query={query}&intolerances={intolerance_csv_string}&number={number}&offset={offset}&apiKey={API_KEY}"
+        URL = f"{base_url}?query={query}&intolerances={intolerance_csv_string}&includeIngredients={including_list}&excludeIngredients={excluding_list}&number={number}&offset={offset}&apiKey={API_KEY}"
 
         # API call via requests library
         response = requests.get(URL)
@@ -444,7 +450,6 @@ def user_favourites():
 
 @app.route('/favourite-recipe/<recipe_id>/user/<user_id>/delete/<favourite_id>', methods=["POST"])
 def delete_favourite(recipe_id, user_id, favourite_id):
-    # TODO
     # Validate arguments
     if not favourite_id:
         return

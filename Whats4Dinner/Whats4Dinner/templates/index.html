@@ -24,11 +24,11 @@
             <div class="row g-3">
 
                 <label for="searchKeywordInput">Keyword</label>
-                <input autofocus id="searchKeywordInput" class="form-control w-auto" name="keyword" placeholder="Pizza" type="text">
-                <button class="btn btn-primary mb-2" type="submit">Search</button>
+                <input autofocus id="searchKeywordInput" class="form-control w-auto" name="keyword" placeholder="Pizza" type="text" 
+                value="{% if keyword %}{{ keyword }}{% endif %}">
 
-                <div id="advanced_switch_id" class="advanced_switch form-check form-switch">
-                    <input id="advanced_search_toggle_id" class="advanced_switch form-check-input" type="checkbox">
+                <div id="advanced_switch_id" class="advanced_switch form-check form-switch" style="margin: 10px;">
+                    <input id="advanced_search_toggle_id" name="advancedSearchToggle" class="advanced_switch form-check-input" type="checkbox">
                     <label class="form-check-label" for="advanced_switch advanced_search_toggle_id">Advanced search</label>
                 </div>
 
@@ -133,6 +133,10 @@
 
             </div>
 
+            <div style="margin: 10px;">
+                <button class="btn btn-primary mb-2" type="submit">Search</button>
+            </div>
+
         </form>
 
             {% if recipes %}
@@ -169,17 +173,20 @@
 <script>
 
     $(function () {
-        var toggle = $("#advanced_search_toggle_id");
+        let toggle = $("#advanced_search_toggle_id");
+        let primarySearchKeyword = $("#searchKeywordInput");
         toggle.click(function () {
-            var search_list = document.getElementById("advanced_search_container");
+            let search_list = document.getElementById("advanced_search_container");
 
             if (toggle.is(':checked')) {
                 search_list.style.display = "block";
+                primarySearchKeyword.prop("disabled", true);
+
             }
             else {
                 search_list.style.display = "none";
+                primarySearchKeyword.prop("disabled", false);
             }
-
         });
     });
 

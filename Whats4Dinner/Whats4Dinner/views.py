@@ -199,8 +199,19 @@ def search_recipe():
     elif request.method == "POST":
 
         # Assign form values to variables
-        query_input = request.form.get("keyword")
-        
+        query_input = "Chicken" # Default for now
+        isBasicKeywordSearch = request.form.get("advancedSearchToggle") != "on"
+        including_list = request.form.get("including_list")
+
+        if isBasicKeywordSearch:
+            query_input = request.form.get("keyword")    
+        else:
+            # Get the first item in the "ingredients list" and set it to the query_input
+            if including_list:
+                tmpIngredientsList = including_list.split(",")    
+                if tmpIngredientsList:
+                    query_input = tmpIngredientsList[0].strip()
+
         # Loop through list items and return item name if it's checked
         #intolerance_input = request.form.get("intolerances_id")
 
@@ -212,11 +223,12 @@ def search_recipe():
         diets_list = request.form.getlist("diets")
         diets_csv_string = ",".join(diets_list) 
 
-        # Retrieve list of ingredients (include and exclude)
-        including_list = request.form.get("including_list")
+        # Retrieve list of ingredients (exclude)
+#        including_list = request.form.get("including_list")
         excluding_list = request.form.get("excluding_list")
-        print(including_list)
-        print(excluding_list)
+        if excluding_list:
+                tmpIngredientsList = excluding_list.split(",")    
+                
 
         # Validate form input
         if not query_input:
@@ -257,7 +269,7 @@ def search_recipe():
                 'index.html',
                 title='Home page',
                 year=datetime.now().year,
-                recipes=extracted_data)
+                recipes=extracted_data, keyword=query)
         # API call has returned a response code other than 200
         else:
             # Render index.html page with message code alerting no results.
@@ -463,5 +475,5 @@ def delete_favourite(recipe_id, user_id, favourite_id):
     else:
         return jsonify({'success': False, 'message': "Error"})
 
-@app.route("/profile/user/password", methods=["GET"])
-def change_password():
+#@app.route("/profile/user/password", methods=["GET"])
+#def change_password():

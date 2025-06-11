@@ -240,7 +240,7 @@ def search_recipe():
     
         base_url = "https://api.spoonacular.com/recipes/complexSearch"
         query = query_input
-        number = 5
+        number = 50
         offset = 0#get_random_Int(0,150)
        
         # TODO: Improve URL ecoding and string building
@@ -256,13 +256,44 @@ def search_recipe():
             print(f'json: {parsed_json}')
             
             # Extract title and image
+            totalResults = parsed_json['totalResults']               
+
+            # Build a list of indexes (without dupes)            
+            index_list=[]
+            maxResults = 5
+            if totalResults < 5:
+                maxResults = totalResults - 1
+
+            i=0
+            if parsed_json['results']:
+                while i < maxResults:
+                    tmp_int = get_random_Int(0,50)
+                    if tmp_int in index_list:
+                        continue
+                    else:
+                        index_list.append(tmp_int)
+                        i += 1
+               
+                
+                
+            # Build the list of extracted_data to render
             extracted_data = {}
-            for recipe in parsed_json['results']:
-                extracted_data[recipe['id']] = {
-                    'id': recipe['id'],
-                    'title': recipe['title'],
-                    'image': recipe['image']
+            results_json = parsed_json['results']
+            
+            for index in index_list:
+                recipe_json = results_json[index]
+                extracted_data[recipe_json['id']] = {
+                    'id': recipe_json['id'],
+                    'title': recipe_json['title'],
+                    'image': recipe_json['image']
                 }
+                                  
+            # for recipe in parsed_json['results']:
+            #     extracted_data[recipe['id']] = {
+            #         'id': recipe['id'],
+            #         'title': recipe['title'],
+            #         'image': recipe['image']
+            #     }
             print(extracted_data)
             # Redirect/render index.html template. Pass results dictionary to index.html to be rendered.
             return render_template(

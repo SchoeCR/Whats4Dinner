@@ -208,6 +208,10 @@ def search_recipe():
         intolerance_list = request.form.getlist("intolerances")
         intolerance_csv_string = ",".join(intolerance_list)
 
+        # TODO - combine Diets list into CSV string
+        diets_list = request.form.getlist("diets")
+        diets_csv_string = ",".join(diets_list) 
+
         # Retrieve list of ingredients (include and exclude)
         including_list = request.form.get("including_list")
         excluding_list = request.form.get("excluding_list")
@@ -228,7 +232,7 @@ def search_recipe():
         offset = 0#get_random_Int(0,150)
        
         # TODO: Improve URL ecoding and string building
-        URL = f"{base_url}?query={query}&intolerances={intolerance_csv_string}&includeIngredients={including_list}&excludeIngredients={excluding_list}&number={number}&offset={offset}&apiKey={API_KEY}"
+        URL = f"{base_url}?query={query}&intolerances={intolerance_csv_string}&includeIngredients={including_list}&excludeIngredients={excluding_list}&diet={diets_csv_string}&number={number}&offset={offset}&apiKey={API_KEY}"
 
         # API call via requests library
         response = requests.get(URL)
@@ -459,3 +463,5 @@ def delete_favourite(recipe_id, user_id, favourite_id):
     else:
         return jsonify({'success': False, 'message': "Error"})
 
+@app.route("/profile/user/password", methods=["GET"])
+def change_password():

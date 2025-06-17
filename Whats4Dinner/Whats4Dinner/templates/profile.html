@@ -20,7 +20,7 @@
                     <h4 class="my-0 fw-normal">My Stuff</h4>
                 </div>
                 <div class="card-body">
-                    <form action="/profile/user/favourites" method="get">
+                    <form action="/profile/user/{{ session.user_id }}/favourites" method="get">
                         <button class="btn btn-primary mb-2" type="submit">Favourite recipes</button>
                     </form>
                     <form action="/profile/user/mealplan" method="get">
@@ -38,8 +38,8 @@
                     <h4 class="my-0 fw-normal">Profile</h4>
                 </div>
                 <div class="card-body">
-                    <form action="/profile/user/password" method="get">
-                        <button class="btn btn-primary mb-2" type="submit">Change password</button>
+                    <form action="/profile/user/{{ session.user_id }}/password" method="get">
+                        <button id="btn_password_id" class="btn btn-primary mb-2" type="submit">Change password</button>
                     </form>
                     <form action="/profile/user/emailchange" method="get">
                         <button class="btn btn-primary mb-2" type="submit">Change email</button>
@@ -49,5 +49,17 @@
         </div>
     </div>
 </main>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+    $(function () {
+        $("#btn_password_id").click(function () {
+            let user_id = document.getElementById()
+        });
+    });
+</script>
 
 {% endblock %}

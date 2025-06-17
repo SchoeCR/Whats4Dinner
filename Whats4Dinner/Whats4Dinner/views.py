@@ -4,6 +4,7 @@ Routes and views for the flask application.
 
 from asyncio.windows_events import NULL
 from importlib import reload
+from pickle import GET
 import sqlite3
 import tkinter.messagebox
 from urllib import response
@@ -25,8 +26,8 @@ def home():
         year=datetime.now().year,
     )
 
-@app.route('/profile')
-def profile():
+@app.route('/profile/user/<user_id>')
+def profile(user_id):
     """Renders the profile page."""
     return render_template(
         'profile.html',
@@ -475,8 +476,8 @@ def favourite_loginReq(email, password):
 
     return jsonify({'success': True, 'message': "Logged in."})
 
-@app.route('/profile/user/favourites', methods=["GET"])
-def user_favourites():
+@app.route('/profile/user/<user_id>/favourites', methods=["GET"])
+def user_favourites(user_id):
     
     if "user_id" not in session:
         return redirect("/login")
@@ -506,5 +507,14 @@ def delete_favourite(recipe_id, user_id, favourite_id):
     else:
         return jsonify({'success': False, 'message': "Error"})
 
-#@app.route("/profile/user/password", methods=["GET"])
-#def change_password():
+@app.route("/profile/user/<user_id>/password", methods=["GET","POST"])
+def change_password(user_id):
+
+    if request.method == "GET":
+        if not session:
+            return redirect("/")
+        else:
+            return render_template(
+                "password.html",
+                title='Change password',
+                year=datetime.now().year)

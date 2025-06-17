@@ -70,7 +70,7 @@
                             <a class="nav-link active" aria-current="page" href="/">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/profile">Profile</a>
+                            <a id="profile_link_id" class="nav-link" href="/profile/user/{{ session.user_id }}">Profile</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/logout">Logout</a>
@@ -125,7 +125,6 @@
         </footer>
     </div>
 
-    <script src="/static/scripts/jquery-1.10.2.js"></script>
     <script src="/static/scripts/bootstrap.js"></script>
     <script src="/static/scripts/respond.js"></script>
     {% block scripts %}{% endblock %}
@@ -177,6 +176,16 @@
             }, duration);
         }
     </script>
+
+    <!--<script>
+        $(function () {
+            $("#profile_link_id").click(function () {
+                let user_id = $("#user_id").text();
+                console.log("User ID:", user_id);
+                window.location.href = "/profile/user/" + user_id;
+            });
+        });
+    </script>-->
 
 </body>
 </html>

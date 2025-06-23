@@ -189,6 +189,19 @@ input[type="checkbox"].input-validation-error {
     z-index: 9999;
 }
 
+/* Modifier classes */
+.alert_popup-success {
+    background-color: #4CAF50; /* Green */
+}
+
+.alert_popup-fail {
+    background-color: #f44336; /* Red */
+}
+
+.alert_popup-info {
+    background-color: #2196F3; /* Blue */
+}
+
 .advanced_switch:hover {
     cursor: pointer;
 }

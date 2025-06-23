@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h3>My Favourites</h3>
+
+{% if validation_error %}
+
+<div class="text-danger text-col">
+    Error: {{ validation_error }}
+</div>
+
+{% endif %}
+
+{% if message %}
+<h5>{{ message }}</h5>
+{% endif %}
+
+<main>
+    {% if favourites %}
+
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">Recipe</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody id="favourites_tbody">
+                {% for fav in favourites %}
+                <tr id="favourite_id-{{ fav.favourite_id }}">
+                    <td><form action="/recipe/view/{{ fav.recipe_id }}" method="get"><button id="btn_recipe_id-{{ fav.recipe_id }}" class="">{{ fav.recipe_name }}</button></form></td>
+                    <td class="p-1 align-right" style="width:1%;white-space:nowrap"><img class="rounded" src="{{ fav.recipe_image }}" alt="Mmm, yum yum" style="max-width: 250px; height: auto; display: block;" /></td>
+                    <td><small class="favourite_id" value="{{ fav.favourite_id }}" style="display:none"></small></td>
+                    <td><small class="recipe_id" value="{{ fav.recipe_id }}" style="display:none"></small></td>
+                    <td><button class="btn_fav-delete btn"><img id="DeleteGif" src="/static/trash-xmark.png" alt="Delete" /></button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% else %}
+    <p>You dont have any favourites &#9785</p>
+    {% endif %}
+</main>
+{% endblock %}
+{% block footer %}
+<a href="https://www.flaticon.com/free-icons/food-waste" title="food-waste icons" target="_blank" rel="noopener noreferrer">Food-waste icons created by Freepik - Flaticon</a>
+{% endblock %}
+{% block scripts %}
+
+<script>
+    $(function () {
+
+        $(".btn_fav-delete").click(function () {
+            let row = $(this).closest("tr");
+            let recipe_id = row.find(".recipe_id").attr("value");
+            let favourite_id = row.find(".favourite_id").attr("value");
+            let user_id = $("#user_id").text();
+
+            $.post("/favourite-recipe/" + recipe_id + "/user/" + user_id + "/delete/" + favourite_id,
+                {
+                    recipe_id: recipe_id,
+                    user_id: user_id,
+                    favourite_id: favourite_id
+                })
+
+                .done(function (response) {
+                    $("#favourite_id-" + favourite_id).remove(); // remove the recipe card or row
+                    showMessage("Recipe removed");
+                })
+                .fail(function (xhr) {
+                    showMessage("Error" + xhr.responseText);
+                });
+        });
+
+    });
+
+</script>
+
+{% endblock %}

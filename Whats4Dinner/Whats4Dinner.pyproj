@@ -95,6 +95,7 @@
     <Content Include="Whats4Dinner\templates\profile.html" />
     <Content Include="Whats4Dinner\templates\recipe.html" />
     <Content Include="Whats4Dinner\templates\register.html" />
+    <Content Include="Whats4Dinner\templates\shoppinglist.html" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">

@@ -537,14 +537,15 @@ def change_password(user_id):
             return jsonify({'success': False, 'message': "Current password invalid"}), 400
         
         # Check psw_curr is correct 
-        psw_select = db_select("users",where={"user_id": user_id})
+        profile = db_select("users",where={"user_id": user_id})
+        psw_select = profile[0]['hash']
         if not psw_select: return jsonify({'success': False, 'message': "No existing password found"})
         
         # Check selected password against psw_curr
         if not check_password_hash(psw_select,psw_curr): return jsonify({'success': False, 'message': "Current password is incorrect"})
         
         # Check new password and confirmation match
-        if psw_new != psw_curr: return jsonify({'success': False, 'message': "Password confirmation does not match"})
+        if psw_new != psw_conf: return jsonify({'success': False, 'message': "Password confirmation does not match"})
         
         # Hash new password
         psw_hash = generate_password_hash(psw_new)

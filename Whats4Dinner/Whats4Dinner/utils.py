@@ -10,7 +10,7 @@ from datetime import datetime
 tables_approved = ['users', 'favourite_Recipes']
 columns_approved = {
     'db_update': {
-        'users': ['first_name', 'last_name', 'email', 'hash']},
+        'users': ['user_id', 'first_name', 'last_name', 'email', 'hash', 'added_date']},
     'db_select': {
         'users': ['user_id', 'first_name','last_name','email','hash','added_date'],
         'favourite_Recipes':['favourite_id','user_id','recipe_id','recipe_name','recipe_summary','recipe_image']},
@@ -72,13 +72,14 @@ def db_select(table, where=None, orderby=None, *column_select): #qryStr, args=()
     values = []
     if where:
         conditions=[]
-        if function_name in columns_approved:
+        if function_name in columns_approved and table in columns_approved[function_name]:
             for key, val in where.items():
-                if key not in columns_approved[function_name].items():
+                if key not in columns_approved[function_name][table]:
                     return 400
                 conditions.append(f"{key} = ?")
                 values.append(val)
-                sql += " WHERE " + " AND ".join(conditions)
+            sql += " WHERE " + " AND ".join(conditions)
+        else: return 400
 
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -88,22 +89,21 @@ def db_select(table, where=None, orderby=None, *column_select): #qryStr, args=()
     return result  # Now returning fetched data
 
 def db_update(table, where_column=None, where_value=None, **column_value):
-    tables_approved = ["users"]
-    columns_approved = ["first_name","last_name","email","hash"]
-    
+    function_name = "db_update"
     try:
         # Validate table arg against tables_approved
         if table not in tables_approved:
             return 400
-        if where_column not in columns_approved:
-            return 400
+        if function_name in columns_approved and table in columns_approved[function_name]:
+           if where_column not in columns_approved[function_name][table]:
+               return 400
 
         # Build SET clause with placeholders
         set_clauses = []
         values = []
 
         for key, value in column_value.items():
-            if key not in columns_approved:
+            if key not in columns_approved[function_name][table]:
                 return 400
             set_clauses.append(f"{key} = ?")
             values.append(value)

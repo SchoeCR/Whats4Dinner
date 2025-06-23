@@ -45,7 +45,6 @@ def db_delete(table, column_reference, row_reference):
     except:
         return 500
 
-# TODO: Upgrade to paramterized query to prevent SQL injection
 def db_select(table, where=None, orderby=None, *column_select): #qryStr, args=()
     
     # Check table against whitelist

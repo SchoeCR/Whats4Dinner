@@ -8,6 +8,7 @@ from pickle import GET
 import sqlite3
 import tkinter.messagebox
 from urllib import response
+import werkzeug
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from flask import render_template, request, flash, redirect, session, json, Flask, jsonify
@@ -159,7 +160,8 @@ def login():
             validation_error='Please enter a password.')
 
         # Query database for existing account with matching credentials
-        profile = db_select(f"SELECT * FROM users WHERE email='{email}'")
+        profile = db_select("users",where={"email":email})
+        #db_select(f"SELECT * FROM users WHERE email='{email}'")
 
         # Retrieve stored password hash
         pswhash = profile[0]["hash"]
@@ -511,10 +513,45 @@ def delete_favourite(recipe_id, user_id, favourite_id):
 def change_password(user_id):
 
     if request.method == "GET":
-        if not session:
+        if "user_id" not in session or str(session["user_id"]) != str(user_id):
             return redirect("/")
         else:
             return render_template(
                 "password.html",
                 title='Change password',
-                year=datetime.now().year)
+                year=datetime.now().year,
+                user_id=user_id)
+    else: # Request method "POST"
+        psw_curr = request.form.get("psw_curr");
+        psw_new = request.form.get("psw_new");
+        psw_conf = request.form.get("psw_conf");
+        
+        # Validate input
+        if not user_id:
+            return jsonify({'success': False, 'message': "No current user"}), 400
+        if not psw_new:
+            return jsonify({'success': False, 'message': "New password invalid"}), 400
+        if not psw_conf:
+            return jsonify({'success': False, 'message': "Password confirmation invalid"}), 400
+        if not psw_curr:
+            return jsonify({'success': False, 'message': "Current password invalid"}), 400
+        
+        # Check psw_curr is correct 
+        psw_select = db_select("users",where={"user_id": user_id})
+        if not psw_select: return jsonify({'success': False, 'message': "No existing password found"})
+        
+        # Check selected password against psw_curr
+        if not check_password_hash(psw_select,psw_curr): return jsonify({'success': False, 'message': "Current password is incorrect"})
+        
+        # Check new password and confirmation match
+        if psw_new != psw_curr: return jsonify({'success': False, 'message': "Password confirmation does not match"})
+        
+        # Hash new password
+        psw_hash = generate_password_hash(psw_new)
+        
+        # Submit to db to update record
+        if db_update("users","user_id",user_id,**{"hash": psw_hash}) == 200:
+            return jsonify({'success': True, 'message': "Password updated"}), 200
+        else: return jsonify({'success': False, 'message': "Password unable to be updated"}), 500
+
+

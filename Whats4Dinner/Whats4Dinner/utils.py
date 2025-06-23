@@ -1,4 +1,5 @@
 from ast import Return
+from multiprocessing import Value
 import sqlite3
 from flask import redirect, jsonify
 import requests
@@ -6,6 +7,16 @@ import random
 from .config import API_KEY
 from datetime import datetime
 
+tables_approved = ['users', 'favourite_Recipes']
+columns_approved = {
+    'db_update': {
+        'users': ['first_name', 'last_name', 'email', 'hash']},
+    'db_select': {
+        'users': ['user_id', 'first_name','last_name','email','hash','added_date'],
+        'favourite_Recipes':['favourite_id','user_id','recipe_id','recipe_name','recipe_summary','recipe_image']},
+    }
+
+# TODO: Upgrade to paramaterized query (refer db_update)
 def db_insert(table, columns, values):
     placeholders = ", ".join(["?"] * len(values))  # Create placeholders dynamically
     sql = f"INSERT INTO {table} ({', '.join(columns)}) VALUES ({placeholders})"
@@ -16,6 +27,7 @@ def db_insert(table, columns, values):
     conn.close()
     return
 
+# TODO: Upgrade to paramaterized query (refer db_update)
 def db_delete(table, column_reference, row_reference):
     try:
         # Validate inputs
@@ -33,16 +45,84 @@ def db_delete(table, column_reference, row_reference):
     except:
         return 500
 
-
 # TODO: Upgrade to paramterized query to prevent SQL injection
-def db_select(qryStr, args=()):
+def db_select(table, where=None, orderby=None, *column_select): #qryStr, args=()
+    
+    # Check table against whitelist
+    if table not in tables_approved:
+        return 400
+    # Check column_select against whitelist
+    function_name = "db_select"
+    if column_select:
+        if function_name in columns_approved:
+            for arg in column_select:
+                for table_name, columns in columns_approved[function_name].items():
+                    if arg in columns:
+                        break
+                else:
+                    return 400
+        else:
+            return 400
+    else: column_select = ['*']
+
+    # Parse column select into comma separated string
+    column_str = ', '.join(column_select)
+
+    sql = f"SELECT {column_str} FROM {table}"
+
+    values = []
+    if where:
+        conditions=[]
+        if function_name in columns_approved:
+            for key, val in where.items():
+                if key not in columns_approved[function_name].items():
+                    return 400
+                conditions.append(f"{key} = ?")
+                values.append(val)
+                sql += " WHERE " + " AND ".join(conditions)
+
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute(qryStr, args)  # Pass args as a tuple
+    cursor.execute(sql, values)  # Pass args as a tuple
     result = cursor.fetchall()  # Fetch data before closing
     conn.close()
     return result  # Now returning fetched data
 
+def db_update(table, where_column=None, where_value=None, **column_value):
+    tables_approved = ["users"]
+    columns_approved = ["first_name","last_name","email","hash"]
+    
+    try:
+        # Validate table arg against tables_approved
+        if table not in tables_approved:
+            return 400
+        if where_column not in columns_approved:
+            return 400
+
+        # Build SET clause with placeholders
+        set_clauses = []
+        values = []
+
+        for key, value in column_value.items():
+            if key not in columns_approved:
+                return 400
+            set_clauses.append(f"{key} = ?")
+            values.append(value)
+
+        set_clause = ", ".join(set_clauses)
+
+        sql = f"UPDATE {table} SET {set_clause} WHERE {where_column} = ?"
+        values.append(where_value)
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(sql, values)
+        conn.commit()
+        return 200
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return 500
 
 def get_db_connection():
     conn = sqlite3.connect('dinner.db')

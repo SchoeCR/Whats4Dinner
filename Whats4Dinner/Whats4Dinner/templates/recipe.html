@@ -538,4 +538,41 @@
     });
 </script>
 
+<script>
+    $(function () {
+        $("#btn_addTolist_id").click(function () {
+            let row = $(this).closest("tr");
+            let ingredient_id = row.find(".ingredient_id").attr("value");
+            let name = row.find(".ingredient_name").attr("value");
+            let image = row.find(".ingredient_image").attr("value");
+            let amount = row.find(".ingredient_amount").attr("value");
+            let unit = row.find(".ingredient_unit").attr("value");
+            let user_id = $("#user_id").text();
+
+            // Post it to the server endpoint
+            if (!user_id) {
+                modal.style.display = "block";
+                return;
+            }
+
+            $.post("/profile/user/" + user_id + "/shoppinglist",
+                {
+                    ingredient_id: ingredient_id,
+                    user_id: user_id,
+                    ingredient_name: name,
+                    ingredient_image: image,
+                    ingredient_amount: amount,
+                    ingredient_unit: unit,
+                })
+                .done(function (response) {
+                    showMessage("Added to shopping list.")
+                    
+                })
+                .fail(function (xhr) {
+                    alert("Failed to add to shopping list: " + xhr.responseText);
+                });
+        })
+    })
+</script>
+
 {% endblock %}

@@ -570,7 +570,7 @@ def change_password(user_id):
             return jsonify({'success': True, 'message': "Password updated"}), 200
         else: return jsonify({'success': False, 'message': "Password unable to be updated"}), 500
 
-@app.route('/profile/user/<user_id>/shoppinglist', methods=["GET, POST"])
+@app.route('/profile/user/<user_id>/shoppinglist', methods=["GET"])
 def user_shoppinglist(user_id):
     
     if "user_id" not in session or str(session["user_id"]) != str(user_id):
@@ -587,4 +587,24 @@ def user_shoppinglist(user_id):
         title='My favourites',
         year=datetime.now().year,
         shopping=shopping)
+
+@app.route('/profile/user/<user_id>/shoppinglist/additem/<ingredient_id>', methods=["POST"])
+def addTo_shoppinglist(user_id,ingredient_id):
+    
+    if "user_id" not in session or str(session["user_id"]) != str(user_id):
+        return redirect("/")
+    
+    # Get posted data from request
+    user_id = request.form.get("user_id")
+    ingredient_id = request.form.get("ingredient_id")
+    ingredient_name = request.form.get("ingredient_name")
+    ingredient_image = request.form.get("ingredient_image")
+    ingredient_amount = request.form.get("ingredient_amount")
+    ingredient_unit = request.form.get("ingredient_unit")
+    
+    # Save Data to DB
+    
+
+    
+    
 

@@ -555,4 +555,21 @@ def change_password(user_id):
             return jsonify({'success': True, 'message': "Password updated"}), 200
         else: return jsonify({'success': False, 'message': "Password unable to be updated"}), 500
 
+@app.route('/profile/user/<user_id>/shoppinglist', methods=["GET"])
+def user_shoppinglist(user_id):
+    
+    if "user_id" not in session or str(session["user_id"]) != str(user_id):
+        return redirect("/")
+
+    response = get_user_shopping(user_id)
+    # Convert to list of dictionaries
+    shopping = [dict(row) for row in response]
+
+    print(shopping)
+
+    return render_template(
+        "shoppinglist.html",
+        title='My favourites',
+        year=datetime.now().year,
+        shopping=shopping)
 

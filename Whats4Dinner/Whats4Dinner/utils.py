@@ -234,14 +234,16 @@ def get_random_Int(min_val, max_val):
 
 def get_user_favourites(user_id):
     # Get recipes that user has favourited
-
-    #TODO: Upgrade to paramterized query to increase security
-    # Construct query string for db_select
-    qry_string = f"SELECT * FROM favourite_Recipes WHERE user_id = {user_id}"
-
-    # Call db_Select and pass in query string as argument
-    returned_data = db_select(qry_string)
+    # Call db_Select
+    returned_data = db_select("favourite_Recipes",where={"user_id": user_id})
 
     # Check if any data has been returned, then return to calling function
     return returned_data or []
+
+def get_user_shopping(user_id):
+    # Get items user has added to their shopping list
+    returned_data = db_select("shopping_list",where={"user_id": user_id})
+    # Check if any data has been returned, then return to calling function
+    return returned_data or []
+
 

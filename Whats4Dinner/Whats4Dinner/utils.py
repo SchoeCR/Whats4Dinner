@@ -7,13 +7,14 @@ import random
 from .config import API_KEY
 from datetime import datetime
 
-tables_approved = ['users', 'favourite_Recipes']
+tables_approved = ['users', 'favourite_Recipes', 'shopping_list']
 columns_approved = {
     'db_update': {
         'users': ['user_id', 'first_name', 'last_name', 'email', 'hash', 'added_date']},
     'db_select': {
         'users': ['user_id', 'first_name','last_name','email','hash','added_date'],
-        'favourite_Recipes':['favourite_id','user_id','recipe_id','recipe_name','recipe_summary','recipe_image']},
+        'favourite_Recipes':['favourite_id','user_id','recipe_id','recipe_name','recipe_summary','recipe_image'],
+        'shopping_list':['shopping_id','user_id','ingredient_id','ingredient_name','ingredient_image','quantity','unit','date_added']},
     }
 
 # TODO: Upgrade to paramaterized query (refer db_update)

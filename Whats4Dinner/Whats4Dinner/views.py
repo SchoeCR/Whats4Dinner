@@ -318,6 +318,17 @@ def search_recipe():
         # Otherwise, we need to process the JSON and return an array of data.
         # Review ... https://medium.com/@modimuskan397/how-to-parse-json-file-and-show-output-json-using-flask-c0b415f3f0a0
 
+
+def create_ingredient_for_view(extendedIngredient):
+       
+     # TODO: Reduce quanity and unit options to a single value. 
+     return { "ingredient_id": extendedIngredient["id"],
+             "ingredient_name": extendedIngredient["name"],
+             "ingredient_image": extendedIngredient["image"],
+             "ingredient_amount": extendedIngredient["amount"],
+             "ingredient_unit": extendedIngredient["unit"]
+             }
+
 @app.route('/recipe/view/<recipe_id>', methods=["GET"])
 def recipe_view(recipe_id):
     # Route for user to view recipe in detail.
@@ -350,6 +361,10 @@ def recipe_view(recipe_id):
         nutrition = {}
         recipe_summary = {}
         extracted_data = parsed_json
+        
+        rawExtendedIngredients = extracted_data["extendedIngredients"]
+        ingredients = list(map(create_ingredient_for_view, rawExtendedIngredients))
+        
         dairyFree = extracted_data["dairyFree"]
         glutenFree = extracted_data["glutenFree"]
         vegan = extracted_data["vegan"]
@@ -555,7 +570,7 @@ def change_password(user_id):
             return jsonify({'success': True, 'message': "Password updated"}), 200
         else: return jsonify({'success': False, 'message': "Password unable to be updated"}), 500
 
-@app.route('/profile/user/<user_id>/shoppinglist', methods=["GET"])
+@app.route('/profile/user/<user_id>/shoppinglist', methods=["GET, POST"])
 def user_shoppinglist(user_id):
     
     if "user_id" not in session or str(session["user_id"]) != str(user_id):

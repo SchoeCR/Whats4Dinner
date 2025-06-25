@@ -142,23 +142,17 @@
                                                 <th scope="col">Item</th>
                                                 <th scope="col">Quantity</th>
                                                 <th scope="col"></th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {% if recipes %}
                                             {% for ingredient in recipes.extendedIngredients %}
-                                            <tr>
-                                                <td>{{ ingredient.name }}</td>
-                                                {% if ingredient.measures.us.amount and ingredient.measures.metric.amount %}
-                                                {% if ingredient.measures.us.amount != ingredient.measures.metric.amount %}
-                                                <td>{{ ingredient.measures.us.amount }} {{ ingredient.measures.us.unitShort }} ({{ ingredient.measures.metric.amount }} {{ ingredient.measures.metric.unitShort }})</td>
-                                                {% else %}
-                                                <td>{{ ingredient.measures.us.amount }} {{ ingredient.measures.us.unitShort }}</td>
-                                                {% endif %}
-                                                {% else %}
-                                                <td>{{ ingredient.measures.us.amount }} {{ ingredient.measures.us.unitShort }}</td>
-                                                {% endif %}
-                                                <td><img class="rounded" src="https://spoonacular.com/cdn/ingredients_100x100/{{ ingredient.image }}" /></td>
+                                            <tr id="ingredient_id-{{ingredient.id}}">
+                                                <td id="ingredient_name-{{ingredient.name}}">{{ ingredient.name }}</td>
+                                                <td><span id="ingredient_amount-{{ ingredient.amount }}">{{ ingredient.amount }}</span> <span id="ingredient_unit-{{ ingredient.unit }}">{{ ingredient.unit }}</span></td>
+                                                <td><img id="ingredient_image-{{ ingredient.image }}" class="rounded" src="https://spoonacular.com/cdn/ingredients_100x100/{{ ingredient.image }}" /></td>
+                                                <td><button id="btn_addTolist_id" class="btn btn-primary">Add to shopping list</button></td>
                                             </tr>
                                             {% endfor %}
                                             {% endif %}

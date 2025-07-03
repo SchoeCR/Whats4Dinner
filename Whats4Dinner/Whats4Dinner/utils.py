@@ -1,6 +1,9 @@
 from ast import Return
+from doctest import debug
 from multiprocessing import Value
+from optparse import Values
 import sqlite3
+from turtle import update
 from flask import redirect, jsonify
 import requests
 import random
@@ -89,30 +92,36 @@ def db_select(table, where=None, orderby=None, *column_select): #qryStr, args=()
     conn.close()
     return result  # Now returning fetched data
 
-def db_update(table, where_column=None, where_value=None, **column_value):
+def db_update(table, where=None, orderby=None, updateValues=None):
     function_name = "db_update"
     try:
         # Validate table arg against tables_approved
         if table not in tables_approved:
             return 400
         if function_name in columns_approved and table in columns_approved[function_name]:
-           if where_column not in columns_approved[function_name][table]:
-               return 400
+            if updateValues:
+                for key, value in updateValues.items():
+                    if key not in columns_approved[function_name][table]:
+                        return 400
 
-        # Build SET clause with placeholders
+        # Build SET clause
         set_clauses = []
         values = []
-
-        for key, value in column_value.items():
-            if key not in columns_approved[function_name][table]:
-                return 400
+        if not updateValues: return 400
+        for key, value in updateValues.items():
             set_clauses.append(f"{key} = ?")
             values.append(value)
-
         set_clause = ", ".join(set_clauses)
 
-        sql = f"UPDATE {table} SET {set_clause} WHERE {where_column} = ?"
-        values.append(where_value)
+        # Build WHERE clause
+        where_clauses = []
+        if not where: return 400
+        for key, value in where.items():
+            where_clauses.append(f"{key} = ?")
+            values.append(value)
+        where_clause = " AND ".join(where_clauses)
+
+        sql = f"UPDATE {table} SET {set_clause} WHERE {where_clause}"
 
         conn = get_db_connection()
         cursor = conn.cursor()

@@ -595,14 +595,27 @@ def addTo_shoppinglist(user_id,ingredient_id):
         return redirect("/")
     
     # Get posted data from request
-    user_id = request.form.get("user_id")
-    ingredient_id = request.form.get("ingredient_id")
     ingredient_name = request.form.get("ingredient_name")
     ingredient_image = request.form.get("ingredient_image")
     ingredient_amount = request.form.get("ingredient_amount")
     ingredient_unit = request.form.get("ingredient_unit")
     
     # Save Data to DB
+    try:
+        # Check to see if already in shopping list
+        item_in_shoppingList = db_select("shopping_List",where={"ingredient_id":ingredient_id,"user_id":user_id})
+        if item_in_shoppingList:
+            # Calculate new quantity
+            item = item_in_shoppingList[0]
+            quantity_new = round(item["quantity"] + float(ingredient_amount),1)
+            # Append to existing quantity if yes
+            if db_update("shopping_List",where={"shopping_id":item["shopping_id"]},updateValues={"quantity":quantity_new,"date_added":datetime.now()}) == 200:
+                return jsonify({'success': True, 'message': "Added to shopping list"}), 200
+            else: return jsonify({'success': False, 'message': "Unable to add to shopping list"}), 500
+        # Add new if not pre-existing
+        else:
+
+    except:
     
 
     

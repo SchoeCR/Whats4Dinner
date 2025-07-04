@@ -555,10 +555,8 @@
                 return;
             }
 
-            $.post("/profile/user/" + user_id + "/shoppinglist",
+            $.post("/profile/user/" + user_id + "/shoppinglist/additem/" + ingredient_id,
                 {
-                    ingredient_id: ingredient_id,
-                    user_id: user_id,
                     ingredient_name: name,
                     ingredient_image: image,
                     ingredient_amount: amount,

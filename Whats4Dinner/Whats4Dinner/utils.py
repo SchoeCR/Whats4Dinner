@@ -10,26 +10,62 @@ import random
 from .config import API_KEY
 from datetime import datetime
 
-tables_approved = ['users', 'favourite_Recipes', 'shopping_list']
+tables_approved = ['users', 'favourite_Recipes', 'shopping_List']
 columns_approved = {
     'db_update': {
         'users': ['user_id', 'first_name', 'last_name', 'email', 'hash', 'added_date']},
     'db_select': {
         'users': ['user_id', 'first_name','last_name','email','hash','added_date'],
         'favourite_Recipes':['favourite_id','user_id','recipe_id','recipe_name','recipe_summary','recipe_image'],
-        'shopping_list':['shopping_id','user_id','ingredient_id','ingredient_name','ingredient_image','quantity','unit','date_added']},
+        'shopping_List':['shopping_id','user_id','ingredient_id','ingredient_name','ingredient_image','quantity','unit','date_added']},
+    'db_insert': {
+        'users':['user_id','first_name','last_name','email','hash','added_date'],
+        'favourite_Recipes':['favourite_id','user_id','recipe_id','recipe_name','recipe_summary','recipe_image'],
+        'shopping_List':['shopping_id','user_id','ingredient_id','ingredient_name','ingredient_image','quantity','unit','date_added']}
     }
 
 # TODO: Upgrade to paramaterized query (refer db_update)
-def db_insert(table, columns, values):
-    placeholders = ", ".join(["?"] * len(values))  # Create placeholders dynamically
-    sql = f"INSERT INTO {table} ({', '.join(columns)}) VALUES ({placeholders})"
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute(sql, values)  # Pass the values dynamically
-    conn.commit()
-    conn.close()
-    return
+def db_insert(table, insertvalues=None):
+    try:
+        # Check table against whitelist
+        if table not in tables_approved:
+            return 400
+        
+        # Check insert_values against whitelist
+        function_name = "db_insert"
+        if function_name not in columns_approved or table not in columns_approved[function_name]:
+            return 400
+        if not insertvalues:
+            return 400
+                
+        columns_list = []
+        values_list = []
+        
+        for key, value in insertvalues.items():
+            if key in columns_approved[function_name][table]:
+                columns_list.append(key)
+                values_list.append(value)
+        
+        if not columns_list:
+            return 400 # No valid columns to insert
+                
+        # Build query
+        columns = ", ".join(columns_list)
+        placeholders = ", ".join(["?"] * len(columns_list))        
+        sql = f"INSERT INTO {table} ({columns}) VALUES ({placeholders})"
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(sql, values_list)  # Pass the values dynamically
+        conn.commit()
+        conn.close()
+        return 200
+
+    except Exception as e:
+        print("Error in db_insert:", e)
+        return 500
+    
+    
 
 # TODO: Upgrade to paramaterized query (refer db_update)
 def db_delete(table, column_reference, row_reference):
@@ -107,19 +143,19 @@ def db_update(table, where=None, orderby=None, updateValues=None):
         # Build SET clause
         set_clauses = []
         values = []
-        if not updateValues: return 400
-        for key, value in updateValues.items():
-            set_clauses.append(f"{key} = ?")
-            values.append(value)
-        set_clause = ", ".join(set_clauses)
+        if updateValues:
+            for key, value in updateValues.items():
+                set_clauses.append(f"{key} = ?")
+                values.append(value)
+            set_clause = ", ".join(set_clauses)
 
         # Build WHERE clause
         where_clauses = []
-        if not where: return 400
-        for key, value in where.items():
-            where_clauses.append(f"{key} = ?")
-            values.append(value)
-        where_clause = " AND ".join(where_clauses)
+        if where:
+            for key, value in where.items():
+                where_clauses.append(f"{key} = ?")
+                values.append(value)
+            where_clause = " AND ".join(where_clauses)
 
         sql = f"UPDATE {table} SET {set_clause} WHERE {where_clause}"
 
@@ -252,8 +288,13 @@ def get_user_favourites(user_id):
 
 def get_user_shopping(user_id):
     # Get items user has added to their shopping list
-    returned_data = db_select("shopping_list",where={"user_id": user_id})
+    returned_data = db_select("shopping_List",where={"user_id": user_id})
     # Check if any data has been returned, then return to calling function
     return returned_data or []
 
+def deleteShoppingListItem(user_id, ingredient_id):
+    if not user_id and not ingredient_id:
+        return 400
+    try:
+        if db_delete()
 

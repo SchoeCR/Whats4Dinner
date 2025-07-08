@@ -27,6 +27,7 @@
                     <th scope="col"></th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Added</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody id="shopping_tbody">
@@ -34,9 +35,9 @@
                 <tr id="shopping_id-{{ item.shopping_id }}">
                     <td>{{ item.ingredient_name }}</td>
                     <td class="p-1 align-right" style="width:1%;white-space:nowrap"><img class="rounded" src="{{ item.ingredient_image }}" alt="Mmm, yum yum" style="max-width: 250px; height: auto; display: block;" /></td>
-                    <td>{{ item.quantity }}{{ item.unit }}</td>
+                    <td>{{ item.quantity }} {{ item.unit }}</td>
                     <td>{{ item.date_added }}</td>
-                    <td><button class="btn_fav-delete btn"><img id="DeleteGif" src="/static/trash-xmark.png" alt="Delete" /></button></td>
+                    <td><button class="btn_shopping-delete btn">&#128465</button></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -56,25 +57,27 @@
 <script>
     $(function () {
 
-        $(".btn_fav-delete").click(function () {
+        $(".btn_shopping-delete").click(function () {
             let row = $(this).closest("tr");
-            let recipe_id = row.find(".recipe_id").attr("value");
-            let favourite_id = row.find(".favourite_id").attr("value");
+            let ingredient_id = row.attr("id");
             let user_id = $("#user_id").text();
 
-            $.post("/favourite-recipe/" + recipe_id + "/user/" + user_id + "/delete/" + favourite_id,
-                {
-                    recipe_id: recipe_id,
-                    user_id: user_id,
-                    favourite_id: favourite_id
-                })
+            // Show the loader before the AJAX call
+            $("#loadingOverlay, #loadingGif").show();
+
+            $.post("/profile/user/" + user_id + "/shoppinglist/deleteitem/" + ingredient_id, {})
 
                 .done(function (response) {
-                    $("#favourite_id-" + favourite_id).remove(); // remove the recipe card or row
-                    showMessage("Recipe removed");
+                    $("#" + ingredient_id).remove(); // remove the recipe card or row
+                    showMessage("Item deleted");
                 })
-                .fail(function (xhr) {
-                    showMessage("Error" + xhr.responseText);
+                .fail(function (response) {
+                    showMessage(response.message);
+                    console.log('An error occurred.');
+                })
+                .always(function () {
+                    // Hide the loader after the AJAX call
+                    $("#loadingOverlay, #loadingGif").hide();
                 });
         });
 

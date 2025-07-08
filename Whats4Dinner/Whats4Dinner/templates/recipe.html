@@ -148,11 +148,11 @@
                                         <tbody>
                                             {% if recipes %}
                                             {% for ingredient in recipes.extendedIngredients %}
-                                            <tr id="ingredient_id-{{ingredient.id}}">
-                                                <td id="ingredient_name-{{ingredient.name}}">{{ ingredient.name }}</td>
-                                                <td><span id="ingredient_amount-{{ ingredient.amount }}">{{ ingredient.amount }}</span> <span id="ingredient_unit-{{ ingredient.unit }}">{{ ingredient.unit }}</span></td>
-                                                <td><img id="ingredient_image-{{ ingredient.image }}" class="rounded" src="https://spoonacular.com/cdn/ingredients_100x100/{{ ingredient.image }}" /></td>
-                                                <td><button id="btn_addTolist_id" class="btn btn-primary">Add to shopping list</button></td>
+                                            <tr id="{{ingredient.id}}" class="ingredient_id">
+                                                <td id="ingredient_name-{{ingredient.name}}" class="ingredient_name">{{ ingredient.name }}</td>
+                                                <td><span id="ingredient_amount-{{ ingredient.amount }}" class="ingredient_amount">{{ ingredient.amount }}</span> <span id="ingredient_unit-{{ ingredient.unit }}" class="ingredient_unit">{{ ingredient.unit }}</span></td>
+                                                <td><img id="ingredient_image-{{ ingredient.image }}" class="rounded ingredient_image" src="https://spoonacular.com/cdn/ingredients_100x100/{{ ingredient.image }}" /></td>
+                                                <td><button class="btn_addToShopping btn">&#128722</button></td>
                                             </tr>
                                             {% endfor %}
                                             {% endif %}
@@ -540,13 +540,13 @@
 
 <script>
     $(function () {
-        $("#btn_addTolist_id").click(function () {
+        $(".btn_addToShopping").click(function () {
             let row = $(this).closest("tr");
-            let ingredient_id = row.find(".ingredient_id").attr("value");
-            let name = row.find(".ingredient_name").attr("value");
-            let image = row.find(".ingredient_image").attr("value");
-            let amount = row.find(".ingredient_amount").attr("value");
-            let unit = row.find(".ingredient_unit").attr("value");
+            let ingredient_id = row.attr("id");
+            let name = row.find(".ingredient_name").text().trim();
+            let image = row.find(".ingredient_image").attr("src");
+            let amount = row.find(".ingredient_amount").text().trim();
+            let unit = row.find(".ingredient_unit").text().trim();
             let user_id = $("#user_id").text();
 
             // Post it to the server endpoint
@@ -554,6 +554,9 @@
                 modal.style.display = "block";
                 return;
             }
+
+            // Show the loader before the AJAX call
+            $("#loadingOverlay, #loadingGif").show();
 
             $.post("/profile/user/" + user_id + "/shoppinglist/additem/" + ingredient_id,
                 {
@@ -563,11 +566,15 @@
                     ingredient_unit: unit,
                 })
                 .done(function (response) {
-                    showMessage("Added to shopping list.")
-                    
+                    showMessage(response.message);
                 })
-                .fail(function (xhr) {
-                    alert("Failed to add to shopping list: " + xhr.responseText);
+                .fail(function () {
+                    showMessage(response.message);
+                    console.log('An error occurred.');
+                })
+                .always(function () {
+                    // Hide the loader after the AJAX call completes (success or fail)
+                    $("#loadingOverlay, #loadingGif").hide();
                 });
         })
     })

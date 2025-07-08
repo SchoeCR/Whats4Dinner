@@ -614,9 +614,28 @@ def addTo_shoppinglist(user_id,ingredient_id):
             else: return jsonify({'success': False, 'message': "Unable to add to shopping list"}), 500
         # Add new if not pre-existing
         else:
+            if db_insert("shopping_List",insertvalues={"user_id":user_id,"ingredient_id":ingredient_id,"ingredient_name":ingredient_name,
+                                                                        "ingredient_image":ingredient_image,"quantity":ingredient_amount,"unit":ingredient_unit,
+                                                                        "date_added":datetime.now()}) == 200:
+                return jsonify({'success': True, 'message': "Added to shopping list"}), 200
+            else: return jsonify({'success': False, 'message': "Unable to add to shopping list"}), 500
+    except Exception as e:
+        print("Error in addTo_shoppinglist:", e)
+        return 500
 
+@app.route('/profile/user/<user_id>/shoppinglist/deleteitem/<ingredient_id>', methods=["POST"])
+def deleteFrom_shoppinglist(user_id, ingredient_id):
+
+    if "user_id" not in session or str(session["user_id"]) != str(user_id):
+        return redirect("/")
+
+    if not ingredient_id:
+        return jsonify({'success': False, 'message': "Invalid ingredient."}),500
+
+    try:
+        if deleteShoppingListItem() == 200:
+            return jsonify()
     except:
-    
 
     
     

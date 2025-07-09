@@ -32,7 +32,7 @@
             </thead>
             <tbody id="shopping_tbody">
                 {% for item in shopping %}
-                <tr id="shopping_id-{{ item.shopping_id }}">
+                <tr id="{{ item.shopping_id }}">
                     <td>{{ item.ingredient_name }}</td>
                     <td class="p-1 align-right" style="width:1%;white-space:nowrap"><img class="rounded" src="{{ item.ingredient_image }}" alt="Mmm, yum yum" style="max-width: 250px; height: auto; display: block;" /></td>
                     <td>{{ item.quantity }} {{ item.unit }}</td>
@@ -59,21 +59,21 @@
 
         $(".btn_shopping-delete").click(function () {
             let row = $(this).closest("tr");
-            let ingredient_id = row.attr("id");
+            let shopping_id = row.attr("id");
             let user_id = $("#user_id").text();
 
             // Show the loader before the AJAX call
             $("#loadingOverlay, #loadingGif").show();
 
-            $.post("/profile/user/" + user_id + "/shoppinglist/deleteitem/" + ingredient_id, {})
+            $.post("/profile/user/" + user_id + "/shoppinglist/deleteitem/" + shopping_id, {})
 
                 .done(function (response) {
-                    $("#" + ingredient_id).remove(); // remove the recipe card or row
-                    showMessage("Item deleted");
+                    $("#" + shopping_id).remove(); // remove the recipe card or row
+                    showMessage(response.message);
                 })
                 .fail(function (response) {
                     showMessage(response.message);
-                    console.log('An error occurred.');
+                    console.log(response.message);
                 })
                 .always(function () {
                     // Hide the loader after the AJAX call

@@ -623,19 +623,20 @@ def addTo_shoppinglist(user_id,ingredient_id):
         print("Error in addTo_shoppinglist:", e)
         return 500
 
-@app.route('/profile/user/<user_id>/shoppinglist/deleteitem/<ingredient_id>', methods=["POST"])
-def deleteFrom_shoppinglist(user_id, ingredient_id):
+@app.route('/profile/user/<user_id>/shoppinglist/deleteitem/<shopping_id>', methods=["POST"])
+def deleteFrom_shoppinglist(user_id, shopping_id):
 
     if "user_id" not in session or str(session["user_id"]) != str(user_id):
         return redirect("/")
 
-    if not ingredient_id:
+    if not shopping_id:
         return jsonify({'success': False, 'message': "Invalid ingredient."}),500
 
     try:
-        if deleteShoppingListItem() == 200:
-            return jsonify()
+        if deleteShoppingListItem(shopping_id) == 200:
+            return jsonify({'success':True, 'message':"Item removed from shopping list"}),200
     except:
+        return jsonify({'success':False, 'message':"Item could not be removed from shopping list"}),500
 
     
     

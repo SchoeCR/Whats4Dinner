@@ -292,9 +292,12 @@ def get_user_shopping(user_id):
     # Check if any data has been returned, then return to calling function
     return returned_data or []
 
-def deleteShoppingListItem(user_id, ingredient_id):
-    if not user_id and not ingredient_id:
+def deleteShoppingListItem(shopping_id):
+    if not shopping_id:
         return 400
     try:
-        if db_delete()
+        if db_delete("shopping_List","shopping_id",shopping_id) == 200:
+            return 200
+    except:
+        return 500
 

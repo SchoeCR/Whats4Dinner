@@ -141,10 +141,13 @@ input[type="checkbox"].input-validation-error {
 .footer-band {
     background-color: #343a40;
     color: white;
-    padding: 1rem 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem 2rem;
     text-align: center;
-    margin-top: 2rem;
-    width:100%;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.2);
 }
 
 .nav-band {

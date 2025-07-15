@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /Whats4Dinner/Whats4Dinner/config.py
+/Whats4Dinner/Whats4Dinner/Wrap-up items.txt

@@ -23,7 +23,7 @@
                     <form action="/profile/user/{{ session.user_id }}/favourites" method="get">
                         <button class="btn btn-primary mb-2" type="submit">Favourite recipes</button>
                     </form>
-                    <form action="/profile/user/mealplan" method="get">
+                    <form action="/profile/user/{{ session.user_id }}/mealplan" method="get">
                         <button class="btn btn-primary mb-2" type="submit">Meal plan</button>
                     </form>
                     <form action="/profile/user/{{ session.user_id }}/shoppinglist" method="get">

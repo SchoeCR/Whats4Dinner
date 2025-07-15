@@ -638,6 +638,22 @@ def deleteFrom_shoppinglist(user_id, shopping_id):
     except:
         return jsonify({'success':False, 'message':"Item could not be removed from shopping list"}),500
 
+@app.route('/profile/user/<user_id>/mealplan', methods=["GET"])
+def user_mealplan(user_id):
     
+    if "user_id" not in session or str(session["user_id"]) != str(user_id):
+        return redirect("/")
+
+    response = get_user_shopping(user_id)
+    # Convert to list of dictionaries
+    shopping = [dict(row) for row in response]
+
+    print(shopping)
+
+    return render_template(
+        "shoppinglist.html",
+        title='My favourites',
+        year=datetime.now().year,
+        shopping=shopping)
     
 

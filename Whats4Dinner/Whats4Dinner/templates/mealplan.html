@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h3>Meal Plan</h3>
+
+{% if validation_error %}
+
+<div class="text-danger text-col">
+    Error: {{ validation_error }}
+</div>
+
+{% endif %}
+
+{% if message %}
+<h5>{{ message }}</h5>
+{% endif %}
+
+<main>
+    
+</main>
+{% endblock %}
+{% block footer %}
+<a href="https://www.flaticon.com/free-icons/food-waste" title="food-waste icons" target="_blank" rel="noopener noreferrer">Food-waste icons created by Freepik - Flaticon</a>
+{% endblock %}

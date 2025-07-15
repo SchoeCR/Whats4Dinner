@@ -91,11 +91,13 @@
     <Content Include="Whats4Dinner\templates\index.html" />
     <Content Include="Whats4Dinner\templates\layout.html" />
     <Content Include="Whats4Dinner\templates\login.html" />
+    <Content Include="Whats4Dinner\templates\mealplan.html" />
     <Content Include="Whats4Dinner\templates\password.html" />
     <Content Include="Whats4Dinner\templates\profile.html" />
     <Content Include="Whats4Dinner\templates\recipe.html" />
     <Content Include="Whats4Dinner\templates\register.html" />
     <Content Include="Whats4Dinner\templates\shoppinglist.html" />
+    <Content Include="Whats4Dinner\Wrap-up items.txt" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">

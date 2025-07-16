@@ -164,10 +164,13 @@ def login():
         #db_select(f"SELECT * FROM users WHERE email='{email}'")
 
         # Retrieve stored password hash
-        pswhash = profile[0]["hash"]
+        hasProfile = profile != NULL and len(profile) > 0
+
+        if hasProfile:        
+            pswhash = profile[0]["hash"]
 
         # Check if profile is null or passwords do not match
-        if len(profile) != 1 or not check_password_hash(pswhash,password):
+        if not hasProfile or not check_password_hash(pswhash,password):
             return render_template(
             'login.html', title='Login',
             year=datetime.now().year,

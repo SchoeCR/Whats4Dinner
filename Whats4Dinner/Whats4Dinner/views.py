@@ -641,19 +641,18 @@ def deleteFrom_shoppinglist(user_id, shopping_id):
 @app.route('/profile/user/<user_id>/mealplan', methods=["GET"])
 def user_mealplan(user_id):
     
-    if "user_id" not in session or str(session["user_id"]) != str(user_id):
-        return redirect("/")
+    checkIfUserIsLoggedIn(user_id)
 
-    response = get_user_shopping(user_id)
+    response = get_user_mealplan(user_id)
     # Convert to list of dictionaries
-    shopping = [dict(row) for row in response]
+    meal_plan = [dict(row) for row in response]
 
-    print(shopping)
+    print(meal_plan)
 
     return render_template(
-        "shoppinglist.html",
-        title='My favourites',
+        "mealplan.html",
+        title='Meal Plan',
         year=datetime.now().year,
-        shopping=shopping)
+        meal_plan=meal_plan)
     
 

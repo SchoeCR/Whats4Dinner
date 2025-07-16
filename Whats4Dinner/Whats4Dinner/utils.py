@@ -4,24 +4,27 @@ from multiprocessing import Value
 from optparse import Values
 import sqlite3
 from turtle import update
-from flask import redirect, jsonify
+from flask import redirect, jsonify, session
 import requests
 import random
 from .config import API_KEY
 from datetime import datetime
 
-tables_approved = ['users', 'favourite_Recipes', 'shopping_List']
+tables_approved = ['users', 'favourite_Recipes', 'shopping_List', 'meal_plan']
 columns_approved = {
     'db_update': {
-        'users': ['user_id', 'first_name', 'last_name', 'email', 'hash', 'added_date']},
+        'users': ['user_id', 'first_name', 'last_name', 'email', 'hash', 'added_date'],
+        'meal_plan': ['user_id', 'meal_id', 'meal_name','meal_image','planned_date','made_bool','flavour_rating','cooking_rating']},
     'db_select': {
         'users': ['user_id', 'first_name','last_name','email','hash','added_date'],
         'favourite_Recipes':['favourite_id','user_id','recipe_id','recipe_name','recipe_summary','recipe_image'],
-        'shopping_List':['shopping_id','user_id','ingredient_id','ingredient_name','ingredient_image','quantity','unit','date_added']},
+        'shopping_List':['shopping_id','user_id','ingredient_id','ingredient_name','ingredient_image','quantity','unit','date_added'],
+        'meal_plan': ['user_id', 'meal_id', 'meal_name','meal_image','planned_date','made_bool','flavour_rating','cooking_rating']},
     'db_insert': {
         'users':['user_id','first_name','last_name','email','hash','added_date'],
         'favourite_Recipes':['favourite_id','user_id','recipe_id','recipe_name','recipe_summary','recipe_image'],
-        'shopping_List':['shopping_id','user_id','ingredient_id','ingredient_name','ingredient_image','quantity','unit','date_added']}
+        'shopping_List':['shopping_id','user_id','ingredient_id','ingredient_name','ingredient_image','quantity','unit','date_added'],
+        'meal_plan': ['user_id', 'meal_id', 'meal_name','meal_image','planned_date','made_bool','flavour_rating','cooking_rating']}
     }
 
 # TODO: Upgrade to paramaterized query (refer db_update)
@@ -300,4 +303,21 @@ def deleteShoppingListItem(shopping_id):
             return 200
     except:
         return 500
+
+def checkIfUserIsLoggedIn(user_id):
+    if "user_id" not in session or str(session["user_id"]) != str(user_id):
+        return redirect("/")
+    return;
+
+def get_user_mealplan(user_id):
+    returned_data = db_select("meal_plan",where={"user_id": user_id})
+    
+    if isinstance(returned_data,(list,tuple)):
+        return returned_data
+
+    if returned_data is None:
+        return []
+
+    return [returned_data]
+
 

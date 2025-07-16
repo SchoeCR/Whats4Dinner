@@ -581,7 +581,23 @@ def user_shoppinglist(user_id):
 
     response = get_user_shopping(user_id)
     # Convert to list of dictionaries
-    shopping = [dict(row) for row in response]
+   
+    # Define the date string and its corresponding format
+    format_string = "%Y-%m-%d %H:%M:%S.%f"
+
+    shopping = []
+    for row in response: 
+        parsedDateAdded = datetime.strptime(row['date_added'], format_string)
+        dateAddedString = parsedDateAdded.strftime('%d %b %Y')
+
+        shopping.append({
+            'shopping_id': row['shopping_id'], 
+            'ingredient_name': row['ingredient_name'], 
+            'ingredient_image': row['ingredient_image'], 
+            'unit': row['unit'],
+            'quantity': row['quantity'],
+            'date_added': dateAddedString
+            })
 
     print(shopping)
 

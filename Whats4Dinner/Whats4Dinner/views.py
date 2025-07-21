@@ -10,7 +10,7 @@ import tkinter.messagebox
 from urllib import response
 import werkzeug
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime
+from datetime import date, datetime
 from flask import render_template, request, flash, redirect, session, json, Flask, jsonify
 from Whats4Dinner import app
 from .utils import *
@@ -658,20 +658,61 @@ def deleteFrom_shoppinglist(user_id, shopping_id):
         return jsonify({'success':False, 'message':"Item could not be removed from shopping list"}),500
 
 @app.route('/profile/user/<user_id>/mealplan', methods=["GET"])
-def user_mealplan(user_id):
+def load_mealplan(user_id):
     
     checkIfUserIsLoggedIn(user_id)
-
-    response = get_user_mealplan(user_id)
-    # Convert to list of dictionaries
-    meal_plan = [dict(row) for row in response]
-
-    print(meal_plan)
-
+    
     return render_template(
         "mealplan.html",
         title='Meal Plan',
-        year=datetime.now().year,
-        meal_plan=meal_plan)
+        year=datetime.now().year)
     
+@app.route('/profile/user/<user_id>/mealplan/<date_selected>', methods=["GET"])
+def show_mealplan(user_id, date_selected):
 
+    checkIfUserIsLoggedIn(user_id)
+    user_mealplan = get_user_mealplan(user_id)
+    # Define the date string and its corresponding format
+    
+    mealplan = []
+    dateRange = getDateRange(date_selected)
+
+    # Loop through response and find records that match dates in dateRange
+    for date in dateRange:
+        for row in response: 
+            if date == row["planned_date"]:
+                mealplan = list(map(create_recipe_plan_for_view,user_mealplan))
+
+    print(mealplan)
+
+def getDateRange(date_selected):
+    
+    # Validate date_selected
+    if isinstance(date_selected,datetime.date):
+
+        # using date_selected, find day of week
+        dayOfWeek = datetime.weekday(date_selected)
+        dateRange = []
+        # using day of week, find sunday date in same week
+        j = 0
+        for i in range(0,6):
+            dateTemp = (date_selected + j) - dayOfWeek
+            dateRange.append(dateTemp)
+            j+=1
+        
+        return dateRange
+    
+    else:
+        return None
+
+def create_recipe_plan_for_view(user_mealplan):
+    
+    format_string = "%Y-%m-%d %H:%M:%S.%f"
+    parsedDateAdded = datetime.strptime(user_mealplan['planned_date'], format_string)
+    dateAddedString = parsedDateAdded.strftime('%d %b %Y')
+    return {"ID": user_mealplan["meal_plan_id"],
+            "mealID": user_mealplan["meal_id"],
+            "mealName": user_mealplan["meal_name"],
+            "mealImage": user_mealplan["meal_image"],
+            "plannedDate": dateAddedString 
+        }

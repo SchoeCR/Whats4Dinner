@@ -22,17 +22,32 @@
         <p>Date: <input type="text" id="datepicker"></p>
     </div>
 
-    <div class="container">
+    <div id="meal_plan_container" class="container">
         <div class="row">
             <div class="col">
                 Sunday
             </div>
             <div class="col">
-                Column
+                Monday
             </div>
             <div class="col">
-                Column
+                Tuesday
             </div>
+            <div class="col">
+                Wednesday
+            </div>
+            <div class="col">
+                Thursday
+            </div>
+            <div class="col">
+                Friday
+            </div>
+            <div class="col">
+                Saturday
+            </div>
+        </div>
+        <div class="row">
+
         </div>
 
      
@@ -53,7 +68,12 @@
 
         $("#datepicker").datepicker();
 
+        $("#datepicker").click(function () {
+
+        });
+
     });
+
 </script>
 
 {% endblock %}

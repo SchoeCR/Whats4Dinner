@@ -70,9 +70,8 @@
                     <h1 id="recipe_title_id" class="h2">{{ recipes.title }}</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group me-2">
-                            <button type="button" class="btn btn-primary" name="btn_favourite" id="btn_favourite_id">Add Favourite</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                            <button type="button" class="btn btn-outline-primary" name="btn_favourite" id="btn_favourite_id">Add to Favourites</button>
+                            <button type="button" class="btn btn-outline-primary" name="btn_plan" id="btn_plan_id">Add to Plan</button>
                         </div>
                     </div>
                 </div>
@@ -320,6 +319,10 @@
                         });
                 }
             }
+        });
+
+        $("#btn_plan_id").click(function () {
+
         });
 
     });

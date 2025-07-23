@@ -66,24 +66,41 @@
 
     $(function () {
 
+        //const today = new Date();
+
+        //// Check querystring to see if a date is set
+        //const queryString = window.location.search;
+        //const urlParams = new URLSearchParams(queryString);
+        //const dateSelectedQueryStringParam = urlParams.get('date_selected');
+
+        //if (dateSelectedQueryStrinParam != null) {
+        //    const tmpDate = new Date(dateSelectedQueryStringParam)
+        //    const todayFormattedDate = tmpDate.toISOString().substring(0, 10);
+        //    $("#date_picker").val(todayFormattedDate);
+        //    let user_id = $("#user_id").text();
+        //    window.location.href = "/profile/user/" + user_id + "/mealplan/" + date_selected;
+        //}
+
         $("#date_picker").on('change', function () {
 
             let selectedDate = $(this).val();
             let user_id = $("#user_id").text();            
 
-            $.post("/profile/user/" + user_id + "/mealplan/" + date_selected,
-                {
-                    user_id: user_id,
-                    date_selected: selectedDate
-                })
+            window.location.href = "/profile/user/" + user_id + "/mealplan/" + date_selected;
 
-                .done(function (response) {
-                    showMessage("Recipe removed");
-                })
+            //$.post("/profile/user/" + user_id + "/mealplan/" + date_selected,
+            //    {
+            //        user_id: user_id,
+            //        date_selected: selectedDate
+            //    })
 
-                .fail(function (response) {
-                    showMessage("Error" + xhr.responseText);
-                })
+            //    .done(function (response) {
+            //        showMessage("Recipe removed");
+            //    })
+
+            //    .fail(function (response) {
+            //        showMessage("Error" + xhr.responseText);
+            //    })
            
         });
 

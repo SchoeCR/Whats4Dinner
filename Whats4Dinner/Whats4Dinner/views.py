@@ -10,7 +10,7 @@ import tkinter.messagebox
 from urllib import response
 import werkzeug
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import date, datetime
+from datetime import datetime, date, timedelta
 from flask import render_template, request, flash, redirect, session, json, Flask, jsonify
 from Whats4Dinner import app
 from .utils import *
@@ -657,38 +657,39 @@ def deleteFrom_shoppinglist(user_id, shopping_id):
     except:
         return jsonify({'success':False, 'message':"Item could not be removed from shopping list"}),500
 
-@app.route('/profile/user/<user_id>/mealplan', methods=["GET"])
-def load_mealplan(user_id):
-    
-    checkIfUserIsLoggedIn(user_id)
-    
-    return render_template(
-        "mealplan.html",
-        title='Meal Plan',
-        year=datetime.now().year)
-    
+@app.route('/profile/user/<user_id>/mealplan/', defaults={'date_selected':None}, methods=["GET"])
 @app.route('/profile/user/<user_id>/mealplan/<date_selected>', methods=["GET"])
 def show_mealplan(user_id, date_selected):
 
     checkIfUserIsLoggedIn(user_id)
     user_mealplan = get_user_mealplan(user_id)
     # Define the date string and its corresponding format
+
+    tmpDate = datetime.now().date(); # default 
     
+    if date_selected is not None:
+        tmpDate = datetime(date_selected).date # Passed in selected date
+
     mealplan = []
-    dateRange = getDateRange(date_selected)
+    dateRange = getDateRange(tmpDate)
 
     # Loop through response and find records that match dates in dateRange
     for date in dateRange:
-        for row in response: 
+        for row in user_mealplan: 
             if date == row["planned_date"]:
                 mealplan = list(map(create_recipe_plan_for_view,user_mealplan))
-
-    print(mealplan)
+    
+    return render_template(
+        "mealplan.html",
+        title='Meal Plan',
+        year=datetime.now().year,
+        mealplan=mealplan)
 
 def getDateRange(date_selected):
     
     # Validate date_selected
-    if isinstance(date_selected,datetime.date):
+    isDate = True # isinstance(date_selected, datetime.date)
+    if isDate:
 
         # using date_selected, find day of week
         dayOfWeek = datetime.weekday(date_selected)
@@ -696,7 +697,7 @@ def getDateRange(date_selected):
         # using day of week, find sunday date in same week
         j = 0
         for i in range(0,6):
-            dateTemp = (date_selected + j) - dayOfWeek
+            dateTemp = (date_selected + timedelta(days=j)) - timedelta(days=dayOfWeek)
             dateRange.append(dateTemp)
             j+=1
         

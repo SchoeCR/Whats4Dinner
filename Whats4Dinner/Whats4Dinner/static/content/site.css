@@ -218,3 +218,8 @@ input[type="checkbox"].input-validation-error {
     padding: 2px;
     color: white;
 }
+
+.meal_plan_div_lower {
+    margin-top: 220px;
+    transition: margin-top 0.3s ease;
+}

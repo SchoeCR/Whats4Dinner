@@ -1,5 +1,6 @@
 from ast import Return
 from doctest import debug
+from math import e
 from multiprocessing import Value
 from optparse import Values
 import sqlite3
@@ -68,27 +69,36 @@ def db_insert(table, insertvalues=None):
         print("Error in db_insert:", e)
         return 500
     
-    
-
-# TODO: Upgrade to paramaterized query (refer db_update)
-def db_delete(table, column_reference, row_reference):
+def db_delete(table, where=None):
     try:
-        # Validate inputs
-        if row_reference is None or table is None or column_reference is None:
-            return 400
+        # Check table against whitelist
+        if table not in tables_approved:
+            return 400 #Bad Request
 
-        sql = f"DELETE FROM {table} WHERE {column_reference}= ?"
-        args = (row_reference,)
+        if not where:
+            return 400 #Prevent full table deletion
+
+        # Build WHERE clause
+        where_values = []
+        where_clauses = [f"{key} = ?" for key in where]
+        where_values = list(where.values())
+        where_clause = " AND ".join(where_clauses)
+
+        sql = f"DELETE FROM {table} WHERE {where_clause}"
+
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute(sql, args)
+        cursor.execute(sql, where_values)
         conn.commit()
+        deleted = cursor.rowcount
         conn.close()
-        return 200
-    except:
+        
+        return 200 if deleted else 204 # No Content
+    except Exception as e:
+        print(f"Error in db_delete: {e}")
         return 500
 
-def db_select(table, where=None, orderby=None, *column_select): #qryStr, args=()
+def db_select(table, *column_select, where=None, orderby=None): #qryStr, args=()
     
     # Check table against whitelist
     if table not in tables_approved:

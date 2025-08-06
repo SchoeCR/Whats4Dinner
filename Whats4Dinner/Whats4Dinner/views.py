@@ -107,7 +107,7 @@ def register():
 
         # TODO: Improve security by changing to parameterised query
         # Check if profile with received email already exists
-        profile = db_select("SELECT * FROM users WHERE email = ?",(email,))
+        profile = db_select("users", where={"email":email})
         if len(profile) >= 1:
             return render_template(
             'register.html', title='Register',
@@ -439,11 +439,10 @@ def add_favourite():
     try:
 
         # Check to see if it's already favourited. 
-        existing_favourite_id = db_select(f"SELECT favourite_id FROM favourite_Recipes WHERE user_id = {user_id} AND recipe_id = {recipe_id}")
+        existing_favourite_id = db_select("favourite_Recipes","favourite_id",where={"user_id":user_id,"recipe_id":recipe_id})
 
         if not existing_favourite_id:
-            db_insert("favourite_Recipes", ["user_id", "recipe_id", "recipe_name", "recipe_summary", "recipe_image"],
-                      [user_id, recipe_id, recipe_name, recipe_summary, recipe_image])
+            db_insert("favourite_Recipes",insertvalues={"user_id":user_id, "recipe_id":recipe_id, "recipe_name":recipe_name, "recipe_summary":recipe_summary, "recipe_image":recipe_image})
             return jsonify({'success': True, 'message': "Recipe added to favourites"}), 200
         else:
             return jsonify({'success': True, 'message': "You've already favourited this recipe. ;)"}), 200
@@ -461,7 +460,7 @@ def check_favourite_recipe(recipe_id, user_id):
 
     # TODO: Improve security
     # Check to see if it's already favourited. 
-    existing_favourite_id = db_select(f"SELECT favourite_id FROM favourite_Recipes WHERE user_id = {user_id} AND recipe_id = {recipe_id}")
+    existing_favourite_id = db_select("favourite_Recipes","favourite_id",where={"user_id":user_id,"recipe_id":recipe_id})
         
     if existing_favourite_id:
         return jsonify({'success': True, 'message': "Recipe already favourited. :)"}), 200
@@ -481,7 +480,7 @@ def favourite_loginReq(email, password):
         return jsonify({'success': False, 'message': "Password invalid"}), 400
 
     # Query database for existing account with matching credentials
-    profile = db_select(f"SELECT * FROM users WHERE email='{email}'")
+    profile = db_select("users", where={"email":email})
 
     # Retrieve stored password hash
     pswhash = profile[0]["hash"]
@@ -662,28 +661,32 @@ def deleteFrom_shoppinglist(user_id, shopping_id):
 def show_mealplan(user_id, date_selected):
 
     checkIfUserIsLoggedIn(user_id)
-    user_mealplan = get_user_mealplan(user_id)
+    results_raw = get_user_mealplan(user_id)
+    user_mealplan = [dict(row) for row in results_raw]
     # Define the date string and its corresponding format
 
     tmpDate = datetime.now().date(); # default 
     
     if date_selected is not None:
-        tmpDate = datetime(date_selected).date # Passed in selected date
+        tmpDate = normalise_date(date_selected)
 
     mealplan = []
     dateRange = getDateRange(tmpDate)
 
     # Loop through response and find records that match dates in dateRange
-    for date in dateRange:
-        for row in user_mealplan: 
-            if date == row["planned_date"]:
-                mealplan = list(map(create_recipe_plan_for_view,user_mealplan))
+    filtered_mealplan = [
+        row for row in user_mealplan 
+        if datetime.strptime(row["planned_date"],"%Y-%m-%d %H:%M:%S.%f").date() in dateRange
+    ]
+    
+    mealplan = list(map(create_recipe_plan_for_view, filtered_mealplan))
     
     return render_template(
         "mealplan.html",
         title='Meal Plan',
         year=datetime.now().year,
-        mealplan=mealplan)
+        mealPlan=mealplan,
+        dateRange=dateRange)
 
 def getDateRange(date_selected):
     
@@ -696,7 +699,7 @@ def getDateRange(date_selected):
         dateRange = []
         # using day of week, find sunday date in same week
         j = 0
-        for i in range(0,6):
+        for i in range(7):
             dateTemp = (date_selected + timedelta(days=j)) - timedelta(days=dayOfWeek)
             dateRange.append(dateTemp)
             j+=1
@@ -711,9 +714,76 @@ def create_recipe_plan_for_view(user_mealplan):
     format_string = "%Y-%m-%d %H:%M:%S.%f"
     parsedDateAdded = datetime.strptime(user_mealplan['planned_date'], format_string)
     dateAddedString = parsedDateAdded.strftime('%d %b %Y')
+    dayOfWeek = parsedDateAdded.strftime("%A")
     return {"ID": user_mealplan["meal_plan_id"],
             "mealID": user_mealplan["meal_id"],
             "mealName": user_mealplan["meal_name"],
             "mealImage": user_mealplan["meal_image"],
-            "plannedDate": dateAddedString 
+            "plannedDate": dateAddedString,
+            "dayOfWeek": dayOfWeek,
+            "userID": user_mealplan["user_id"]
         }
+
+def normalise_date(date_selected):
+
+    if date_selected is None:
+        return None
+
+    if isinstance(date_selected,datetime):
+        return date_selected.date()
+
+    try:
+        return datetime.strptime(date_selected, "%Y-%m-%d").date()
+    except (ValueError, TypeError):
+        return None
+
+app.route('/profile/user/<user_id>/mealplan/<meal_plan_id>/delete', methods=["POST"])
+def delete_from_mealPlan(user_id, meal_plan_id):
+    """Deletes a recipe from the user's meal plan."""
+    
+    checkIfUserIsLoggedIn(user_id)
+    
+    # Validate inputs
+    if not meal_plan_id:
+        return jsonify({'success': False, 'message': "Invalid meal plan ID"}), 400
+    
+    # Delete from database
+    try:
+        result = db_delete("meal_plan",where={"meal_plan_id": meal_plan_id, "user_id": user_id})
+        
+        if result == 200:
+            return jsonify({'success': True, 'message': "Recipe removed from meal plan"}), 200
+        elif result == 204:
+            return jsonify({'success': False, 'message': "Meal plan not found"}), 404
+        else:
+            return jsonify({'success': False, 'message': "Bad request"}), 400
+
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+app.route('/profile/user/<user_id>/mealplan/add/<recipe_id>', methods=["POST"])
+def add_to_mealplan(user_id, recipe_id):
+    """Adds a recipe to the user's meal plan."""
+    
+    checkIfUserIsLoggedIn(user_id)
+    # Get the date from the form
+    planned_date = request.form.get("planned_date")
+    
+    # Validate inputs
+    if not planned_date:
+        return jsonify({'success': False, 'message': "Invalid date"}), 400
+    # Convert planned_date to datetime object
+    try:
+        planned_date = datetime.strptime(planned_date, "%Y-%m-%d")
+    except ValueError:
+        return jsonify({'success': False, 'message': "Invalid date format"}), 400
+    # Insert into database
+    try:
+        db_insert("meal_Plan", insertvalues={
+            "user_id": user_id,
+            "meal_id": recipe_id,
+            "planned_date": planned_date
+        })
+        return jsonify({'success': True, 'message': "Recipe added to meal plan"}), 200
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)}), 500

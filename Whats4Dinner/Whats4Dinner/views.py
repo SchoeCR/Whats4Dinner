@@ -64,7 +64,7 @@ def register():
         email = request.form.get("email")
         password = request.form.get("password")
         confirmation = request.form.get("confirmation")
-        added_date = datetime.now().date
+        added_date = datetime.now().date()
         
         # Check form variables for null values
         if not first_name:
@@ -665,7 +665,7 @@ def show_mealplan(user_id, date_selected):
     user_mealplan = [dict(row) for row in results_raw]
     # Define the date string and its corresponding format
 
-    tmpDate = datetime.now().date(); # default 
+    tmpDate = datetime.now().date() # default 
     
     if date_selected is not None:
         tmpDate = normalise_date(date_selected)
@@ -676,7 +676,7 @@ def show_mealplan(user_id, date_selected):
     # Loop through response and find records that match dates in dateRange
     filtered_mealplan = [
         row for row in user_mealplan 
-        if datetime.strptime(row["planned_date"],"%Y-%m-%d %H:%M:%S.%f").date() in dateRange
+        if datetime.strptime(row["planned_date"],"%Y-%m-%d").date() in dateRange
     ]
     
     mealplan = list(map(create_recipe_plan_for_view, filtered_mealplan))
@@ -711,7 +711,7 @@ def getDateRange(date_selected):
 
 def create_recipe_plan_for_view(user_mealplan):
     
-    format_string = "%Y-%m-%d %H:%M:%S.%f"
+    format_string = "%Y-%m-%d"
     parsedDateAdded = datetime.strptime(user_mealplan['planned_date'], format_string)
     dateAddedString = parsedDateAdded.strftime('%d %b %Y')
     dayOfWeek = parsedDateAdded.strftime("%A")
@@ -769,14 +769,15 @@ def add_to_mealplan(user_id, recipe_id):
     # Get the remaining form values    
     recipe_name = request.form.get("recipe_name")
     recipe_image = request.form.get("recipe_image")
-    planned_date = request.form.get("planned_date")
+    request_planned_date = request.form.get("planned_date")
     
     # Validate inputs
-    if not planned_date:
+    if not request_planned_date:
         return jsonify({'success': False, 'message': "Invalid date"}), 400
     # Convert planned_date to datetime object
     try:
-        planned_date = datetime.strptime(planned_date, "%Y-%m-%d")
+        planned_date_and_time = datetime.strptime(request_planned_date, "%Y-%m-%d")
+        planned_date = planned_date_and_time.date()
     except ValueError:
         return jsonify({'success': False, 'message': "Invalid date format"}), 400
     # Insert into database

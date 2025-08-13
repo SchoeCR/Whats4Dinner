@@ -59,6 +59,26 @@ class TestService(unittest.TestCase):
         self.assertEqual(db_result[0]["recipe_image"], recipe_image_url)
         
         db_delete("favourite_Recipes", where={"user_id":user_id})
+        
+    def test_save_duplicate_favourite_returns_error_message(self):
+        
+        # I wouldn't normally write unit tests against the db, but this is my first one as I refactor.
+
+        # Arrange
+        user_id = 99
+        recipe_id = 1
+        recipe_name = "Spicy chicken"
+        recipe_summary = "Super spicy chicken that will knock your socks off!"
+        recipe_image_url = "https://google.com/image.png"
+
+        # Act 
+        save_new_favourite(user_id, recipe_id, recipe_name, recipe_summary, recipe_image_url)
+        error_message = save_new_favourite(user_id, recipe_id, recipe_name, recipe_summary, recipe_image_url)
+
+        # Assert
+        self.assertEqual(error_message, "You've already favourited this recipe. ;)")
+        
+        db_delete("favourite_Recipes", where={"user_id":user_id})
 
 if __name__ == '__main__':
     unittest.main()

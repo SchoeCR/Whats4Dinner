@@ -176,7 +176,7 @@
                     <div class="container bg-light">
                         <div class="row">
                             <div class="col-auto">
-                                <button onclick="deleteMeal('{{ meal.ID }}', '{{ meal.userID }}')" class="btn">&#128465</button>
+                                <button onclick="deleteMeal('{{ meal.mealID }}', '{{ meal.userID }}')" class="btn">&#128465</button>
                             </div>
                             <div class="col-auto">
                                 <a href="/recipe/view/{{ meal.mealID }}" class="btn">&#128269</a>
@@ -250,7 +250,7 @@
         // Show the loader before the AJAX call
         $("#loadingOverlay, #loadingGif").show();
 
-        $.post("/profile/user/" + user_id + "/mealplan/" + mealID + "/delete", {
+        $.post("/profile/user/" + userID + "/mealplan/" + mealID + "/delete", {
             mealID: mealID,
             userID: userID
         })

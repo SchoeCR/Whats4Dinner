@@ -14,6 +14,19 @@
 
 <body>
 
+    <div id="mealPlanModal" class="modal-div">
+        <div id="mealPlan-popup" class="modal-plan_popup">
+            <span id="popup-close" class="close">&times;</span>
+            <label for="plannedDate_id" class="form-label">Planned date:</label>
+            <input id="plannedDate_id" type="date" name="plannedDate" style="max-width:none; width:400px" class="form-control">
+            <div id="plannedDate_feedback" class="invalid-feedback">
+                Please select a valid date.
+            </div>
+            <br />
+            <input id="id_btn-submit_plan-popup" type="submit" value="Add to plan" class="btn btn-primary">
+        </div>
+    </div>
+
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
         <div class="p-2">
             <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -322,7 +335,7 @@
         });
 
         $("#btn_plan_id").click(function () {
-
+            mealPlanModal.style.display = "block";
         });
 
     });
@@ -332,17 +345,32 @@
 
 <script>
     // Get the modal
-    var modal = document.getElementById("myModal");
+    var modalLogin = document.getElementById("myModal");
     // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
+    var spanLogin = document.getElementsByClassName("close")[0];
     // When the user clicks on <span> (x), close the modal
-    span.onclick = function () {
-        modal.style.display = "none";
+    spanLogin.onclick = function () {
+        modalLogin.style.display = "none";
     }
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
+        if (event.target == modalLogin) {
+            modalLogin.style.display = "none";
+        }
+    }
+</script>
+
+<script>
+    var modalPlan = document.getElementById("mealPlanModal");
+    var spanPlan = document.getElementById("popup-close");
+    // When the user clicks on <span> (x), close the modal
+    spanPlan.onclick = function () {
+        modalPlan.style.display = "none";
+    }
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modalPlan) {
+            modalPlan.style.display = "none";
         }
     }
 </script>
@@ -581,6 +609,43 @@
                 });
         })
     })
+</script>
+
+<script>
+    $(function () {
+        $("#id_btn-submit_plan-popup").click(function () {
+            let recipe_id = $("#recipe_id").text();
+            let recipe_name = $("#recipe_title_id").text();
+            let recipe_image = $("#recipe_image_id").text();
+            let planned_date = $("#plannedDate_id").val();
+            let user_id = $("#user_id").text();
+            if (!user_id) {
+                modal.style.display = "block";
+                return;
+            }
+            // Show the loader before the AJAX call
+            $("#loadingOverlay, #loadingGif").show();
+            let url = "/profile/user/" + user_id.trim() + "/mealplan/add/" + recipe_id.trim();
+            console.log("Posting to:", url);
+            $.post("/profile/user/" + user_id + "/mealplan/add/" + recipe_id,
+                {
+                    recipe_name: recipe_name,
+                    recipe_image: recipe_image,
+                    planned_date: planned_date
+                })
+                .done(function (response) {
+                    showMessage("Recipe added to meal plan");
+                })
+                .fail(function (xhr) {
+                    alert("Failed to add to meal plan: " + xhr.responseText);
+                })
+                .always(function () {
+                    // Hide the loader after the AJAX call completes
+                    $("#loadingOverlay, #loadingGif").hide();
+                    modalPlan.style.display = "none"; // Close the modal
+                })
+        })
+    });
 </script>
 
 {% endblock %}

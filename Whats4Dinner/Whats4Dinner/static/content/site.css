@@ -90,6 +90,15 @@ input[type="checkbox"].input-validation-error {
     animation: scaleIn 0.3s ease-out;
 }
 
+.modal-plan_popup {
+    background-color: #fefefe;
+    margin: auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 25%; /* Could be more or less, depending on screen size */
+    animation: scaleIn 0.3s ease-out;
+}
+
 .close {
     color: #aaa;
     float: right;

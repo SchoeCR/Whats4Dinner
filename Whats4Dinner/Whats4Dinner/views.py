@@ -737,7 +737,7 @@ def normalise_date(date_selected):
     except (ValueError, TypeError):
         return None
 
-app.route('/profile/user/<user_id>/mealplan/<meal_plan_id>/delete', methods=["POST"])
+@app.route('/profile/user/<user_id>/mealplan/<meal_plan_id>/delete', methods=["POST"])
 def delete_from_mealPlan(user_id, meal_plan_id):
     """Deletes a recipe from the user's meal plan."""
     
@@ -761,12 +761,14 @@ def delete_from_mealPlan(user_id, meal_plan_id):
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
 
-app.route('/profile/user/<user_id>/mealplan/add/<recipe_id>', methods=["POST"])
+@app.route('/profile/user/<user_id>/mealplan/add/<recipe_id>', methods=["POST"])
 def add_to_mealplan(user_id, recipe_id):
     """Adds a recipe to the user's meal plan."""
     
     checkIfUserIsLoggedIn(user_id)
-    # Get the date from the form
+    # Get the remaining form values    
+    recipe_name = request.form.get("recipe_name")
+    recipe_image = request.form.get("recipe_image")
     planned_date = request.form.get("planned_date")
     
     # Validate inputs
@@ -779,10 +781,15 @@ def add_to_mealplan(user_id, recipe_id):
         return jsonify({'success': False, 'message': "Invalid date format"}), 400
     # Insert into database
     try:
-        db_insert("meal_Plan", insertvalues={
+        db_insert("meal_plan", insertvalues={
             "user_id": user_id,
             "meal_id": recipe_id,
-            "planned_date": planned_date
+            "meal_name": recipe_name,
+            "meal_image": recipe_image,            
+            "planned_date": planned_date,
+            "made_bool": 0,
+            "flavour_rating": 0,
+            "cooking_rating": 0
         })
         return jsonify({'success': True, 'message': "Recipe added to meal plan"}), 200
     except Exception as e:

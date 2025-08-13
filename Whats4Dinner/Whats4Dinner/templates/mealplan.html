@@ -22,42 +22,208 @@
         <p>Date: <input type="date" id="date_picker"></p>
     </div>
 
-    <div id="meal_plan_container" class="container">
-        <div class="row">
-            <div class="col">
-                Sunday
-            </div>
-            <div class="col">
-                Monday
-            </div>
-            <div class="col">
-                Tuesday
-            </div>
-            <div class="col">
-                Wednesday
-            </div>
-            <div class="col">
-                Thursday
-            </div>
-            <div class="col">
-                Friday
-            </div>
-            <div class="col">
-                Saturday
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <h5 class="card-header">Monday</h5>
+                {% for meal in mealPlan %}
+                {% if "Monday" in meal.dayOfWeek %}
+                <sub style="visibility:hidden">{{ meal.ID }}</sub>
+                <img src="{{ meal.mealImage }}" class="card-img-top" alt="Mmm, yum yum">
+                <div class="card-body">
+                    <h6 class="card-title">{{ meal.mealName }}</h6>
+                    <sub>{{ meal.mealID }}</sub>
+                    <div class="container bg-light">
+                        <div class="row">
+                            <div class="col-auto">
+                                <button onclick="deleteMeal('{{ meal.ID }}', '{{ meal.userID }}')" class="btn">&#128465</button>
+                            </div>
+                            <div class="col-auto">
+                                <a href="/recipe/view/{{ meal.mealID }}" class="btn">&#128269</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                <div class="card-footer text-muted">
+                    {{ dateRange[0] }}
+                </div>
             </div>
         </div>
-        <div class="row">
-
+        <div class="col">
+            <div class="card">
+                <h5 class="card-header">Tuesday</h5>
+                {% for meal in mealPlan %}
+                {% if "Tuesday" in meal.dayOfWeek %}
+                <sub style="visibility:hidden">{{ meal.ID }}</sub>
+                <img src="{{ meal.mealImage }}" class="card-img-top" alt="Mmm, yum yum">
+                <div class="card-body">
+                    <h6 class="card-title">{{ meal.mealName }}</h6>
+                    <sub>{{ meal.mealID }}</sub>
+                    <div class="container bg-light">
+                        <div class="row">
+                            <div class="col-auto">
+                                <button onclick="deleteMeal('{{ meal.ID }}', '{{ meal.userID }}')" class="btn">&#128465</button>
+                            </div>
+                            <div class="col-auto">
+                                <a href="/recipe/view/{{ meal.mealID }}" class="btn">&#128269</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                <div class="card-footer text-muted">
+                    {{ dateRange[1] }}
+                </div>
+            </div>
         </div>
-
-     
-
+        <div class="col">
+            <div class="card">
+                <h5 class="card-header">Wednesday</h5>
+                {% for meal in mealPlan %}
+                {% if "Wednesday" in meal.dayOfWeek %}
+                <sub style="visibility:hidden">{{ meal.ID }}</sub>
+                <img src="{{ meal.mealImage }}" class="card-img-top" alt="Mmm, yum yum">
+                <div class="card-body">
+                    <h6 class="card-title">{{ meal.mealName }}</h6>
+                    <sub>{{ meal.mealID }}</sub>
+                    <div class="container bg-light">
+                        <div class="row">
+                            <div class="col-auto">
+                                <button onclick="deleteMeal('{{ meal.ID }}', '{{ meal.userID }}')" class="btn">&#128465</button>
+                            </div>
+                            <div class="col-auto">
+                                <a href="/recipe/view/{{ meal.mealID }}" class="btn">&#128269</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                <div class="card-footer text-muted">
+                    {{ dateRange[2] }}
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <h5 class="card-header">Thursday</h5>
+                {% for meal in mealPlan %}
+                {% if "Thursday" in meal.dayOfWeek %}
+                <sub style="visibility:hidden">{{ meal.ID }}</sub>
+                <img src="{{ meal.mealImage }}" class="card-img-top" alt="Mmm, yum yum">
+                <div class="card-body">
+                    <h6 class="card-title">{{ meal.mealName }}</h6>
+                    <sub>{{ meal.mealID }}</sub>
+                    <div class="container bg-light">
+                        <div class="row">
+                            <div class="col-auto">
+                                <button onclick="deleteMeal('{{ meal.ID }}', '{{ meal.userID }}')" class="btn">&#128465</button>
+                            </div>
+                            <div class="col-auto">
+                                <a href="/recipe/view/{{ meal.mealID }}" class="btn">&#128269</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                <div class="card-footer text-muted">
+                    {{ dateRange[3] }}
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <h5 class="card-header">Friday</h5>
+                {% for meal in mealPlan %}
+                {% if "Friday" in meal.dayOfWeek %}
+                <sub style="visibility:hidden">{{ meal.ID }}</sub>
+                <img src="{{ meal.mealImage }}" class="card-img-top" alt="Mmm, yum yum">
+                <div class="card-body">
+                    <h6 class="card-title">{{ meal.mealName }}</h6>
+                    <sub>{{ meal.mealID }}</sub>
+                    <div class="container bg-light">
+                        <div class="row">
+                            <div class="col-auto">
+                                <button onclick="deleteMeal('{{ meal.ID }}', '{{ meal.userID }}')" class="btn">&#128465</button>
+                            </div>
+                            <div class="col-auto">
+                                <a href="/recipe/view/{{ meal.mealID }}" class="btn">&#128269</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                <div class="card-footer text-muted">
+                    {{ dateRange[4] }}
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <h5 class="card-header">Saturday</h5>
+                {% for meal in mealPlan %}
+                {% if "Saturday" in meal.dayOfWeek %}
+                <sub style="visibility:hidden">{{ meal.ID }}</sub>
+                <img src="{{ meal.mealImage }}" class="card-img-top" alt="Mmm, yum yum">
+                <div class="card-body">
+                    <h6 class="card-title">{{ meal.mealName }}</h6>
+                    <sub>{{ meal.mealID }}</sub>
+                    <div class="container bg-light">
+                        <div class="row">
+                            <div class="col-auto">
+                                <button onclick="deleteMeal('{{ meal.ID }}', '{{ meal.userID }}')" class="btn">&#128465</button>
+                            </div>
+                            <div class="col-auto">
+                                <a href="/recipe/view/{{ meal.mealID }}" class="btn">&#128269</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                <div class="card-footer text-muted">
+                    {{ dateRange[5] }}
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <h5 class="card-header">Sunday</h5>
+                {% for meal in mealPlan %}
+                {% if "Sunday" in meal.dayOfWeek %}
+                <sub style="visibility:hidden">{{ meal.ID }}</sub>
+                <img src="{{ meal.mealImage }}" class="card-img-top" alt="Mmm, yum yum">
+                <div class="card-body">
+                    <h6 class="card-title">{{ meal.mealName }}</h6>
+                    <sub>{{ meal.mealID }}</sub>
+                    <div class="container bg-light">
+                        <div class="row">
+                            <div class="col-auto">
+                                <button onclick="deleteMeal('{{ meal.ID }}', '{{ meal.userID }}')" class="btn">&#128465</button>
+                            </div>
+                            <div class="col-auto">
+                                <a href="/recipe/view/{{ meal.mealID }}" class="btn">&#128269</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                <div class="card-footer text-muted">
+                    {{ dateRange[6] }}
+                </div>
+            </div>
+        </div>
     </div>
 
 </main>
 {% endblock %}
 {% block footer %}
-<a href="https://www.flaticon.com/free-icons/food-waste" title="food-waste icons" target="_blank" rel="noopener noreferrer">Food-waste icons created by Freepik - Flaticon</a>
 {% endblock %}
 
 {% block scripts %}
@@ -66,46 +232,40 @@
 
     $(function () {
 
-        //const today = new Date();
-
-        //// Check querystring to see if a date is set
-        //const queryString = window.location.search;
-        //const urlParams = new URLSearchParams(queryString);
-        //const dateSelectedQueryStringParam = urlParams.get('date_selected');
-
-        //if (dateSelectedQueryStrinParam != null) {
-        //    const tmpDate = new Date(dateSelectedQueryStringParam)
-        //    const todayFormattedDate = tmpDate.toISOString().substring(0, 10);
-        //    $("#date_picker").val(todayFormattedDate);
-        //    let user_id = $("#user_id").text();
-        //    window.location.href = "/profile/user/" + user_id + "/mealplan/" + date_selected;
-        //}
-
         $("#date_picker").on('change', function () {
 
             let selectedDate = $(this).val();
-            let user_id = $("#user_id").text();            
+            let user_id = $("#user_id").text();
 
-            window.location.href = "/profile/user/" + user_id + "/mealplan/" + date_selected;
+            showMessage("Date selected:" + selectedDate);
 
-            //$.post("/profile/user/" + user_id + "/mealplan/" + date_selected,
-            //    {
-            //        user_id: user_id,
-            //        date_selected: selectedDate
-            //    })
+            window.location.href = "/profile/user/" + user_id + "/mealplan/" + selectedDate;
 
-            //    .done(function (response) {
-            //        showMessage("Recipe removed");
-            //    })
-
-            //    .fail(function (response) {
-            //        showMessage("Error" + xhr.responseText);
-            //    })
-           
         });
 
-
     });
+
+    function deleteMeal(mealID, userID) {
+
+        // Show the loader before the AJAX call
+        $("#loadingOverlay, #loadingGif").show();
+
+        $.post("/profile/user/" + user_id + "/mealplan/" + mealID + "/delete", {
+            mealID: mealID,
+            userID: userID
+        })
+            .done(function (response) {
+                showMessage("Meal removed from plan successfully");
+                location.reload(); // Reload the page to reflect changes
+            })
+            .fail(function (error) {
+                showMessage("Error deleting meal: " + error.responseText);
+            })
+            .always(function () {
+                // Hide the loader after the AJAX call completes
+                $("#loadingOverlay, #loadingGif").hide();
+            });
+    }
 
 </script>
 

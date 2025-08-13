@@ -13,6 +13,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, date, timedelta
 from flask import render_template, request, flash, redirect, session, json, Flask, jsonify
 from Whats4Dinner import app
+from Whats4Dinner.service import save_new_favourite
 from .utils import *
 import requests
 from .config import API_KEY
@@ -443,32 +444,19 @@ def get_recipe_similar(recipe_id):
 @app.route('/favourite-recipe', methods=["POST"])
 def add_favourite():
     """Adds a favourite for a user."""
-    user_id = request.form.get("user_id")
-    recipe_id = request.form.get("recipe_id")
-    recipe_name = request.form.get("recipe_name")
-    recipe_summary = request.form.get("recipe_summary")
-    recipe_image = request.form.get("recipe_image")
+    error_message = save_new_favourite(
+        request.form.get("user_id"), 
+        request.form.get("recipe_id"), 
+        request.form.get("recipe_name"), 
+        request.form.get("recipe_summary"), 
+        request.form.get("recipe_image"))
 
-    # Validate inputs
-    if not user_id:
-        return jsonify({'success': False, 'message': "Invalid user"}), 400
-    if not recipe_id or not recipe_name:
-        return jsonify({'success': False, 'message': "Invalid recipe"}), 400
-
-    # Save to Database
-    try:
-
-        # Check to see if it's already favourited. 
-        existing_favourite_id = db_select("favourite_Recipes","favourite_id",where={"user_id":user_id,"recipe_id":recipe_id})
-
-        if not existing_favourite_id:
-            db_insert("favourite_Recipes",insertvalues={"user_id":user_id, "recipe_id":recipe_id, "recipe_name":recipe_name, "recipe_summary":recipe_summary, "recipe_image":recipe_image})
-            return jsonify({'success': True, 'message': "Recipe added to favourites"}), 200
-        else:
-            return jsonify({'success': True, 'message': "You've already favourited this recipe. ;)"}), 200
-    except Exception as e:
-        return jsonify({'success': False, 'message': str(e)}), 500
+    if not error_message:
+        return jsonify({'success': True, 'message': "Recipe added to favourites"}), 200
+    else:
+        return jsonify({'success': False, 'message': error_message}), 400
     
+   
 @app.route('/favourite-recipe/<recipe_id>/user/<user_id>/check', methods=["GET"])
 def check_favourite_recipe(recipe_id, user_id):
        

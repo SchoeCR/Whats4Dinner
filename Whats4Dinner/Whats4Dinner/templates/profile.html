@@ -38,11 +38,14 @@
                     <h4 class="my-0 fw-normal">Profile</h4>
                 </div>
                 <div class="card-body">
+
+                    <ul>
+                        <li>Name: {{ user_profile.first_name }} {{ user_profile.last_name }}</li>
+                        <li>Email: {{ user_profile.email }}</li>
+                    </ul>
+
                     <form action="/profile/user/{{ session.user_id }}/password" method="get">
                         <button id="btn_password_id" class="btn btn-primary mb-2" type="submit">Change password</button>
-                    </form>
-                    <form action="/profile/user/emailchange" method="get">
-                        <button class="btn btn-primary mb-2" type="submit">Change email</button>
                     </form>
                 </div>
             </div>

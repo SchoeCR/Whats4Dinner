@@ -30,11 +30,31 @@ def home():
 @app.route('/profile/user/<user_id>')
 def profile(user_id):
     """Renders the profile page."""
+    
+    # Get the User Profile
+    user_profile = db_select("users",where={"user_id":user_id})
+
+    if not user_profile:
+        return render_template(
+            'profile.html',
+            title='User Profile',
+            year=datetime.now().year,
+            message='Your contact page.',
+            error_message="User profile not found.")
+
+    user_profile_json = {
+        "userID": user_profile[0]["user_id"],
+        "first_name": user_profile[0]["first_name"],
+        "last_name": user_profile[0]["last_name"],
+        "email": user_profile[0]["email"] 
+    }
+
     return render_template(
         'profile.html',
         title='User Profile',
         year=datetime.now().year,
-        message='Your contact page.'
+        message='Your contact page.',
+        user_profile=user_profile_json
     )
 
 @app.route('/flash', methods=["GET"])

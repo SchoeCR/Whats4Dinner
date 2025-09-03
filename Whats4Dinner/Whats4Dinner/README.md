@@ -26,3 +26,18 @@ The app also allows users to save their favorite recipes and create a shopping l
 Spoonacular API is a comprehensive food and recipe API that provides access to a vast database of recipes, ingredients, and nutritional information. 
 It offers various endpoints for searching recipes, retrieving recipe details, and generating meal plans.
 
+***
+
+*User Control:*
+
+The app provides users with the ability to register a profile, providing additional features beyond just recipe searching and suggestions.
+From the profile page, users can:
+- View saved recipes for easy access later.
+- View and manage their shopping list, which includes ingredients needed for their chosen recipes.
+- Create a meal plan by selecting recipes for specific days of the week.
+- Update their profile information, such as username and password.
+
+***
+
+***Recipe Search and Suggestions:***
+

@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />
+    <Content Include="Whats4Dinner\README.md" />
     <Content Include="Whats4Dinner\static\content\bootstrap.css" />
     <Content Include="Whats4Dinner\static\content\bootstrap.min.css" />
     <Content Include="Whats4Dinner\static\content\site.css" />

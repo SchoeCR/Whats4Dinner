@@ -87,4 +87,37 @@ This action saves the recipe to the user's profile, allowing them to easily acce
 
 <ins>**Shopping List:**</ins>
 
-When viewing a detailed recipe
+When viewing a recipe on the detail page, users have the option to add the ingredients required for that recipe to their shopping list. 
+<br>Each ingredient has a shopping cart icon associated with it and when clicked, the application will provide feedback to the user; whether successful or not.<br>
+
+The shopping list is accessible from the user's profile page, where users can view all the ingredients they have added from various recipes. Should multiple of the same igredient
+be added from different recipes, the application will automatically consolidate them into a single entry with the total quantity required.<br>
+Shopping list items can be individually removed from the shopping list by pressing the &#128465; symbol.
+<br><br>
+>*As per the saving recipes section, the decision was made to oppose data normalisation convention by storing ingredient information when adding ingredients to the shopping list for the purpose of*
+*preserving available daily API credit*
+***
+
+<ins>**Meal Planning:**</ins>
+
+From the detailed recipe view page, users can press the "Add to plan" button to add the recipe to their meal plan.
+Upon clicking the button, a modal dialog appears, prompting the user to select a day of the week to which they want to add the recipe.
+Upon selecting a day, the app will provide feedback to the user, indicating whether the addition was successful or not.
+<br><br>
+The users meal plan is accessible from their profile page. By default the page loads to display the current week (as per their system date) from Sunday to Monday.
+Using the date input, the page will reload and display any recipes that were planned for that particular date.
+<br><br>From the meal plan, the user has the option to either remove a recipe by pressing the &#128465; symbol, or view the recipe
+detail page by pressing the &#128269; symbol.
+<br><br>
+>*As per the saving recipes section, the decision was made to oppose data normalisation convention by storing ingredient information when adding ingredients to the shopping list for the purpose of*
+*preserving available daily API credit*
+
+***
+
+<ins>**User Profile Control:**</ins>
+
+From the profile page, the user can view basic account information such as their username and email address.
+They also have the option to update their password by clicking the "Change Password" button.
+The user is then redirected to a separate page where to make the change they must enter their existing password, enter a new one, and then confirm the
+change by re-entering the new password. <br><br>
+Upon submission, the app will provide feedback to the user, indicating whether the password change was successful or not.

@@ -529,7 +529,7 @@ def delete_favourite(recipe_id, user_id, favourite_id):
     if not favourite_id:
         return
     # Call util function: Db_Delete
-    if db_delete("favourite_Recipes","favourite_id",favourite_id) == 200:
+    if db_delete("favourite_Recipes",where={"favourite_id":favourite_id}) == 200:
         return jsonify({'success': True, 'message': "Favourite deleted"})
     else:
         return jsonify({'success': False, 'message': "Error"})

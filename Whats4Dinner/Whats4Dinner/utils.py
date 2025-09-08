@@ -309,7 +309,7 @@ def deleteShoppingListItem(shopping_id):
     if not shopping_id:
         return 400
     try:
-        if db_delete("shopping_List","shopping_id",shopping_id) == 200:
+        if db_delete("shopping_List",where={"shopping_id":shopping_id}) == 200:
             return 200
     except:
         return 500

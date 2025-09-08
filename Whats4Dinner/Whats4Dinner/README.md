@@ -6,11 +6,10 @@
 Whats4Dinner is a web application that helps users decide what to cook for dinner based on the ingredients they have at home. Users can input their available ingredients, and the app will suggest recipes that can be made with those ingredients. 
 The app also allows users to save their favorite recipes and create a shopping list for missing ingredients and create a meal plan using found recipes.
 
-<ins>**Features:**</ins>
-
 ***
 
-*Technologies Used:*
+<ins>**Technologies/languages Used:**</ins>
+
 - Frontend: Flask, HTML, CSS, JavaScript
 - Backend: Python, Flask
 - Database: SQLite
@@ -19,7 +18,7 @@ The app also allows users to save their favorite recipes and create a shopping l
 
 ***
 
-*Data source -> Spoonacular API:* 
+<ins>**Data source -> Spoonacular API:**</ins> 
 > Spoonacular API Documentation:
 > https://spoonacular.com/food-api
 
@@ -28,7 +27,7 @@ It offers various endpoints for searching recipes, retrieving recipe details, an
 
 ***
 
-*User Control:*
+<ins>**User Control:**</ins>
 
 The app provides users with the ability to register a profile, providing additional features beyond just recipe searching and suggestions.
 From the profile page, users can:
@@ -39,7 +38,7 @@ From the profile page, users can:
 
 ***
 
-***Recipe Search and Suggestions:***
+<ins>**Recipe Search and Suggestions:**</ins>
 
 Once logged in, from the 'Home' page, users have a couple of options for 'searching' or 'querying' the API data source for suggested recipes.
 
@@ -54,7 +53,7 @@ Further refinements can be made by specifying any intolerances or allergens (e.g
 
 ***
 
-***Detailed Recipe View:***
+<ins>**Detailed Recipe View:**</ins>
 
 Upon selecting a recipe from the search results, users are taken to a detailed view of the recipe. This view provides the following key information:
 - Recipe Title
@@ -69,9 +68,23 @@ Upon selecting a recipe from the search results, users are taken to a detailed v
 - Suggested wine pairings, if any
 
 In addition to viewing the recipe information above, users can also interact with the recipe in the following ways:
-
+- Add recipe to favourites
+- Add ingredients to shopping list
+- Add recipe to meal plan
 
 ***
 
-***Saving Favourite Recipes:***
+<ins>**Saving Favourite Recipes:**</ins>
 
+Should a user find a recipe they particularly like and wish to save it for future reference, they can do so by clicking the "Add to favourites" button on the detailed recipe view page.
+This action saves the recipe to the user's profile, allowing them to easily access it later from their profile page.
+
+>*When designing the project, the concious decision was made to go against data normalisation conventions and store information (other than just the unique identification number)* 
+*regarding the recipe (e.g. Recipe name, Image, description) in the project database.<br> The justification for this decision was due to the limitations of available daily credit in the free API plan.*<br>
+*By storing this information in the project database, it reduces the number of API calls required to retrieve recipe information, thus conserving the daily credit limit.*<br>
+
+***
+
+<ins>**Shopping List:**</ins>
+
+When viewing a detailed recipe
